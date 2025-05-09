@@ -990,6 +990,84 @@
         }
     }
     </style>
+     <style>
+        /* WhatsApp floating button styles */
+        .whatsapp-float {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            background-color: #25D366;
+            border-radius: 50%;
+            color: white;
+            font-size: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            z-index: 1000;
+            animation: float-pop 2s infinite;
+            transition: all 0.3s ease;
+        }
+        
+        .whatsapp-float:hover {
+            transform: scale(1.1) translateY(-5px);
+            box-shadow: 0 6px 15px rgba(0,0,0,0.3);
+        }
+        
+        /* Pop animation with slight float effect */
+        @keyframes float-pop {
+            0% { transform: translateY(0) scale(1); }
+            50% { transform: translateY(-5px) scale(1.05); }
+            100% { transform: translateY(0) scale(1); }
+        }
+        
+        /* Tooltip */
+        .whatsapp-float::after {
+            content: "Chat with us on WhatsApp";
+            position: absolute;
+            right: 70px;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: #333;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 5px;
+            font-size: 14px;
+            white-space: nowrap;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .whatsapp-float:hover::after {
+            opacity: 1;
+            visibility: visible;
+            right: 75px;
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .whatsapp-float {
+                width: 50px;
+                height: 50px;
+                font-size: 25px;
+                bottom: 20px;
+                right: 20px;
+            }
+            
+            .whatsapp-float::after {
+                font-size: 12px;
+                padding: 5px 8px;
+                right: 60px;
+            }
+            
+            .whatsapp-float:hover::after {
+                right: 65px;
+            }
+        }
+    </style>
 </head>
 <body>
     <header>
@@ -1638,5 +1716,9 @@
         });
     });
     </script>
+     <!-- WhatsApp Floating Button -->
+    <a href="https://wa.me/918651744312" target="_blank" class="whatsapp-float">
+        <i class="fab fa-whatsapp"></i>
+    </a>
 </body>
 </html>

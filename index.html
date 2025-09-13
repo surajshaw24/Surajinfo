@@ -1,997 +1,975 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-    <title>Suraj Shaw</title>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Suraj Shaw - Portfolio</title>
+    <meta name="description" content="Suraj Shaw - Web Developer, UI/UX Designer, Youtuber from Dhanbad, India">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&display=swap" rel="stylesheet">
+    
+    <!-- Boxicons -->
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    
     <style>
-    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&display=swap');
-    *{
-        font-family: "Poppins", sans-serif;
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-        text-decoration: none;
-        border: none;
-        outline: none;
-        -webkit-tap-highlight-color: transparent;
-    }
-    :root{
-        --bg-color:#1f243d;
-        --second-bg-color:#323946;
-        --main-color:#7cf03d;
-        --white-color:#fff;
-        --disabled-color:#fff3;
-    }
-    html{
-        font-size: 62.5%;
-        scroll-behavior: smooth;
-        overflow-x: hidden;
-    }
-    body{
-        color:var(--white-color);
-        background: var(--bg-color);
-        overflow-x: hidden;
-        -webkit-user-select: none;
-        -moz-user-select: none;
-        -ms-user-select: none;
-        user-select: none;
-    }
+        /* ===== BASE STYLES & VARIABLES ===== */
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&display=swap');
 
-    header{
-        position: fixed;
-        top:0;
-        left:0;
-        width:100%;
-        background: var(--bg-color);
-        display: flex;
-        justify-content:space-between;
-        align-items: center;
-        z-index: 100;
-        padding: 1.6rem 5%;
-        transition: all 0.3s ease;
-    }
-
-    .logo{
-        font-size: 2.5rem;
-        color:var(--white-color);
-        font-weight: 700;
-    }
-    nav a{
-        font-size:1.8rem;
-        color:var(--white-color);
-        font-weight: 500;
-        margin-right: 3.5rem;
-        transition: 0.3s;
-    }
-
-    nav a:hover,
-    nav a.active {
-        color:var(--main-color);
-    }
-
-    #menu-icon{
-        font-size: 3.6rem;
-        display: none;
-        cursor: pointer;
-        z-index: 101;
-        color: var(--white-color);
-    }
-
-    section{
-        width: 100%;
-        min-height:100vh;
-        padding: 10rem 5% 2rem;
-    }
-
-    /* Animation classes */
-    [data-animate] {
-      opacity: 0;
-      transition: opacity 0.5s ease, transform 0.5s ease;
-    }
-
-    [data-animate="fade-up"] {
-      transform: translateY(50px);
-    }
-
-    [data-animate="fade-down"] {
-      transform: translateY(-50px);
-    }
-
-    [data-animate="fade-left"] {
-      transform: translateX(50px);
-    }
-
-    [data-animate="fade-right"] {
-      transform: translateX(-50px);
-    }
-
-    [data-animate].animated {
-      opacity: 1;
-      transform: translate(0, 0);
-    }
-
-    /* Add this to your CSS */
-    [data-animate] {
-        will-change: transform, opacity;
-        backface-visibility: hidden;
-        perspective: 1000px;
-    }
-    /* Delay classes */
-    .delay-1 { transition-delay: 0.1s !important; }
-    .delay-2 { transition-delay: 0.2s !important; }
-    .delay-3 { transition-delay: 0.3s !important; }
-    .delay-4 { transition-delay: 0.4s !important; }
-    .delay-5 { transition-delay: 0.5s !important; }
-
-    .home{
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 5rem;
-        background-color: var(--bg-color);
-    }
-
-    .home-details{
-        flex: 1;
-    }
-    .home-details h1{
-        font-size: clamp(3.5rem, 8vw, 5.5rem);  
-        line-height: 1.2;
-    }
-    .home-details h2{
-        display:inline-block;
-        font-size: clamp(2.4rem, 5vw, 3.2rem);
-        margin: 1rem 0;
-        line-height: 1.2;
-    }
-
-    .home-details h2 span{
-        position: relative;
-        display: inline-block;
-        color: transparent;
-        -webkit-text-stroke:.07rem var(--main-color);
-        animation: display-text 16s linear infinite;
-        animation-delay: calc(-4s * var(--i));
-    }
-    @keyframes display-text{
-        25%,100%{
-            display: none;
+        :root {
+            --bg-color: #1f243d;
+            --second-bg-color: #323946;
+            --main-color: #7cf03d;
+            --white-color: #fff;
+            --disabled-color: rgba(255, 255, 255, 0.3);
+            --border-radius: 0.8rem;
+            --transition-speed: 0.3s;
+            --shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.2);
+            --spacing-sm: 0.8rem;
+            --spacing-md: 1.6rem;
+            --spacing-lg: 2.5rem;
+            --spacing-xl: 5rem;
         }
-    }
 
-    .home-details h2 span::before{
-        content:attr(data-text);
-        position: absolute;
-        width: 0;
-        border-right: .2rem solid var(--main-color);
-        color:var(--main-color);
-        white-space: nowrap;
-        overflow: hidden;
-        animation:fill-text 4s linear infinite;
-    }
-
-    @keyframes fill-text{
-        10%,100%{
-            width:0;
+        /* Reduce motion for accessibility */
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
         }
-        70%,90%{
-            width:100%;
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            text-decoration: none;
+            border: none;
+            outline: none;
+            font-family: 'Poppins', sans-serif;
+            -webkit-tap-highlight-color: transparent;
         }
-    }
 
-    .home-details p{
-        font-size:1.6rem;
-        margin:1.5rem 0 2.5rem;
-        line-height: 1.6;
-    }
-    .home-details .btn-sci{
-        display: flex;
-        align-items:center;
-        flex-wrap: wrap;
-        gap: 2rem;
-    }
-    .btn{
-        display: inline-block;
-        padding: 1.2rem 2.8rem;
-        background:var(--main-color);
-        border:0.2rem solid var(--main-color);
-        border-radius: 4rem;
-        box-shadow: 0 0 1rem var(--main-color);
-        font-size: 1.6rem;
-        color:var(--bg-color);
-        font-weight: 500;
-        transition:0.5s;
-        cursor: pointer;
-    }
-    .btn:hover{
-        background:transparent;
-        color:var(--main-color);
-        box-shadow:none;
-    }
-
-    .home-details .btn-sci .sci{
-        display: flex;
-        gap: 1rem;
-    }
-    .home-details .btn-sci .sci a{
-        display: inline-flex;
-        padding: .8rem;
-        border:2px solid var(--main-color);
-        border-radius:50%;
-        font-size: 2rem;
-        color: var(--main-color);
-        transition:0.3s;
-    }
-    .home-details .btn-sci .sci a:hover{
-        background:var(--main-color);
-        color: var(--bg-color);
-        box-shadow:0 0 1rem var(--main-color);
-    }
-
-    .home-img{
-        flex: 1;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
-    .home-img .img-box{
-        position: relative;
-        width: 100%;
-        max-width: 35rem;
-        height: 35rem;
-        border-radius: 50%;
-        padding: .9rem;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        overflow: hidden;
-    }
-
-    .home-img .img-box::before, 
-    .home-img .img-box::after{
-        content: '';
-        position: absolute;
-        width: 100%;
-        height: 100%;
-        background:conic-gradient(transparent,transparent,transparent,var(--main-color));
-        transform: rotate(0deg);
-        animation:rotate-border 10s linear infinite; 
-    }
-    .home-img .img-box::after{
-       animation-delay:-5s; 
-    }
-
-    @keyframes rotate-border{
-    100%{
-        transform:rotate(360deg);
-    }
-    }
-
-    .home-img .img-box .img-item{
-        position: relative;
-        width: 100%;
-        height: 100%;
-        background: var(--bg-color);
-        border-radius: 50%;
-        border: .01rem solid var(--bg-color);
-        justify-content: center;
-        display: flex;
-        z-index: 1;
-        overflow: hidden;
-    }
-    .home-img .img-box .img-item img{
-        position: absolute;
-        top: 0rem;
-        display: block;
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        mix-blend-mode: lighten;
-    }
-
-    /*service section */
-    .Service{
-        background-color:var(--bg-color);
-        height:auto;    
-    }
-
-    .heading{
-        font-size:4.5rem;
-        text-align: center;
-        margin-bottom: 2rem;
-    }
-    .heading span{
-        color:var(--main-color);
-    }
-    .service-container{
-       display: grid;
-        grid-template-columns:repeat(auto-fit,minmax(30rem,1fr));
-        gap: 2rem;
-    }
-
-    .service-container .service-box{
-        padding: 3rem 2rem;
-        margin-bottom:2rem;
-        background: var(--second-bg-color);
-        border: .2rem solid var(--second-bg-color);
-        border-radius:1rem;
-        transition: 0.3s;
-    }
-    .service-container .service-box:hover{
-        border:.2rem solid var(--main-color);
-        transform: scale(1.02);
-        cursor: pointer;
-    }
-
-    .service-box .icon{
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-    }
-    .service-box .icon i{
-        font-size: 4.5rem;
-        transition: 0.3s;
-    }
-
-    .service-box:hover .icon:not(a i){
-        color: var(--main-color);
-    }
-
-    .service-box .icon a{
-        display: inline-flex;
-        background: var(--white-color);
-        border-radius: 50%;
-        padding: 1rem;
-        transition: 0.3s;
-    }
-
-    .service-box:hover .icon a{
-        background: var(--main-color);
-    }
-    .service-box .icon a i{
-        font-size:2.5rem;
-        color:var(--bg-color);
-        transform: rotate(225deg);
-    }
-    .service-box .icon a:hover i{
-        transform: rotate(180deg);
-    }
-
-    .service-box h3{
-        font-size: 2.5rem;
-        margin: 1.5rem 0;
-    }
-    .service-box:hover h3{
-        color:var(--main-color);
-    }
-    .service-box p{
-        font-size: 1.5rem;
-        text-align: justify;
-        line-height: 1.6;
-    }
-
-    /*Resume section*/
-    .resume{
-        background-color: var(--bg-color);
-        height: auto;
-    }
-    .resume-container{
-        display: grid;
-        grid-template-columns: 1fr 2fr;
-        gap:3rem;
-    }
-
-    .resume-box h2{
-        font-size:3.5rem;
-        margin-bottom: 1rem;
-    }
-    .resume-box p{
-        font-size:1.6rem;
-        line-height: 1.6;
-    }
-    .resume-box .desc{
-        margin:2rem 0 2.5rem;
-    }
-    .resume-box .resume-button{
-        width:100%;
-        height: 5rem;
-        background:var(--second-bg-color);
-        border:.2rem solid var(--second-bg-color);
-        font-size: 1.6rem;
-        color:var(--white-color);
-        font-weight: 500;
-        margin-bottom:1.5rem;
-        border-radius: .8rem;
-        cursor: pointer;
-        transition: 0.3s;
-    }
-    .resume-box .resume-button:hover,
-    .resume-box .resume-button.active{
-        border:.2rem solid var(--main-color);
-        color:var(--main-color);
-    }
-    .resume-detail{
-        display: none;
-    }
-    .resume-detail.active{
-        display: block;
-    }
-    .resume-box .heading{
-        font-size:3.5rem;
-        text-align: left;
-        margin-bottom: 1.5rem;
-    }
-
-    .resume-list{
-        display: grid;
-        grid-template-columns:repeat(auto-fit,minmax(25rem,1fr));
-        gap:2rem;
-        max-height:45rem;
-        overflow-y: auto;
-        padding-right: 1rem;
-    }
-    /*for changing the scroll bar */
-    .resume-list::-webkit-scrollbar{
-        width:.7rem;
-    }
-    .resume-list::-webkit-scrollbar-thumb{
-        background:transparent;
-        border-radius:1rem;
-    }
-    .resume-list:hover::-webkit-scrollbar-thumb{
-        background: var(--main-color);
-    }
-    /*close*/
-
-    .resume-list .resume-item{
-        background:var(--second-bg-color);
-        border-radius:.8rem;
-        padding: 2.5rem 2rem;
-        height:auto;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        transition: 0.3s;
-    }
-
-    .resume-item:hover {
-        transform: translateY(-5px);
-    }
-
-    .resume-item .year{
-        color:var(--main-color);
-        font-size: 1.6rem;
-        margin-bottom: 0.5rem;
-    }
-    .resume-item h3{
-        font-size:2rem;
-        margin-bottom: 1rem;
-    }
-    .resume-item .company{
-        position: relative;
-        margin-left:2rem;
-        margin-bottom: 1.5rem;
-        font-size: 1.5rem;
-    } 
-
-    .resume-item .company::before{
-        content: '';
-        position: absolute;
-        top:50%;
-        transform: translateY(-50%);
-        left: -2rem;
-        width: 1rem;
-        height: 1rem;
-        background: var(--main-color);
-        border-radius:50%;
-    }
-    .resume-item .company-discription{
-        text-align:justify;
-        font-size: 1.4rem;
-        line-height: 1.6;
-    }
-
-    .resume-detail.skill .resume-list{
-        grid-template-columns:repeat(auto-fit,minmax(15rem,1fr));
-        max-height: none;
-        overflow: visible;
-    }
-    .resume-detail.skill .resume-item{
-        position: relative;
-        align-items: center;
-        height: auto;
-        text-align: center;
-    }
-
-    .resume-detail.skill .resume-item i{
-        font-size: 7rem;
-        transition:0.3s;
-        margin-bottom: 1rem;
-    } 
-    .resume-detail.skill .resume-item:hover i{
-        color:var(--main-color);
-        transform: scale(1.1);
-    }
-    .resume-detail.skill .resume-item span{
-        position: absolute;
-        top:-2rem;
-        left: 50%;
-        transform: translateX(-50%);
-        background:var(--white-color);
-        color: var(--bg-color);
-        font-size:1.4rem;
-        padding: .5rem 1rem;
-        border-radius: .6rem;
-        pointer-events: none;
-        opacity: 0;
-        transition:0.2s;
-        white-space: nowrap;
-    }
-
-    .resume-detail.skill .resume-item:hover span{
-        top:-2.5rem;
-        opacity: 1;
-    }
-
-    .resume-detail.about .resume-list{
-        max-height: none;
-        grid-template-columns:repeat(auto-fit,minmax(25rem,1fr));
-    }
-    .resume-detail.about .resume-item{
-        height: auto;
-        padding: 1.5rem;
-        background:transparent;
-    }
-
-    .resume-detail.about .resume-item p{
-        color: var(--main-color);
-        margin-right: 1.5rem;
-        font-size: 1.5rem;
-        margin-bottom: 1rem;
-    }
-
-    .resume-detail.about .resume-item p span{
-        color: var(--white-color);
-        margin-left: 1rem;
-        font-size:1.6rem;
-    }
-    .resume-detail.about .resume-item p a{
-        color: var(--white-color);
-        margin-left: 1rem;
-        font-size:1.6rem;
-        transition: 0.3s;
-    }
-    .resume-detail.about .resume-item p a:hover {
-        color: var(--main-color);
-    }
-    /*Portfolio Design*/
-    .portfolio{
-        background-color: var(--bg-color);
-        height: auto;
-    }
-    .portfolio-container{
-        display:grid;
-        grid-template-columns:repeat(2,1fr);
-        gap:3rem;
-    }
-
-    .portfolio-detail{
-        display: none;
-    }
-    .portfolio-detail.active{
-        display:block;
-    }
-    .portfolio-box .num{
-        font-size: 6rem;
-        -webkit-text-stroke: .07rem var(--white-color);
-        color:transparent;
-        line-height:1;
-    }
-
-    .portfolio-box h3{
-        font-size:3rem;
-        margin: 1rem 0 2rem;
-    }
-    .portfolio-box p{
-        font-size: 1.6rem;
-        text-align: justify;
-        line-height: 1.6;
-        margin-bottom: 1.5rem;
-    }
-    .portfolio-box .tech{
-        margin: 2rem 0;
-        color:var(--main-color);
-        border-bottom:.1rem solid var(--white-color);
-        padding-bottom: 1.5rem;
-        font-size: 1.5rem;
-    }
-    .portfolio-box .live-github{
-        display: flex;
-        gap: 1.5rem;
-        margin-top: 2rem;
-    }
-    .portfolio-box .live-github a{
-        position: relative;
-        display:inline-flex;
-        padding: 1rem;
-        font-size: 2.5rem;
-        color:var(--white-color);
-        border-radius:50%;
-        background:var(--second-bg-color);
-        transition:.3s;
-    }
-    .portfolio-box .live-github a:hover{
-        color: var(--main-color);
-        transform: translateY(-5px);
-    }
-
-    .portfolio-box .live-github a span{
-        position: absolute;
-        top:-3.5rem;
-        left:50%;
-        transform: translateX(-50%) scale(.9);
-        font-size:1.4rem;
-        white-space:nowrap;
-        padding:.5rem 1rem;
-        border-radius: .6rem;
-        pointer-events: none;
-        background:var(--white-color);
-        color:var(--bg-color);
-        opacity:0;
-        transition:0.2s;
-    }
-
-    .portfolio-box .live-github a:hover span{
-        top:-4rem;
-        opacity: 1;
-        transform: translateX(-50%) scale(1);
-    }
-
-    .portfolio-box .portfolio-carousal{
-        width: 100%;
-        height: 40rem;
-        border-radius: 1rem;
-        overflow: hidden;
-        position: relative;
-    }
-    .portfolio-carousal .img-slide{
-        display: grid;
-        grid-auto-flow: column;
-        grid-auto-columns:100%;
-        gap:2rem;
-        height: 100%;
-        transition:.5s;
-    }
-    .portfolio-carousal .img-item{
-      height: 100%;
-    }
-    .portfolio-carousal .img-item img {  
-        display: block;
-        width: 100%;
-        height:100%;
-        object-fit: cover;
-        border-radius:1rem;
-    }
-    .portfolio-box .navigation{
-        text-align:right;
-        margin-top:2rem;
-    }
-    .portfolio-box .navigation button {    
-        display: inline-flex;
-        justify-content: center;
-        align-items: center;
-        width: 5rem;
-        height: 5rem;
-        background-color:var(--second-bg-color);
-        border: .2rem solid var(--main-color);
-        border-radius:.6rem;
-        font-size:3rem;
-        color: var(--main-color);
-        cursor: pointer;
-        transition: 0.3s;
-    }
-    .portfolio-box .navigation button:hover {
-        background-color: var(--main-color);
-        color: var(--bg-color);
-    }
-    .portfolio-box .navigation button.disabled{
-        background-color: var(--second-bg-color);
-        color:var(--disabled-color);
-        border-color: var(--disabled-color);
-        cursor: not-allowed;
-    }
-    .portfolio-box .navigation .arrow-right{
-        margin-left: 1.5rem;
-    }
-
-    /* Contact style */
-    .contact{
-        background-color: var(--bg-color);
-        height: auto;
-        padding-bottom:7rem;
-    }
-    .contact-container{
-        display: grid;
-        grid-template-columns:1fr 1.3fr;
-        gap:3rem;
-    }
-    .contact-container .contact-box:first-child{
-        align-self: center;
-    }
-    .contact-box h2{
-        font-size: 3.5rem;
-        margin-bottom: 1.5rem;
-    }   
-    .contact-box p{
-        font-size: 1.6rem;
-        line-height: 1.6;
-    }
-    .contact-box .desc{
-        margin: 1.5rem 0 2.5rem;
-    }
-
-    .contact-box .contact-details{
-        display: flex;
-        align-items: center;
-        margin:2rem 0;
-    }
-    .contact-details i{
-        display: inline-flex;
-        justify-content: center;
-        align-items: center;
-        background: var(--second-bg-color);
-        color:var(--main-color);
-        font-size: 2.5rem;
-        min-width: 5rem;
-        height: 5rem;
-        border-radius: .6rem;
-        margin-right:1.5rem;
-        transition: 0.3s;
-    }
-
-    .contact-details:hover i {
-        background: var(--main-color);
-        color: var(--bg-color);
-        transform: rotate(15deg);
-    }
-
-    .contact-details .details p:first-child{
-        color:var(--main-color);
-        font-size: 1.5rem;
-        margin-bottom: 0.5rem;
-    } 
-    .contact-details .details a, 
-    .contact-details .details p:last-child {
-        color:var(--white-color);
-        font-size:1.5rem;
-        transition: 0.3s;
-    }
-    .contact-details .details a:hover {
-        color: var(--main-color);
-    }
-    .contact-box form{
-        background-color:var(--second-bg-color);
-        padding:2.5rem;
-        border-radius:1rem;
-        text-align: center;
-    }
-    .contact-box .heading{
-        font-size:3rem;
-        margin-bottom: 2rem;
-    }
-
-    .contact-box .field-box{
-        display: grid;
-        grid-template-columns:repeat(2,1fr);
-        gap:1.5rem;
-    }
-    .contact-box .field-box input,
-    .contact-box .field-box textarea{
-        width: 100%;
-        padding: 1.5rem;
-        background-color:var(--bg-color);
-        border: .15rem solid var(--bg-color);
-        border-radius: .6rem;
-        font-size: 1.6rem;
-        color:var(--white-color);
-        transition: 0.3s;
-    }
-    .contact-box .field-box input{
-        text-transform:uppercase;
-    }
-    .contact-box .field-box textarea{
-        grid-column:1/-1;
-        height: 20rem;
-        resize: none;
-    }
-    .contact-box .field-box input:focus,
-    .contact-box .field-box textarea:focus{
-        border-color:var(--main-color);
-    }
-    .contact-box .btn{
-        margin-top: 2rem;
-        cursor: pointer;
-        width: 100%;
-    }
-
-    /* Footer */
-    footer {
-        background: var(--second-bg-color);
-        padding: 2rem 5%;
-        text-align: center;
-        font-size: 1.4rem;
-    }
-    footer p {
-        color: var(--white-color);
-    }
-    footer a {
-        color: var(--main-color);
-        font-weight: 500;
-    }
-
-    /* Responsive Styles */
-    @media screen and (max-width : 1200px){
-        html{
-            font-size: 58%;
+        html {
+            font-size: 62.5%; /* 1rem = 10px */
+            scroll-behavior: smooth;
+            overflow-x: hidden;
         }
-        .home-img .img-box {
-            max-width: 30rem;
-            height: 30rem;
-        }
-    }
-    
-    @media screen and (max-width : 992px){
-        header{
-            padding: 1.6rem 5%;
-        }
-        section{
-            padding:8rem 5% 2rem;
-        }
-        .resume-container {
-            gap: 2rem;
-        }
-        .portfolio-container {
-            gap: 2rem;
-        }
-        .contact-container {
-            gap: 2rem;
-        }
-    }
 
-    @media screen and (max-width : 850px){
-        .contact-box .field-box{
-            grid-template-columns: 1fr;
+        body {
+            color: var(--white-color);
+            background: var(--bg-color);
+            overflow-x: hidden;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            line-height: 1.6;
         }
-    }
-    
-    @media screen and (max-width : 768px){
-        #menu-icon{
-            display: block;
-        }
-        nav{
+
+        /* ===== HEADER ===== */
+        header {
             position: fixed;
             top: 0;
-            left: -100%;
-            width: 70%;
-            height: 100vh;
-            padding: 6rem 0 0;
-            background: var(--second-bg-color);
-            box-shadow: 0 .5rem 1rem rgba(0,0,0,.2);
-            display: flex;
-            flex-direction:column;
-            align-items: center;
-            transition: 0.5s ease;
-            z-index: 99;
-        }
-        nav.active{
             left: 0;
-        }
-        nav a{
-            display: block;
-            margin: 1.5rem 0;
-            font-size: 2rem;
-        }
-
-        .home{
-            flex-direction:column-reverse;
-            justify-content: center;
-            gap: 3rem;
-            text-align: center;
-        }
-        .home-img .img-box{
-            width: 25rem;
-            height: 25rem;
-        }
-        .home-details .btn-sci{
-            justify-content: center;
+            width: 100%;
+            background: var(--bg-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 100;
+            padding: var(--spacing-md) 5%;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
         }
 
-        .resume-container,
-        .portfolio-container,
-        .contact-container {
-            grid-template-columns:1fr;
+        .logo {
+            font-size: 2.5rem;
+            color: var(--white-color);
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
         }
 
-        .resume-container{
-            gap: 3rem;
-        }
-        .portfolio-container .portfolio-box:first-child{
-            order: 1;
-        }
-        
-        .portfolio-carousal .img-item {
-            margin-left: 0;
-        }
-    }
-    
-    @media screen and (max-width : 600px){
-        .home-img .img-box{
-            width: 22rem;
-            height: 22rem;
-        }
-        .service-container,
-        .resume-list {
-            grid-template-columns: 1fr;
-        }
-        .portfolio-box .portfolio-carousal {
-            height: 30rem;
-        }
-    }
-
-    @media screen and (max-width : 480px){
-        html{
-            font-size: 55%;
-        }
         nav {
-            width: 80%;
+            display: flex;
+            gap: var(--spacing-lg);
         }
-        .home-details,
-        .resume-box h2,
-        .resume-box .heading,
-        .resume-box .desc,
-        .resume-detail.about .resume-item{
-            text-align: center;
-        }
-        .home-details .btn-sci{
-            flex-direction: column-reverse;
-        }
-        .home-details .btn-sci .sci{
-            margin-left:0;
-            margin-bottom:2rem;
-            justify-content: center;
-        }
-        .contact-box form{
-            padding:2rem;
-        }
-        .contact-box h2{
-            font-size: 3rem;
-        }
-        .portfolio-box .live-github {
-            justify-content: center;
-        }
-    }
 
-    @media screen and (max-width : 380px){
-        nav {
+        nav a {
+            font-size: 1.8rem;
+            color: var(--white-color);
+            font-weight: 500;
+            position: relative;
+            padding: 0.5rem 0;
+            transition: color var(--transition-speed);
+        }
+
+        nav a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 0.2rem;
+            background-color: var(--main-color);
+            transition: width var(--transition-speed);
+        }
+
+        nav a:hover,
+        nav a.active {
+            color: var(--main-color);
+        }
+
+        nav a:hover::after,
+        nav a.active::after {
             width: 100%;
         }
-        .logo {
-            font-size: 2.2rem;
+
+        #menu-icon {
+            font-size: 3.6rem;
+            display: none;
+            cursor: pointer;
+            z-index: 101;
+            color: var(--white-color);
+            transition: transform var(--transition-speed);
         }
-        .home-img .img-box {
-            width: 20rem;
-            height: 20rem;
+
+        #menu-icon.bx-x {
+            transform: rotate(90deg);
         }
-        .resume-box .resume-button {
-            height: 4.5rem;
+
+        /* ===== SECTIONS ===== */
+        section {
+            width: 100%;
+            min-height: 100vh;
+            padding: 10rem 5% 2rem;
+            background-color: var(--bg-color);
+        }
+
+        /* ===== ANIMATIONS ===== */
+        [data-animate] {
+            opacity: 0;
+            transition: opacity 0.5s ease, transform 0.5s ease;
+            will-change: transform, opacity;
+            backface-visibility: hidden;
+            perspective: 1000px;
+        }
+
+        [data-animate="fade-up"] { transform: translateY(50px); }
+        [data-animate="fade-down"] { transform: translateY(-50px); }
+        [data-animate="fade-left"] { transform: translateX(50px); }
+        [data-animate="fade-right"] { transform: translateX(-50px); }
+
+        [data-animate].animated {
+            opacity: 1;
+            transform: translate(0, 0);
+        }
+
+        .delay-1 { transition-delay: 0.1s; }
+        .delay-2 { transition-delay: 0.2s; }
+        .delay-3 { transition-delay: 0.3s; }
+        .delay-4 { transition-delay: 0.4s; }
+        .delay-5 { transition-delay: 0.5s; }
+        .delay-6 { transition-delay: 0.6s; }
+
+        /* ===== HOME SECTION ===== */
+        .home {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--spacing-xl);
+        }
+
+        .home-details {
+            flex: 1;
+        }
+
+        .home-details h1 {
+            font-size: clamp(3.5rem, 8vw, 5.5rem);
+            line-height: 1.2;
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .home-details h2 {
+            display: inline-block;
+            font-size: clamp(2.4rem, 5vw, 3.2rem);
+            margin: var(--spacing-sm) 0;
+            line-height: 1.2;
+        }
+
+        .home-details h2 span {
+            position: relative;
+            display: inline-block;
+            color: transparent;
+            -webkit-text-stroke: 0.07rem var(--main-color);
+            animation: display-text 16s linear infinite;
+            animation-delay: calc(-4s * var(--i));
+        }
+
+        @keyframes display-text {
+            25%, 100% { display: none; }
+        }
+
+        .home-details h2 span::before {
+            content: attr(data-text);
+            position: absolute;
+            width: 0;
+            border-right: 0.2rem solid var(--main-color);
+            color: var(--main-color);
+            white-space: nowrap;
+            overflow: hidden;
+            animation: fill-text 4s linear infinite;
+        }
+
+        @keyframes fill-text {
+            10%, 100% { width: 0; }
+            70%, 90% { width: 100%; }
+        }
+
+        .home-details p {
+            font-size: 1.6rem;
+            margin: 1.5rem 0 2.5rem;
+            line-height: 1.8;
+            max-width: 70ch;
+        }
+
+        .btn-sci {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: var(--spacing-lg);
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 1.2rem 2.8rem;
+            background: var(--main-color);
+            border: 0.2rem solid var(--main-color);
+            border-radius: 4rem;
+            box-shadow: 0 0 1rem var(--main-color);
+            font-size: 1.6rem;
+            color: var(--bg-color);
+            font-weight: 500;
+            transition: 0.5s;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            min-width: 180px;
+            text-align: center;
+        }
+
+        .btn:hover {
+            background: transparent;
+            color: var(--main-color);
+            box-shadow: none;
+        }
+
+        .sci a {
+            display: inline-flex;
+            padding: 0.8rem;
+            border: 2px solid var(--main-color);
+            border-radius: 50%;
+            font-size: 2rem;
+            color: var(--main-color);
+            transition: 0.3s;
+            min-width: 5rem;
+            min-height: 5rem;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .sci a:hover {
+            background: var(--main-color);
+            color: var(--bg-color);
+            box-shadow: 0 0 1rem var(--main-color);
+        }
+
+        .home-img {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .img-box {
+            position: relative;
+            width: 100%;
+            max-width: 35rem;
+            height: 35rem;
+            border-radius: 50%;
+            padding: 0.9rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        .img-box::before,
+        .img-box::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: conic-gradient(transparent, transparent, transparent, var(--main-color));
+            transform: rotate(0deg);
+            animation: rotate-border 10s linear infinite;
+        }
+
+        .img-box::after {
+            animation-delay: -5s;
+        }
+
+        @keyframes rotate-border {
+            100% { transform: rotate(360deg); }
+        }
+
+        .img-item {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            background: var(--bg-color);
+            border-radius: 50%;
+            border: 0.01rem solid var(--bg-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1;
+            overflow: hidden;
+        }
+
+        .img-item img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            mix-blend-mode: lighten;
+            loading: lazy;
+        }
+
+        /* ===== SERVICE SECTION ===== */
+        .heading {
+            font-size: 4.5rem;
+            text-align: center;
+            margin-bottom: 2rem;
+            position: relative;
+        }
+
+        .heading span {
+            color: var(--main-color);
+        }
+
+        .service-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(30rem, 1fr));
+            gap: 2rem;
+            margin-top: var(--spacing-lg);
+        }
+
+        .service-box {
+            padding: 3rem 2rem;
+            margin-bottom: 2rem;
+            background: var(--second-bg-color);
+            border: 0.2rem solid var(--second-bg-color);
+            border-radius: var(--border-radius);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .service-box:hover {
+            border: 0.2rem solid var(--main-color);
+            transform: scale(1.02);
+            box-shadow: var(--shadow);
+        }
+
+        .icon {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .icon i {
+            font-size: 4.5rem;
+            transition: color var(--transition-speed);
+        }
+
+        .service-box:hover .icon:not(a i) {
+            color: var(--main-color);
+        }
+
+        .icon a {
+            display: inline-flex;
+            background: var(--white-color);
+            border-radius: 50%;
+            padding: 1rem;
+            transition: 0.3s;
+            min-width: 4rem;
+            min-height: 4rem;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .service-box:hover .icon a {
+            background: var(--main-color);
+        }
+
+        .icon a i {
+            font-size: 2.5rem;
+            color: var(--bg-color);
+            transform: rotate(225deg);
+            transition: transform 0.3s;
+        }
+
+        .icon a:hover i {
+            transform: rotate(180deg);
+        }
+
+        .service-box h3 {
+            font-size: 2.5rem;
+            margin: 1.5rem 0;
+            transition: color var(--transition-speed);
+        }
+
+        .service-box:hover h3 {
+            color: var(--main-color);
+        }
+
+        .service-box p {
+            font-size: 1.5rem;
+            text-align: justify;
+            line-height: 1.6;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        /* ===== RESUME SECTION ===== */
+        .resume-container {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 3rem;
+        }
+
+        .resume-box h2 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .resume-box p.desc {
+            font-size: 1.6rem;
+            line-height: 1.6;
+            margin: 2rem 0 2.5rem;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .resume-button {
+            width: 100%;
+            height: 5rem;
+            background: var(--second-bg-color);
+            border: 0.2rem solid var(--second-bg-color);
+            font-size: 1.6rem;
+            color: var(--white-color);
+            font-weight: 500;
+            margin-bottom: 1.5rem;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            transition: 0.3s;
+            text-transform: capitalize;
+            text-align: center;
+            line-height: 5rem;
+        }
+
+        .resume-button:hover,
+        .resume-button.active {
+            border: 0.2rem solid var(--main-color);
+            color: var(--main-color);
+        }
+
+        .resume-detail {
+            display: none;
+        }
+
+        .resume-detail.active {
+            display: block;
+        }
+
+        .resume-detail h2.heading {
+            font-size: 3.5rem;
+            text-align: left;
+            margin-bottom: 1.5rem;
+        }
+
+        .resume-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(25rem, 1fr));
+            gap: 2rem;
+            max-height: 45rem;
+            overflow-y: auto;
+            padding-right: 1rem;
+            margin-top: var(--spacing-md);
+        }
+
+        .resume-list::-webkit-scrollbar {
+            width: 0.7rem;
+        }
+
+        .resume-list::-webkit-scrollbar-thumb {
+            background: transparent;
+            border-radius: 1rem;
+        }
+
+        .resume-list:hover::-webkit-scrollbar-thumb {
+            background: var(--main-color);
+        }
+
+        .resume-item {
+            background: var(--second-bg-color);
+            border-radius: var(--border-radius);
+            padding: 2.5rem 2rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            transition: 0.3s;
+            position: relative;
+        }
+
+        .resume-item:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow);
+        }
+
+        .year {
+            color: var(--main-color);
+            font-size: 1.6rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .resume-item h3 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .company {
+            position: relative;
+            margin-left: 2rem;
+            margin-bottom: 1.5rem;
             font-size: 1.5rem;
         }
-    }
-    </style>
-     <style>
-        /* WhatsApp floating button styles */
+
+        .company::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            left: -2rem;
+            width: 1rem;
+            height: 1rem;
+            background: var(--main-color);
+            border-radius: 50%;
+        }
+
+        .company-discription {
+            text-align: justify;
+            font-size: 1.4rem;
+            line-height: 1.6;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        /* Skill Section */
+        .resume-detail.skill .resume-list {
+            grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+            max-height: none;
+            overflow: visible;
+        }
+
+        .resume-detail.skill .resume-item {
+            position: relative;
+            align-items: center;
+            height: auto;
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .resume-detail.skill .resume-item i {
+            font-size: 7rem;
+            transition: 0.3s;
+            margin-bottom: 1rem;
+        }
+
+        .resume-detail.skill .resume-item:hover i {
+            color: var(--main-color);
+            transform: scale(1.1);
+        }
+
+        .resume-detail.skill .resume-item span {
+            position: absolute;
+            top: -2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--white-color);
+            color: var(--bg-color);
+            font-size: 1.4rem;
+            padding: 0.5rem 1rem;
+            border-radius: 0.6rem;
+            pointer-events: none;
+            opacity: 0;
+            transition: 0.2s;
+            white-space: nowrap;
+            z-index: 10;
+        }
+
+        .resume-detail.skill .resume-item:hover span {
+            top: -2.5rem;
+            opacity: 1;
+        }
+
+        /* About Section */
+        .resume-detail.about .resume-list {
+            max-height: none;
+            grid-template-columns: repeat(auto-fit, minmax(25rem, 1fr));
+        }
+
+        .resume-detail.about .resume-item {
+            height: auto;
+            padding: 1.5rem;
+            background: transparent;
+            border: none;
+        }
+
+        .resume-detail.about .resume-item p {
+            color: var(--main-color);
+            margin-right: 1.5rem;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .resume-detail.about .resume-item p span {
+            color: var(--white-color);
+            margin-left: 1rem;
+            font-size: 1.6rem;
+        }
+
+        .resume-detail.about .resume-item p a {
+            color: var(--white-color);
+            margin-left: 1rem;
+            font-size: 1.6rem;
+            transition: 0.3s;
+            text-decoration: underline;
+        }
+
+        .resume-detail.about .resume-item p a:hover {
+            color: var(--main-color);
+            text-decoration: none;
+        }
+
+        /* ===== PORTFOLIO SECTION ===== */
+        .portfolio-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+        }
+
+        .portfolio-detail {
+            display: none;
+        }
+
+        .portfolio-detail.active {
+            display: block;
+        }
+
+        .portfolio-box .num {
+            font-size: 6rem;
+            -webkit-text-stroke: 0.07rem var(--white-color);
+            color: transparent;
+            line-height: 1;
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .portfolio-box h3 {
+            font-size: 3rem;
+            margin: 1rem 0 2rem;
+        }
+
+        .portfolio-box p {
+            font-size: 1.6rem;
+            text-align: justify;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .tech {
+            margin: 2rem 0;
+            color: var(--main-color);
+            border-bottom: 0.1rem solid var(--white-color);
+            padding-bottom: 1.5rem;
+            font-size: 1.5rem;
+        }
+
+        .live-github {
+            display: flex;
+            gap: 1.5rem;
+            margin-top: 2rem;
+            justify-content: center;
+        }
+
+        .live-github a {
+            position: relative;
+            display: inline-flex;
+            padding: 1rem;
+            font-size: 2.5rem;
+            color: var(--white-color);
+            border-radius: 50%;
+            background: var(--second-bg-color);
+            transition: 0.3s;
+            min-width: 5rem;
+            min-height: 5rem;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .live-github a:hover {
+            color: var(--main-color);
+            transform: translateY(-5px);
+            box-shadow: var(--shadow);
+        }
+
+        .live-github a span {
+            position: absolute;
+            top: -3.5rem;
+            left: 50%;
+            transform: translateX(-50%) scale(0.9);
+            font-size: 1.4rem;
+            white-space: nowrap;
+            padding: 0.5rem 1rem;
+            border-radius: 0.6rem;
+            pointer-events: none;
+            background: var(--white-color);
+            color: var(--bg-color);
+            opacity: 0;
+            transition: 0.2s;
+            z-index: 10;
+        }
+
+        .live-github a:hover span {
+            top: -4rem;
+            opacity: 1;
+            transform: translateX(-50%) scale(1);
+        }
+
+        .portfolio-carousal {
+            width: 100%;
+            height: 40rem;
+            border-radius: 1rem;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .img-slide {
+            display: grid;
+            grid-auto-flow: column;
+            grid-auto-columns: 100%;
+            gap: 2rem;
+            height: 100%;
+            transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        .img-item {
+            height: 100%;
+        }
+
+        .img-item img {
+            display: block;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 1rem;
+            loading: lazy;
+        }
+
+        .navigation {
+            text-align: right;
+            margin-top: 2rem;
+        }
+
+        .navigation button {
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            width: 5rem;
+            height: 5rem;
+            background-color: var(--second-bg-color);
+            border: 0.2rem solid var(--main-color);
+            border-radius: 0.6rem;
+            font-size: 3rem;
+            color: var(--main-color);
+            cursor: pointer;
+            transition: 0.3s;
+            margin-left: 1.5rem;
+            min-width: 5rem;
+            min-height: 5rem;
+        }
+
+        .navigation button:hover {
+            background-color: var(--main-color);
+            color: var(--bg-color);
+        }
+
+        .navigation button.disabled {
+            background-color: var(--second-bg-color);
+            color: var(--disabled-color);
+            border-color: var(--disabled-color);
+            cursor: not-allowed;
+        }
+
+        .arrow-right {
+            margin-left: 1.5rem;
+        }
+
+        /* ===== CONTACT SECTION ===== */
+        .contact-container {
+            display: grid;
+            grid-template-columns: 1fr 1.3fr;
+            gap: 3rem;
+        }
+
+        .contact-box h2 {
+            font-size: 3.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .contact-box p.desc {
+            font-size: 1.6rem;
+            line-height: 1.6;
+            margin: 1.5rem 0 2.5rem;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .contact-details {
+            display: flex;
+            align-items: center;
+            margin: 2rem 0;
+            gap: var(--spacing-md);
+        }
+
+        .contact-details i {
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            background: var(--second-bg-color);
+            color: var(--main-color);
+            font-size: 2.5rem;
+            min-width: 5rem;
+            height: 5rem;
+            border-radius: 0.6rem;
+            transition: 0.3s;
+        }
+
+        .contact-details:hover i {
+            background: var(--main-color);
+            color: var(--bg-color);
+            transform: rotate(15deg);
+        }
+
+        .details p:first-child {
+            color: var(--main-color);
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .details a,
+        .details p:last-child {
+            color: var(--white-color);
+            font-size: 1.5rem;
+            transition: 0.3s;
+        }
+
+        .details a:hover {
+            color: var(--main-color);
+        }
+
+        .contact-box form {
+            background-color: var(--second-bg-color);
+            padding: 2.5rem;
+            border-radius: var(--border-radius);
+            text-align: center;
+        }
+
+        .contact-box .heading {
+            font-size: 3rem;
+            margin-bottom: 2rem;
+        }
+
+        .field-box {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .field-box input,
+        .field-box textarea {
+            width: 100%;
+            padding: 1.5rem;
+            background-color: var(--bg-color);
+            border: 0.15rem solid var(--bg-color);
+            border-radius: var(--border-radius);
+            font-size: 1.6rem;
+            color: var(--white-color);
+            transition: 0.3s;
+            resize: none;
+        }
+
+        .field-box input:focus,
+        .field-box textarea:focus {
+            border-color: var(--main-color);
+            outline: 0.2rem solid var(--main-color);
+            outline-offset: 0.2rem;
+        }
+
+        .field-box input {
+            text-transform: uppercase;
+        }
+
+        .field-box textarea {
+            grid-column: 1 / -1;
+            height: 20rem;
+        }
+
+        .contact-box .btn {
+            margin-top: 2rem;
+            cursor: pointer;
+            width: 100%;
+            font-size: 1.8rem;
+            padding: 1.5rem;
+        }
+
+        /* ===== FOOTER ===== */
+        footer {
+            background: var(--second-bg-color);
+            padding: 2rem 5%;
+            text-align: center;
+            font-size: 1.4rem;
+        }
+
+        footer p {
+            color: var(--white-color);
+        }
+
+        footer a {
+            color: var(--main-color);
+            font-weight: 500;
+        }
+
+        /* ===== WHASTAPP FLOAT BUTTON ===== */
         .whatsapp-float {
             position: fixed;
             bottom: 30px;
@@ -1005,25 +983,24 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
             z-index: 1000;
             animation: float-pop 2s infinite;
             transition: all 0.3s ease;
+            border: 0.2rem solid rgba(255, 255, 255, 0.2);
         }
-        
+
         .whatsapp-float:hover {
             transform: scale(1.1) translateY(-5px);
-            box-shadow: 0 6px 15px rgba(0,0,0,0.3);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
         }
-        
-        /* Pop animation with slight float effect */
+
         @keyframes float-pop {
             0% { transform: translateY(0) scale(1); }
             50% { transform: translateY(-5px) scale(1.05); }
             100% { transform: translateY(0) scale(1); }
         }
-        
-        /* Tooltip */
+
         .whatsapp-float::after {
             content: "Chat with us on WhatsApp";
             position: absolute;
@@ -1039,16 +1016,129 @@
             opacity: 0;
             visibility: hidden;
             transition: all 0.3s ease;
+            z-index: 1001;
         }
-        
+
         .whatsapp-float:hover::after {
             opacity: 1;
             visibility: visible;
             right: 75px;
         }
-        
-        /* Responsive adjustments */
-        @media (max-width: 768px) {
+
+        /* ===== RESPONSIVE DESIGN ===== */
+        @media screen and (max-width: 1200px) {
+            html { font-size: 58%; }
+            .img-box { max-width: 30rem; height: 30rem; }
+        }
+
+        @media screen and (max-width: 992px) {
+            header { padding: 1.6rem 5%; }
+            section { padding: 8rem 5% 2rem; }
+            .resume-container, .portfolio-container, .contact-container { gap: 2rem; }
+        }
+
+        @media screen and (max-width: 850px) {
+            .contact-box .field-box { grid-template-columns: 1fr; }
+        }
+
+        @media screen and (max-width: 768px) {
+            #menu-icon { display: block; }
+
+            nav {
+                position: fixed;
+                top: 0;
+                left: -100%;
+                width: 70%;
+                height: 100vh;
+                padding: 6rem 0 0;
+                background: var(--second-bg-color);
+                box-shadow: var(--shadow);
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                transition: 0.5s ease;
+                z-index: 99;
+            }
+
+            nav.active { left: 0; }
+
+            nav a {
+                display: block;
+                margin: 1.5rem 0;
+                font-size: 2rem;
+                padding: 1rem 0;
+                width: 100%;
+                text-align: center;
+                border-bottom: 0.1rem solid rgba(255,255,255,0.1);
+            }
+
+            .home {
+                flex-direction: column-reverse;
+                justify-content: center;
+                gap: 3rem;
+                text-align: center;
+                padding: 0 5%;
+            }
+
+            .home-img .img-box {
+                width: 25rem;
+                height: 25rem;
+            }
+
+            .home-details .btn-sci {
+                justify-content: center;
+            }
+
+            .resume-container, .portfolio-container, .contact-container {
+                grid-template-columns: 1fr;
+            }
+
+            .portfolio-container .portfolio-box:first-child {
+                order: 1;
+            }
+
+            .portfolio-carousal .img-slide {
+                margin-left: 0;
+            }
+
+            .contact-box form {
+                padding: 2rem;
+            }
+        }
+
+        @media screen and (max-width: 600px) {
+            .home-img .img-box {
+                width: 22rem;
+                height: 22rem;
+            }
+            .service-container, .resume-list {
+                grid-template-columns: 1fr;
+            }
+            .portfolio-box .portfolio-carousal {
+                height: 30rem;
+            }
+        }
+
+        @media screen and (max-width: 480px) {
+            html { font-size: 55%; }
+            nav { width: 80%; }
+            .home-details, .resume-box h2, .resume-box .heading, .resume-box .desc, .resume-detail.about .resume-item {
+                text-align: center;
+            }
+            .home-details .btn-sci {
+                flex-direction: column-reverse;
+            }
+            .home-details .btn-sci .sci {
+                margin-left: 0;
+                margin-bottom: 2rem;
+                justify-content: center;
+            }
+            .contact-box h2 {
+                font-size: 3rem;
+            }
+            .portfolio-box .live-github {
+                justify-content: center;
+            }
             .whatsapp-float {
                 width: 50px;
                 height: 50px;
@@ -1056,665 +1146,657 @@
                 bottom: 20px;
                 right: 20px;
             }
-            
             .whatsapp-float::after {
                 font-size: 12px;
                 padding: 5px 8px;
                 right: 60px;
             }
-            
             .whatsapp-float:hover::after {
                 right: 65px;
+            }
+        }
+
+        @media screen and (max-width: 380px) {
+            nav { width: 100%; }
+            .logo { font-size: 2.2rem; }
+            .home-img .img-box {
+                width: 20rem;
+                height: 20rem;
+            }
+            .resume-box .resume-button {
+                height: 4.5rem;
+                font-size: 1.5rem;
+            }
+        }
+
+        /* Ensure large touch targets on small screens */
+        @media (max-width: 480px) {
+            .btn, .resume-button, .navigation button, .sci a, .live-github a {
+                min-height: 48px;
+                min-width: 48px;
             }
         }
     </style>
 </head>
 <body>
+
+    <!-- WhatsApp Floating Button -->
+    <a href="https://wa.me/918651744312" target="_blank" class="whatsapp-float" aria-label="Chat on WhatsApp">
+        <i class='bx bxl-whatsapp'></i>
+    </a>
+
+    <!-- Header -->
     <header>
-        <a href="#" class="logo">SURAJ | <span style="color:#7cf03d;">SHAW</span></a>
-        <i class='bx bx-menu' id="menu-icon"></i>
+        <a href="#home1" class="logo">SURAJ | <span style="color:#7cf03d;">SHAW</span></a>
+        <i class='bx bx-menu' id="menu-icon" aria-label="Toggle Navigation Menu" role="button" tabindex="0"></i>
         <nav>
-            <a href="#home1" class="active">Home</a>
-            <a href="#ser">Service</a>
-            <a href="#res">Resume</a>
-            <a href="#port">Portfolios</a>
-            <a href="#contact1">Contact</a>
+            <a href="#home1" class="active" aria-label="Go to Home">Home</a>
+            <a href="#ser" aria-label="Go to Services">Service</a>
+            <a href="#res" aria-label="Go to Resume">Resume</a>
+            <a href="#port" aria-label="Go to Portfolio">Portfolios</a>
+            <a href="#contact1" aria-label="Go to Contact">Contact</a>
         </nav>
     </header>
 
-    <!--Section-->
+    <!-- Home Section -->
     <section class="home" id="home1">
         <div class="home-details" data-animate="fade-up">
             <h1 data-animate="fade-up" class="delay-1">Suraj Shaw</h1>
-             <h2 data-animate="fade-up" class="delay-2">I'm a 
+            <h2 data-animate="fade-up" class="delay-2">I'm a 
                 <span style="--i:4;" data-text="Coder">Coder</span>
                 <span style="--i:3;" data-text="Youtuber">Youtuber</span>
                 <span style="--i:2;" data-text="Designer">Designer</span>
                 <span style="--i:1;" data-text="Programmer">Programmer</span>
             </h2>
             <p data-animate="fade-up" class="delay-3">Motivated and skilled professional with experience in web development and IT training. Seeking to contribute technical expertise, creative problem-solving, and teaching abilities to build user-friendly web solutions and guide learners effectively. Passionate about continuous learning, innovation, and helping others grow in the ever-evolving field of technology and web development.</p>
-        <div class="btn-sci" data-animate="fade-up" class="delay-4">
-            <a href="https://drive.google.com/file/d/1ert3j4PwAx2G1Tc78CoAXvV--i1gQ9w-/view?usp=drive_link" class="btn">Download CV</a>
-            <div class="sci">
-                <a href="https://www.githud.com/surajshaw24/"><i class='bx bxl-github'></i></a>
-                <a href="https://www.linkedin.com/in/surajshaw24/"><i class='bx bxl-linkedin' ></i></a>
-                <a href="https://www.instagram.com/urs_surajshaw"><i class='bx bxl-instagram-alt'></i></a>
-                <a href="https://www.youtube.com/#"><i class='bx bxl-youtube'></i></a>
-            </div>
-            </div>
-        </div>
-    <div class="home-img" data-animate="fade-left">
-        <div class="img-box">
-            <div class="img-item"> 
-            <img src="suraj.jpeg" alt="Suraj Shaw">
+            <div class="btn-sci" data-animate="fade-up" data-delay="4">
+                <a href="https://drive.google.com/file/d/1ert3j4PwAx2G1Tc78CoAXvV--i1gQ9w-/view?usp=drive_link" class="btn" target="_blank" rel="noopener noreferrer">Download CV</a>
+                <div class="sci">
+                    <a href="https://github.com/surajshaw24/" target="_blank" rel="noopener noreferrer" aria-label="GitHub Profile"><i class='bx bxl-github'></i></a>
+                    <a href="https://www.linkedin.com/in/surajshaw24/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn Profile"><i class='bx bxl-linkedin'></i></a>
+                    <a href="https://www.instagram.com/urs_surajshaw" target="_blank" rel="noopener noreferrer" aria-label="Instagram Profile"><i class='bx bxl-instagram-alt'></i></a>
+                    <a href="https://www.youtube.com/@surajshaw24" target="_blank" rel="noopener noreferrer" aria-label="YouTube Channel"><i class='bx bxl-youtube'></i></a>
+                </div>
             </div>
         </div>
+        <div class="home-img" data-animate="fade-left">
+            <div class="img-box">
+                <div class="img-item">
+                    <img src="suraj.jpeg" alt="Portrait of Suraj Shaw" loading="lazy">
+                </div>
+            </div>
         </div>
     </section>
 
-    <!--Service Section-->
+    <!-- Service Section -->
     <section class="Service" id="ser">
-    <h2 class="heading" data-animate="fade-up">My<span> Services</span></h2>
+        <h2 class="heading" data-animate="fade-up">My<span> Services</span></h2>
         <div class="service-container">
-        <div class="service-box" data-animate="fade-up" class="delay-1">
-            <div class="icon">
-            <i class='bx bx-code-alt'></i>
-                <a href="#"><i class='bx bx-arrow-back' ></i></a>
+            <div class="service-box" data-animate="fade-up" class="delay-1">
+                <div class="icon">
+                    <i class='bx bx-code-alt'></i>
+                    <a href="#" aria-label="View Details"><i class='bx bx-arrow-back'></i></a>
+                </div>
+                <h3>Web Development</h3>
+                <p>Web development is the process of creating websites or web applications. It involves designing how a site looks (frontend), making it work behind the scenes (backend), and storing data (databases). Web developers use languages like HTML, CSS, JavaScript, and others to build, maintain, and improve websites for users.</p>
             </div>
-            <h3>Web Development</h3>
-            <p>Web development is the process of creating websites or web applications. It involves designing how a site looks (frontend), making it work behind the scenes (backend), and storing data (databases). Web developers use languages like HTML, CSS, JavaScript, and others to build, maintain, and improve websites for users.</p>
-            </div>
-            
             <div class="service-box" data-animate="fade-up" class="delay-2">
-            <div class="icon"> 
-                
-                <i class='bx bxs-paint'></i>
-                <a href="#"><i class='bx bx-arrow-back' ></i></a>
+                <div class="icon">
+                    <i class='bx bxs-paint'></i>
+                    <a href="#" aria-label="View Details"><i class='bx bx-arrow-back'></i></a>
+                </div>
+                <h3>UI/UX Design</h3>
+                <p>UI (User Interface) is how a website or app looks—buttons, colors, layout. UX (User Experience) is how it feels to use—easy, smooth, or confusing. UI/UX design focuses on making websites attractive and user-friendly, so people can enjoy using them without problems or confusion. Both work closely together.</p>
             </div>
-            <h3>UI/UX Design</h3>
-            <p>UI (User Interface) is how a website or app looks—buttons, colors, layout. UX (User Experience) is how it feels to use—easy, smooth, or confusing. UI/UX design focuses on making websites attractive and user-friendly, so people can enjoy using them without problems or confusion. Both work closely together.</p>
-            </div>
-            
             <div class="service-box" data-animate="fade-up" class="delay-3">
-            <div class="icon">
-                <i class='bx bx-palette' ></i>
-                <a href="#"><i class='bx bx-arrow-back' ></i></a>
+                <div class="icon">
+                    <i class='bx bx-palette'></i>
+                    <a href="#" aria-label="View Details"><i class='bx bx-arrow-back'></i></a>
+                </div>
+                <h3>Graphics Design</h3>
+                <p>A graphic designer creates visual content to communicate messages. They use colors, images, and text to design logos, posters, social media posts, websites, and more. Their goal is to make designs look good and easy to understand, using tools like Photoshop or Illustrator to bring ideas to life.</p>
             </div>
-            <h3>Graphics Design</h3>
-            <p>A graphic designer creates visual content to communicate messages. They use colors, images, and text to design logos, posters, social media posts, websites, and more. Their goal is to make designs look good and easy to understand, using tools like Photoshop or Illustrator to bring ideas to life.</p>
+            <div class="service-box" data-animate="fade-up" class="delay-4">
+                <div class="icon">
+                    <i class='bx bx-trending-up'></i>
+                    <a href="#" aria-label="View Details"><i class='bx bx-arrow-back'></i></a>
+                </div>
+                <h3>SEO</h3>
+                <p>SEO (Search Engine Optimization) is the process of improving a website so it appears higher in search engine results like Google. It involves using the right keywords, quality content, and good website structure. The goal is to attract more visitors by making the site easier to find online.</p>
             </div>
-            
-              <div class="service-box" data-animate="fade-up" class="delay-4">
-            <div class="icon">
-                <i class='bx bx-trending-up' ></i>
-                <a href="#"><i class='bx bx-arrow-back' ></i></a>
+            <div class="service-box" data-animate="fade-up" class="delay-5">
+                <div class="icon">
+                    <i class='bx bx-slideshow'></i>
+                    <a href="#" aria-label="View Details"><i class='bx bx-arrow-back'></i></a>
+                </div>
+                <h3>Video Editing</h3>
+                <p>A video editor takes raw video clips and puts them together to create a final video. They cut unwanted parts, add music, text, effects, and transitions to make the video interesting and clear. Video editors use software like Adobe Premiere Pro or Final Cut Pro to do their work.</p>
             </div>
-            <h3>SEO</h3>
-            <p>SEO (Search Engine Optimization) is the process of improving a website so it appears higher in search engine results like Google. It involves using the right keywords, quality content, and good website structure. The goal is to attract more visitors by making the site easier to find online.</p>
-            </div>
-            
-              <div class="service-box" data-animate="fade-up" class="delay-5">
-            <div class="icon">
-                <i class='bx bx-slideshow' ></i>
-                <a href="#"><i class='bx bx-arrow-back' ></i></a>
-            </div>
-            <h3>Video Editing</h3>
-            <p>A video editor takes raw video clips and puts them together to create a final video. They cut unwanted parts, add music, text, effects, and transitions to make the video interesting and clear. Video editors use software like Adobe Premiere Pro or Final Cut Pro to do their work.</p>
-            </div>
-            
             <div class="service-box" data-animate="fade-up" class="delay-6">
-            <div class="icon">
-                <i class='bx bx-camera' ></i>
-                <a href="#"><i class='bx bx-arrow-back' ></i></a>
-            </div>
-            <h3>Photography</h3>
-            <p>Photography is the art of capturing moments using a camera. It can be of people, nature, events, or objects. Photographers use lighting, angles, and settings to take clear and beautiful pictures. Photography can be a hobby or a job, used in media, advertising, memories, and storytelling.</p>
+                <div class="icon">
+                    <i class='bx bx-camera'></i>
+                    <a href="#" aria-label="View Details"><i class='bx bx-arrow-back'></i></a>
+                </div>
+                <h3>Photography</h3>
+                <p>Photography is the art of capturing moments using a camera. It can be of people, nature, events, or objects. Photographers use lighting, angles, and settings to take clear and beautiful pictures. Photography can be a hobby or a job, used in media, advertising, memories, and storytelling.</p>
             </div>
         </div>
     </section>
-    
-    <!--Resume Section-->
+
+    <!-- Resume Section -->
     <section class="resume" id="res">
-    <div class="resume-container">
-        <div class="resume-box" data-animate="fade-right">
-        <h2>Why Hire Me</h2>
-        <p class="desc">With expertise in web development and a passion for creating innovative solutions, I bring a unique combination of technical skills and creative problem-solving to every project. My experience spans across multiple technologies and industries, ensuring I can adapt to your specific needs.</p>
-            <button class="resume-button active">Experience</button>
-            <button class="resume-button">Education</button>
-            <button class="resume-button">Skill</button>
-            <button class="resume-button">About me</button>
+        <div class="resume-container">
+            <div class="resume-box" data-animate="fade-right">
+                <h2>Why Hire Me</h2>
+                <p class="desc">With expertise in web development and a passion for creating innovative solutions, I bring a unique combination of technical skills and creative problem-solving to every project. My experience spans across multiple technologies and industries, ensuring I can adapt to your specific needs.</p>
+                <button class="resume-button active" data-target="experience">Experience</button>
+                <button class="resume-button" data-target="education">Education</button>
+                <button class="resume-button" data-target="skill">Skill</button>
+                <button class="resume-button" data-target="about">About me</button>
+            </div>
+            <div class="resume-box">
+                <div class="resume-detail experience active" data-animate="fade-left">
+                    <h2 class="heading">My<span> Experience</span></h2>
+                    <p class="desc">I have worked on various projects across different domains, gaining valuable experience in web development, UI/UX design, and technical training.</p>
+                    <div class="resume-list">
+                        <div class="resume-item" data-animate="fade-up">
+                            <p class="year">2025-Present</p>
+                            <h3>Frontend Developer</h3>
+                            <p class="company">Tech Solutions Inc.</p>
+                            <p class="company-discription">Developed responsive web applications using React.js and implemented modern UI/UX principles to enhance user experience.</p>
+                        </div>
+                        <div class="resume-item" data-animate="fade-up">
+                            <p class="year">2023-2024</p>
+                            <h3>Java Developer</h3>
+                            <p class="company">Software Enterprises</p>
+                            <p class="company-discription">Built robust backend systems using Java Spring Boot and implemented RESTful APIs for various client applications.</p>
+                        </div>
+                        <div class="resume-item" data-animate="fade-up">
+                            <p class="year">2022-2023</p>
+                            <h3>UI/UX Designer</h3>
+                            <p class="company">Creative Designs Ltd.</p>
+                            <p class="company-discription">Created intuitive user interfaces and conducted user research to improve product usability and accessibility.</p>
+                        </div>
+                        <div class="resume-item" data-animate="fade-up">
+                            <p class="year">2021-2022</p>
+                            <h3>Backend Developer</h3>
+                            <p class="company">Web Services Co.</p>
+                            <p class="company-discription">Developed server-side logic and database architecture for high-traffic web applications.</p>
+                        </div>
+                        <div class="resume-item" data-animate="fade-up">
+                            <p class="year">2020-2021</p>
+                            <h3>PHP Developer</h3>
+                            <p class="company">Digital Solutions</p>
+                            <p class="company-discription">Built and maintained WordPress websites and custom PHP applications for various clients.</p>
+                        </div>
+                        <div class="resume-item" data-animate="fade-up">
+                            <p class="year">2018-2020</p>
+                            <h3>.NET Developer</h3>
+                            <p class="company">Enterprise Software</p>
+                            <p class="company-discription">Developed Windows applications using C# and .NET framework for enterprise clients.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="resume-detail education" data-animate="fade-left">
+                    <h2 class="heading">My<span> Education</span></h2>
+                    <p class="desc">My educational background has provided me with a strong foundation in computer science and practical skills in software development.</p>
+                    <div class="resume-list">
+                        <div class="resume-item" data-animate="fade-up">
+                            <p class="year">2022-2025</p>
+                            <h3>BTech In Computer Science & Engineering</h3>
+                            <p class="company">Techplus Academy</p>
+                        </div>
+                        <div class="resume-item" data-animate="fade-up">
+                            <p class="year">2018-2021</p>
+                            <h3>Information Technology</h3>
+                            <p class="company">Techplus Academy</p>
+                        </div>
+                        <div class="resume-item" data-animate="fade-up">
+                            <p class="year">2016-2018</p>
+                            <h3>Intermediate</h3>
+                            <p class="company">High School (JAC BOARD)</p>
+                        </div>
+                        <div class="resume-item" data-animate="fade-up">
+                            <p class="year">2014-2015</p>
+                            <h3>High School</h3>
+                            <p class="company">Jitpur Academy (CBSE BOARD)</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="resume-detail skill" data-animate="fade-left">
+                    <h2 class="heading">My<span> Skills</span></h2>
+                    <p class="desc">I've developed expertise in various technologies and tools throughout my career, allowing me to tackle diverse projects effectively.</p>
+                    <div class="resume-list">
+                        <div class="resume-item" data-animate="fade-up">
+                            <i class='bx bxl-html5'></i>
+                            <span>HTML5</span>
+                        </div>
+                        <div class="resume-item" data-animate="fade-up">
+                            <i class='bx bxl-css3'></i>
+                            <span>CSS3</span>
+                        </div>
+                        <div class="resume-item" data-animate="fade-up">
+                            <i class='bx bxl-javascript'></i>
+                            <span>JavaScript</span>
+                        </div>
+                        <div class="resume-item" data-animate="fade-up">
+                            <i class='bx bxl-jquery'></i>
+                            <span>jQuery</span>
+                        </div>
+                        <div class="resume-item" data-animate="fade-up">
+                            <i class='bx bxl-react'></i>
+                            <span>React JS</span>
+                        </div>
+                        <div class="resume-item" data-animate="fade-up">
+                            <i class='bx bxl-bootstrap'></i>
+                            <span>Bootstrap</span>
+                        </div>
+                        <div class="resume-item" data-animate="fade-up">
+                            <i class='bx bxl-php'></i>
+                            <span>PHP</span>
+                        </div>
+                        <div class="resume-item" data-animate="fade-up">
+                            <i class='bx bxl-java'></i>
+                            <span>Java</span>
+                        </div>
+                        <div class="resume-item" data-animate="fade-up">
+                            <i class='bx bxl-nodejs'></i>
+                            <span>Node.js</span>
+                        </div>
+                        <div class="resume-item" data-animate="fade-up">
+                            <i class='bx bxl-mongodb'></i>
+                            <span>MongoDB</span>
+                        </div>
+                        <div class="resume-item" data-animate="fade-up">
+                            <i class='bx bxl-git'></i>
+                            <span>Git</span>
+                        </div>
+                        <div class="resume-item" data-animate="fade-up">
+                            <i class='bx bxl-figma'></i>
+                            <span>Figma</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="resume-detail about" data-animate="fade-left">
+                    <h2 class="heading">About<span> Me</span></h2>
+                    <p class="desc">I'm a passionate web developer and designer with a strong focus on creating intuitive, user-friendly digital experiences. With one years of experience in the field, I've developed a diverse skill set that allows me to handle both frontend and backend development challenges.</p>
+                    <div class="resume-list">
+                        <div class="resume-item" data-animate="fade-up">
+                            <p>Name <span>SURAJ SHAW</span></p>
+                        </div>
+                        <div class="resume-item" data-animate="fade-up">
+                            <p>Mother Name <span>Savitri Devi</span></p>
+                        </div>
+                        <div class="resume-item" data-animate="fade-up">
+                            <p>Gender <span>Male</span></p>
+                        </div>
+                        <div class="resume-item" data-animate="fade-up">
+                            <p>Status <span>Single</span></p>
+                        </div>
+                        <div class="resume-item" data-animate="fade-up">
+                            <p>City <span>DHANBAD</span></p>
+                        </div>
+                        <div class="resume-item" data-animate="fade-up">
+                            <p>Nationality <span>Indian</span></p>
+                        </div>
+                        <div class="resume-item" data-animate="fade-up">
+                            <p>Experience <span>1+ Years</span></p>
+                        </div>
+                        <div class="resume-item" data-animate="fade-up">
+                            <p>Full Time <span>Available</span></p>
+                        </div>
+                        <div class="resume-item" data-animate="fade-up">
+                            <p>Freelancing <span>Available</span></p>
+                        </div>
+                        <div class="resume-item" data-animate="fade-up">
+                            <p>Phone Number <a href="tel:+918651744312">+91 8651744312</a></p>
+                        </div>
+                        <div class="resume-item" data-animate="fade-up">
+                            <p>Email <a href="mailto:srjshaw24@gmail.com">srjshaw24@gmail.com</a></p>
+                        </div>
+                        <div class="resume-item" data-animate="fade-up">
+                            <p>Languages <span>Hindi, English</span></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-        
-        <div class="resume-box">
-        <div class="resume-detail experience active" data-animate="fade-left">
-            <h2 class="heading">My<span> Experience</span></h2>
-            <p class="desc">I have worked on various projects across different domains, gaining valuable experience in web development, UI/UX design, and technical training.</p>
-                <div class="resume-list">
-                    <div class="resume-item" data-animate="fade-up">
-                        <p class="year">2025-Present</p>
-                        <h3>Frontend Developer</h3>
-                        <p class="company">Tech Solutions Inc.</p>
-                        <p class="company-discription">Developed responsive web applications using React.js and implemented modern UI/UX principles to enhance user experience.</p>
-                    </div>
-                    
-                     <div class="resume-item" data-animate="fade-up">
-                        <p class="year">2023-2024</p>
-                        <h3>Java Developer</h3>
-                        <p class="company">Software Enterprises</p>
-                        <p class="company-discription">Built robust backend systems using Java Spring Boot and implemented RESTful APIs for various client applications.</p>
-                    </div>
-                    
-                     <div class="resume-item" data-animate="fade-up">
-                        <p class="year">2022-2023</p>
-                        <h3>UI/UX Designer</h3>
-                        <p class="company">Creative Designs Ltd.</p>
-                        <p class="company-discription">Created intuitive user interfaces and conducted user research to improve product usability and accessibility.</p>
-                    </div>
-                    
-                    <div class="resume-item" data-animate="fade-up">
-                        <p class="year">2021-2022</p>
-                        <h3>Backend Developer</h3>
-                        <p class="company">Web Services Co.</p>
-                        <p class="company-discription">Developed server-side logic and database architecture for high-traffic web applications.</p>
-                    </div>
-                    
-                    <div class="resume-item" data-animate="fade-up">
-                        <p class="year">2020-2021</p>
-                        <h3>PHP Developer</h3>
-                        <p class="company">Digital Solutions</p>
-                        <p class="company-discription">Built and maintained WordPress websites and custom PHP applications for various clients.</p>
-                    </div>
-                    
-                    <div class="resume-item" data-animate="fade-up">
-                        <p class="year">2018-2020</p>
-                        <h3>.NET Developer</h3>
-                        <p class="company">Enterprise Software</p>
-                        <p class="company-discription">Developed Windows applications using C# and .NET framework for enterprise clients.</p>
-                    </div>
-            </div>
-            </div>
-            
-            <div class="resume-detail education" data-animate="fade-left">
-            <h2 class="heading">My<span> Education</span></h2>
-            <p class="desc">My educational background has provided me with a strong foundation in computer science and practical skills in software development.</p>
-             <div class="resume-list">
-                <div class="resume-item" data-animate="fade-up">
-                        <p class="year">2022-2025</p>
-                        <h3>BTech In Computer Science & Engineering</h3>
-                        <p class="company">Techplus Academy</p>
-                        
-                    </div>
-                <div class="resume-item" data-animate="fade-up">
-                        <p class="year">2018-2021</p>
-                        <h3>Information Technology</h3>
-                        <p class="company">Techplus Academy</p>
-                       
-                    </div>
-                 <div class="resume-item" data-animate="fade-up">
-                        <p class="year">2016-2018</p>
-                        <h3>Intermediate</h3>
-                        <p class="company">HIgh School (JAC BOARD)</p>
-                       
-                    </div>
-                 <div class="resume-item" data-animate="fade-up">
-                        <p class="year">2014-2015</p>
-                        <h3>High School</h3>
-                        <p class="company">Jitpur Academy (CBSE BOARD)</p>
-                       
-                    </div>
-            </div>
-            </div>
-            
-            <div class="resume-detail skill" data-animate="fade-left">
-            <h2 class="heading">My<span> Skills</span></h2>
-            <p class="desc">I've developed expertise in various technologies and tools throughout my career, allowing me to tackle diverse projects effectively.</p>
-                <div class="resume-list">
-                    <div class="resume-item" data-animate="fade-up">
-                    <i class='bx bxl-html5'></i>
-                    <span>HTML5</span>
-                    </div>
-                    
-                    <div class="resume-item" data-animate="fade-up">
-                    <i class='bx bxl-css3' ></i>
-                    <span>CSS3</span>
-                    </div>
-                    
-                    <div class="resume-item" data-animate="fade-up">
-                    <i class='bx bxl-javascript' ></i>
-                    <span>JavaScript</span>
-                    </div>
-                    
-                    <div class="resume-item" data-animate="fade-up">
-                    <i class='bx bxl-jquery' ></i>
-                    <span>jQuery</span>
-                    </div>
-                    
-                    <div class="resume-item" data-animate="fade-up">
-                    <i class='bx bxl-react' ></i>
-                    <span>React JS</span>
-                    </div>
-                    
-                    <div class="resume-item" data-animate="fade-up">
-                    <i class='bx bxl-bootstrap' ></i>
-                    <span>Bootstrap</span>
-                    </div>
-                    
-                    <div class="resume-item" data-animate="fade-up">
-                    <i class='bx bxl-php' ></i>
-                    <span>PHP</span>
-                    </div>
-                    
-                    <div class="resume-item" data-animate="fade-up">
-                    <i class='bx bxl-java' ></i>
-                    <span>Java</span>
-                    </div>
-                    
-                    <div class="resume-item" data-animate="fade-up">
-                    <i class='bx bxl-nodejs' ></i>
-                    <span>Node.js</span>
-                    </div>
-                    
-                    <div class="resume-item" data-animate="fade-up">
-                    <i class='bx bxl-mongodb' ></i>
-                    <span>MongoDB</span>
-                    </div>
-                    
-                    <div class="resume-item" data-animate="fade-up">
-                    <i class='bx bxl-git' ></i>
-                    <span>Git</span>
-                    </div>
-                    
-                    <div class="resume-item" data-animate="fade-up">
-                    <i class='bx bxl-figma' ></i>
-                    <span>Figma</span>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="resume-detail about" data-animate="fade-left">
-            <h2 class="heading">About<span> Me</span></h2>
-            <p class="desc">I'm a passionate web developer and designer with a strong focus on creating intuitive, user-friendly digital experiences. With one years of experience in the field, I've developed a diverse skill set that allows me to handle both frontend and backend development challenges.</p>
-            <div class="resume-list">
-                <div class="resume-item" data-animate="fade-up">
-                <p>Name <span> SURAJ SHAW</span></p>
-                </div>
-                
-                <div class="resume-item" data-animate="fade-up">
-                <p>Mother Name <span> Savitri Devi</span></p>
-                </div>
-                
-                <div class="resume-item" data-animate="fade-up">
-                <p>Gender <span> Male</span></p>
-                </div>
-                
-                <div class="resume-item" data-animate="fade-up">
-                <p>Status<span> Single</span></p>
-                </div>
-                
-                    <div class="resume-item" data-animate="fade-up">
-                    <p>City<span> DHANBAD</span></p>
-                    </div>
-                    
-                    <div class="resume-item" data-animate="fade-up">
-                    <p>Nationality<span> Indian</span></p>
-                    </div>
-                    
-                    <div class="resume-item" data-animate="fade-up">
-                    <p>Experience<span> 1+ Years</span></p>
-                    </div>
-                    
-                    <div class="resume-item" data-animate="fade-up">
-                    <p>Full Time<span> Available</span></p>
-                    </div>
-                    
-                    <div class="resume-item" data-animate="fade-up">
-                    <p>Freelancing<span> Available</span></p>
-                    </div>
-                    
-                    <div class="resume-item" data-animate="fade-up">
-                    <p>Phone Number<a href="tel:+918651744312">+91 8651744312</a></p>
-                    </div>
-                    
-                    <div class="resume-item" data-animate="fade-up">
-                    <p>Email <a href="mailto:srjshaw24@gmail.com">srjshaw24@gmail.com</a></p>
-                    </div>
-                    
-                    <div class="resume-item" data-animate="fade-up">
-                    <p>Languages<span> Hindi, English</span></p>
-                    </div>
-                    
-                    </div>
-                </div>
-            </div> 
-            </div>
-        </section>
-       
-             
-        <!--Portfolio Section-->
-        <section class="portfolio" id="port">
-            <h2 class="heading" data-animate="fade-up">Latest <span>Projects</span></h2>
-            <div class="portfolio-container">
+    </section>
+
+    <!-- Portfolio Section -->
+    <section class="portfolio" id="port">
+        <h2 class="heading" data-animate="fade-up">Latest <span>Projects</span></h2>
+        <div class="portfolio-container">
             <div class="portfolio-box" data-animate="fade-right">
                 <div class="portfolio-detail active">
-                <p class="num">01</p>
-                <h3>Frontend Project</h3>
-                <p>Developed a responsive e-commerce website with modern UI components using React.js. Implemented features like product filtering, shopping cart functionality, and secure checkout process. Optimized performance through code splitting and lazy loading techniques.</p>
-                <div class="tech">
-                    <p>HTML, CSS, JavaScript, React</p>
+                    <p class="num">01</p>
+                    <h3>Frontend Project</h3>
+                    <p>Developed a responsive e-commerce website with modern UI components using React.js. Implemented features like product filtering, shopping cart functionality, and secure checkout process. Optimized performance through code splitting and lazy loading techniques.</p>
+                    <div class="tech">
+                        <p>HTML, CSS, JavaScript, React</p>
+                    </div>
+                    <div class="live-github">
+                        <a href="https://sunidhimakeup.netlify.app/" target="_blank" rel="noopener noreferrer" aria-label="Live Demo">
+                            <i class='bx bx-arrow-back'></i><span>Live Project</span>
+                        </a>
+                        <a href="https://sunidhimakeup.netlify.app/" target="_blank" rel="noopener noreferrer" aria-label="GitHub Repository">
+                            <i class='bx bx-right-arrow-circle'></i><span>Github Repository</span>
+                        </a>
+                    </div>
                 </div>
-                <Div class="live-github">
-                    <a href="https://sunidhimakeup.netlify.app/"><i class='bx bx-arrow-back' ></i><span>Live Project</span></a>
-                    <a href="https://sunidhimakeup.netlify.app/"><i class='bx bx-right-arrow circle' ></i><span>Github Repository</span></a>
-                    </Div>
-                    
-                </div>
-                
                 <div class="portfolio-detail">
-                <p class="num">02</p>
-                <h3>Backend Developer Project</h3>
-                <p>Built a RESTful API for a task management application using Java Spring Boot. Implemented JWT authentication, role-based authorization, and database operations with Hibernate. Designed efficient database schema and optimized queries for better performance.</p>
-                <div class="tech">
-                    <p>Java, Spring Boot, MySQL, Hibernate</p>
+                    <p class="num">02</p>
+                    <h3>Backend Developer Project</h3>
+                    <p>Built a RESTful API for a task management application using Java Spring Boot. Implemented JWT authentication, role-based authorization, and database operations with Hibernate. Designed efficient database schema and optimized queries for better performance.</p>
+                    <div class="tech">
+                        <p>Java, Spring Boot, MySQL, Hibernate</p>
+                    </div>
+                    <div class="live-github">
+                        <a href="#" target="_blank" rel="noopener noreferrer" aria-label="Live Demo">
+                            <i class='bx bx-arrow-back'></i><span>Live Project</span>
+                        </a>
+                        <a href="https://surajinfo.netlify.app/" target="_blank" rel="noopener noreferrer" aria-label="GitHub Repository">
+                            <i class='bx bx-right-arrow-circle'></i><span>Github Repository</span>
+                        </a>
+                    </div>
                 </div>
-                <Div class="live-github">
-                    <a href="#"><i class='bx bx-arrow-back' ></i><span>Live Project</span></a>
-                    <a href="https://surajinfo.netlify.app/"><i class='bx bx-right-arrow circle' ></i><span>Github Repository</span></a>
-                    </Div>
-                </div>
-                
                 <div class="portfolio-detail">
-                <p class="num">03</p>
+                    <p class="num">03</p>
                     <h3>Full Stack Developer</h3>
-                <p>Created a complete MERN stack application for a blogging platform. Developed the frontend with React and Redux, built the backend with Node.js and Express, and used MongoDB for data storage. Implemented features like user authentication, post creation, and comments.</p>
-                <div class="tech">
-                    <p>MongoDB, Express, React, Node.js</p>
+                    <p>Created a complete MERN stack application for a blogging platform. Developed the frontend with React and Redux, built the backend with Node.js and Express, and used MongoDB for data storage. Implemented features like user authentication, post creation, and comments.</p>
+                    <div class="tech">
+                        <p>MongoDB, Express, React, Node.js</p>
+                    </div>
+                    <div class="live-github">
+                        <a href="#" target="_blank" rel="noopener noreferrer" aria-label="Live Demo">
+                            <i class='bx bx-arrow-back'></i><span>Live Project</span>
+                        </a>
+                        <a href="https://sunidhimakeup.netlify.app/" target="_blank" rel="noopener noreferrer" aria-label="GitHub Repository">
+                            <i class='bx bx-right-arrow-circle'></i><span>Github Repository</span>
+                        </a>
+                    </div>
                 </div>
-                <Div class="live-github">
-                    <a href="#"><i class='bx bx-arrow-back' ></i><span>Live Project</span></a>
-                    <a href="https://sunidhimakeup.netlify.app/"><i class='bx bx-right-arrow circle' ></i><span>Github Repository</span></a>
-                    </Div>
-                </div>
-                
                 <div class="portfolio-detail">
-                <p class="num">04</p>
-                <h3>PHP Developer</h3>
-                <p>Developed a custom CMS for a client using PHP and MySQL. Created modular architecture allowing easy extension of functionality. Implemented secure admin panel, user management, and content editing features. Optimized database queries for better performance.</p>
-                <div class="tech">
-                    <p>PHP, MySQL, JavaScript, Bootstrap</p>
+                    <p class="num">04</p>
+                    <h3>PHP Developer</h3>
+                    <p>Developed a custom CMS for a client using PHP and MySQL. Created modular architecture allowing easy extension of functionality. Implemented secure admin panel, user management, and content editing features. Optimized database queries for better performance.</p>
+                    <div class="tech">
+                        <p>PHP, MySQL, JavaScript, Bootstrap</p>
+                    </div>
+                    <div class="live-github">
+                        <a href="#" target="_blank" rel="noopener noreferrer" aria-label="Live Demo">
+                            <i class='bx bx-arrow-back'></i><span>Live Project</span>
+                        </a>
+                        <a href="https://techplusacademy.netlify.app/" target="_blank" rel="noopener noreferrer" aria-label="GitHub Repository">
+                            <i class='bx bx-right-arrow-circle'></i><span>Github Repository</span>
+                        </a>
+                    </div>
                 </div>
-                <Div class="live-github">
-                    <a href="#"><i class='bx bx-arrow-back' ></i><span>Live Project</span></a>
-                    <a href="https://techplusacademy.netlify.app/"><i class='bx bx-right-arrow circle' ></i><span>Github Repository</span></a>
-                    </Div>
-                </div>
-                
                 <div class="portfolio-detail">
-                <p class="num">05</p>
+                    <p class="num">05</p>
                     <h3>UI/UX Designer</h3>
-                <p>Redesigned the user interface for a mobile banking application. Conducted user research, created wireframes and prototypes, and implemented the final design. Improved user flow and reduced the number of steps for common tasks by 40%.</p>
-                <div class="tech">
-                    <p>Figma, Adobe XD, User Research</p>
-                </div>
-                <Div class="live-github">
-                    <a href="#"><i class='bx bx-arrow-back' ></i><span>Live Project</span></a>
-                    <a href="https://nexusproai.netlify.app/"><i class='bx bx-right-arrow circle' ></i><span>Github Repository</span></a>
-                    </Div>
+                    <p>Redesigned the user interface for a mobile banking application. Conducted user research, created wireframes and prototypes, and implemented the final design. Improved user flow and reduced the number of steps for common tasks by 40%.</p>
+                    <div class="tech">
+                        <p>Figma, Adobe XD, User Research</p>
+                    </div>
+                    <div class="live-github">
+                        <a href="#" target="_blank" rel="noopener noreferrer" aria-label="Live Demo">
+                            <i class='bx bx-arrow-back'></i><span>Live Project</span>
+                        </a>
+                        <a href="https://nexusproai.netlify.app/" target="_blank" rel="noopener noreferrer" aria-label="GitHub Repository">
+                            <i class='bx bx-right-arrow-circle'></i><span>Github Repository</span>
+                        </a>
+                    </div>
                 </div>
             </div>
-                
-                <div class="portfolio-box" data-animate="fade-left">
-                <!-- Carousel image -->
-                    <div class="portfolio-carousal">
-                        <div class="img-slide">
+            <div class="portfolio-box" data-animate="fade-left">
+                <div class="portfolio-carousal">
+                    <div class="img-slide">
                         <div class="img-item">
-                            <img src="image1.jpeg" alt="Project 1">
-                            </div>
-                            
+                            <img src="image1.jpeg" alt="Project 1: Frontend E-commerce Site" loading="lazy">
+                        </div>
                         <div class="img-item">
-                            <img src="image2.jpeg" alt="Project 2">
-                            </div>
-                            
+                            <img src="image2.jpeg" alt="Project 2: Java Backend API" loading="lazy">
+                        </div>
                         <div class="img-item">
-                            <img src="image3.jpeg" alt="Project 3">
-                            </div>
-                            
-                             <div class="img-item">
-                            <img src="image4.jpeg" alt="Project 4">
-                            </div>
-                            
-                             <div class="img-item">
-                            <img src="image5.jpeg" alt="Project 5">
-                            </div>
-                            
+                            <img src="image3.jpeg" alt="Project 3: Full Stack MERN Blog" loading="lazy">
+                        </div>
+                        <div class="img-item">
+                            <img src="image4.jpeg" alt="Project 4: PHP Custom CMS" loading="lazy">
+                        </div>
+                        <div class="img-item">
+                            <img src="image5.jpeg" alt="Project 5: UI/UX Banking App Redesign" loading="lazy">
                         </div>
                     </div>
-                    
-                    <!-- Carousel navigation -->
-                    <div class="navigation">
-                    <button class="arrow-left disabled"><i class='bx bx-chevron-left'></i></button>
-                    <button class="arrow-right"><i class='bx bx-chevron-right'></i></button>
-                    </div>
-                
+                </div>
+                <div class="navigation">
+                    <button class="arrow-left disabled" aria-label="Previous Project" disabled><i class='bx bx-chevron-left'></i></button>
+                    <button class="arrow-right" aria-label="Next Project"><i class='bx bx-chevron-right'></i></button>
                 </div>
             </div>
-        </section>
-  
-        
-         <!--Contact  Section--> 
-        <section class="contact" id="contact1">
-            <div class="contact-container">
-                <div class="contact-box" data-animate="fade-right">
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="contact" id="contact1">
+        <div class="contact-container">
+            <div class="contact-box" data-animate="fade-right">
                 <h2>Let's Work Together</h2>
-                <p class="desc" style="text-align:justify">Let's work together to bring your ideas to life! Whether you need a stunning website, expert IT training, or creative tech solutions, I'm here to help. With a passion for innovation and a focus on results, I'm ready to collaborate and make your vision a reality.</p>
-                    <div class="contact-details" data-animate="fade-up">
+                <p class="desc">Let's work together to bring your ideas to life! Whether you need a stunning website, expert IT training, or creative tech solutions, I'm here to help. With a passion for innovation and a focus on results, I'm ready to collaborate and make your vision a reality.</p>
+                <div class="contact-details" data-animate="fade-up">
                     <i class="bx bxs-phone"></i>
-                        <div class="details">
+                    <div class="details">
                         <p>Phone</p>
-                        <a href="tel:8651744312">(+91) 8651744312</a>
-                        </div>
+                        <a href="tel:+918651744312">(+91) 8651744312</a>
                     </div>
-                    
-                     <div class="contact-details" data-animate="fade-up">
+                </div>
+                <div class="contact-details" data-animate="fade-up">
                     <i class="bx bxs-envelope"></i>
-                        <div class="details">
+                    <div class="details">
                         <p>Email</p>
-                         <a href="mailto:srjshaw24@gmail.com">srjshaw24@gmail.com</a>
-                        </div>
+                        <a href="mailto:srjshaw24@gmail.com">srjshaw24@gmail.com</a>
                     </div>
-                    
-                     <div class="contact-details" data-animate="fade-up">
+                </div>
+                <div class="contact-details" data-animate="fade-up">
                     <i class="bx bxs-map"></i>
-                        <div class="details">
+                    <div class="details">
                         <p>Address</p>
                         <p>Chirkunda, Dhanbad, Jharkhand 828202</p>
-                        </div>
                     </div>
-                </div>
-                
-                <div class="contact-box" data-animate="fade-left">
-                <form action="#">
-                    <h2 class="heading">Contact <span>Me</span> </h2>
-                    <div class="field-box">
-                    <input type="text" placeholder="Full Name" required>
-                    <input type="email" placeholder="Email Address" required>
-                    <input type="tel" placeholder="Phone Number" required>
-                    <input type="text" placeholder="Email Subject" required>
-                    <textarea name="message" placeholder="Your message" required></textarea>
-                    </div>
-                    <button type="submit" class="btn">Send Message</button>
-                    </form>
                 </div>
             </div>
-        </section>
-        
-        <footer>
-            <p>&copy; 2024 Suraj Shaw. All Rights Reserved | Designed with <i class='bx bx-heart' style="color: #ff0000;"></i> by <a href="#">Suraj Shaw</a></p>
-        </footer>
-        
+            <div class="contact-box" data-animate="fade-left">
+                <form action="#" method="POST">
+                    <h2 class="heading">Contact <span>Me</span></h2>
+                    <div class="field-box">
+                        <input type="text" name="name" placeholder="Full Name" required aria-label="Full Name">
+                        <input type="email" name="email" placeholder="Email Address" required aria-label="Email Address">
+                        <input type="tel" name="phone" placeholder="Phone Number" required aria-label="Phone Number">
+                        <input type="text" name="subject" placeholder="Email Subject" required aria-label="Email Subject">
+                        <textarea name="message" placeholder="Your message" required aria-label="Message"></textarea>
+                    </div>
+                    <button type="submit" class="btn">Send Message</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2024 Suraj Shaw. All Rights Reserved | Designed with <i class='bx bx-heart' style="color: #ff0000;"></i> by <a href="#">Suraj Shaw</a></p>
+    </footer>
+
+    <!-- JavaScript -->
     <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        // Navigation menu toggle
-        const menuIcon = document.getElementById('menu-icon');
-        const navbar = document.querySelector('header nav');
-        
-        menuIcon.addEventListener('click', () => {
-            menuIcon.classList.toggle('bx-x');
-            navbar.classList.toggle('active');
-        });
-        
-        // Close menu when clicking on nav links
-        document.querySelectorAll('nav a').forEach(link => {
-            link.addEventListener('click', () => {
-                menuIcon.classList.remove('bx-x');
-                navbar.classList.remove('active');
+        document.addEventListener('DOMContentLoaded', function() {
+
+            // ===== MOBILE MENU TOGGLE =====
+            const menuIcon = document.getElementById('menu-icon');
+            const navbar = document.querySelector('header nav');
+            const navLinks = document.querySelectorAll('nav a');
+
+            menuIcon.addEventListener('click', () => {
+                menuIcon.classList.toggle('bx-x');
+                navbar.classList.toggle('active');
+                menuIcon.setAttribute('aria-expanded', navbar.classList.contains('active'));
             });
-        });
-        
-        // Close menu when clicking outside
-        document.addEventListener('click', (e) => {
-            if (!navbar.contains(e.target) && !menuIcon.contains(e.target)) {
-                menuIcon.classList.remove('bx-x');
-                navbar.classList.remove('active');
-            }
-        });
-        
-        // Sticky header on scroll
-        window.addEventListener('scroll', () => {
-            const header = document.querySelector('header');
-            header.classList.toggle('sticky', window.scrollY > 100);
-        });
-        
-        // Resume section tabs
-        const resumeBtns = document.querySelectorAll('.resume-button');
-        const resumeDetails = document.querySelectorAll('.resume-detail');
-        
-        resumeBtns.forEach((button, index) => {
-            button.addEventListener('click', () => {
-                resumeBtns.forEach(btn => btn.classList.remove('active'));
-                resumeDetails.forEach(detail => detail.classList.remove('active'));
-                
-                button.classList.add('active');
-                resumeDetails[index].classList.add('active');
+
+            // Close menu when clicking on nav links
+            navLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    menuIcon.classList.remove('bx-x');
+                    navbar.classList.remove('active');
+                    menuIcon.setAttribute('aria-expanded', 'false');
+                });
             });
-        });
-        
-        // Portfolio carousel
-        const arrowRight = document.querySelector('.arrow-right');
-        const arrowLeft = document.querySelector('.arrow-left');
-        const imgSlide = document.querySelector('.img-slide');
-        const portfolioDetails = document.querySelectorAll('.portfolio-detail');
-        
-        let currentIndex = 0;
-        const maxIndex = portfolioDetails.length - 1;
-        
-        const updateCarousel = () => {
-            // Update image slide position
-            imgSlide.style.transform = `translateX(calc(${currentIndex * -100}% - ${currentIndex * 2}rem))`;
-            
-            // Update portfolio details visibility
-            portfolioDetails.forEach((detail, index) => {
-                detail.classList.toggle('active', index === currentIndex);
-            });
-            
-            // Update button states
-            arrowLeft.classList.toggle('disabled', currentIndex === 0);
-            arrowRight.classList.toggle('disabled', currentIndex === maxIndex);
-        };
-        
-        arrowRight.addEventListener('click', () => {
-            if (currentIndex < maxIndex) {
-                currentIndex++;
-                updateCarousel();
-            }
-        });
-        
-        arrowLeft.addEventListener('click', () => {
-            if (currentIndex > 0) {
-                currentIndex--;
-                updateCarousel();
-            }
-        });
-        
-        // Initialize carousel
-        updateCarousel();
-        
-        // Scroll animations
-        const animateElements = document.querySelectorAll('[data-animate]');
-        
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('animated');
-                } else {
-                    // Remove this line if you don't want animations to replay
-                    // entry.target.classList.remove('animated');
+
+            // Close menu when clicking outside
+            document.addEventListener('click', (e) => {
+                if (!navbar.contains(e.target) && !menuIcon.contains(e.target)) {
+                    menuIcon.classList.remove('bx-x');
+                    navbar.classList.remove('active');
+                    menuIcon.setAttribute('aria-expanded', 'false');
                 }
             });
-        }, {
-            threshold: 0.1,
-            rootMargin: '0px 0px -50px 0px'
-        });
-        
-        animateElements.forEach(element => {
-            observer.observe(element);
-        });
-        
-        // Smooth scroll for anchor links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function(e) {
+
+            // ===== STICKY HEADER =====
+            window.addEventListener('scroll', () => {
+                const header = document.querySelector('header');
+                header.classList.toggle('sticky', window.scrollY > 100);
+            });
+
+            // ===== RESUME TABS =====
+            const resumeBtns = document.querySelectorAll('.resume-button');
+            const resumeDetails = document.querySelectorAll('.resume-detail');
+
+            resumeBtns.forEach(button => {
+                button.addEventListener('click', () => {
+                    const targetId = button.getAttribute('data-target');
+                    
+                    resumeBtns.forEach(btn => btn.classList.remove('active'));
+                    resumeDetails.forEach(detail => detail.classList.remove('active'));
+
+                    button.classList.add('active');
+                    document.querySelector(`.resume-detail.${targetId}`).classList.add('active');
+                });
+            });
+
+            // ===== PORTFOLIO CAROUSEL =====
+            const arrowRight = document.querySelector('.arrow-right');
+            const arrowLeft = document.querySelector('.arrow-left');
+            const imgSlide = document.querySelector('.img-slide');
+            const portfolioDetails = document.querySelectorAll('.portfolio-detail');
+            let currentIndex = 0;
+            const maxIndex = portfolioDetails.length - 1;
+
+            const updateCarousel = () => {
+                imgSlide.style.transform = `translateX(calc(${currentIndex * -100}% - ${currentIndex * 2}rem))`;
+                portfolioDetails.forEach((detail, index) => {
+                    detail.classList.toggle('active', index === currentIndex);
+                });
+                arrowLeft.classList.toggle('disabled', currentIndex === 0);
+                arrowRight.classList.toggle('disabled', currentIndex === maxIndex);
+                arrowLeft.disabled = currentIndex === 0;
+                arrowRight.disabled = currentIndex === maxIndex;
+            };
+
+            arrowRight.addEventListener('click', () => {
+                if (currentIndex < maxIndex) {
+                    currentIndex++;
+                    updateCarousel();
+                }
+            });
+
+            arrowLeft.addEventListener('click', () => {
+                if (currentIndex > 0) {
+                    currentIndex--;
+                    updateCarousel();
+                }
+            });
+
+            // Initialize
+            updateCarousel();
+
+            // ===== SCROLL ANIMATIONS =====
+            const animateElements = document.querySelectorAll('[data-animate]');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('animated');
+                    }
+                });
+            }, {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            });
+
+            animateElements.forEach(element => {
+                observer.observe(element);
+            });
+
+            // ===== SMOOTH SCROLL =====
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href');
+                    if (targetId === '#') return;
+                    const targetElement = document.querySelector(targetId);
+                    if (targetElement) {
+                        window.scrollTo({
+                            top: targetElement.offsetTop - 100,
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+
+            // ===== ACTIVE NAV LINK ON SCROLL =====
+            const sections = document.querySelectorAll('section');
+            window.addEventListener('scroll', () => {
+                let current = '';
+                sections.forEach(section => {
+                    const sectionTop = section.offsetTop;
+                    const sectionHeight = section.clientHeight;
+                    if (pageYOffset >= (sectionTop - 150)) {
+                        current = section.getAttribute('id');
+                    }
+                });
+                navLinks.forEach(link => {
+                    link.classList.remove('active');
+                    if (link.getAttribute('href') === `#${current}`) {
+                        link.classList.add('active');
+                    }
+                });
+            });
+
+            // ===== DISABLE RIGHT CLICK & INSPECT =====
+            document.addEventListener('contextmenu', function(e) {
                 e.preventDefault();
-                const targetId = this.getAttribute('href');
-                if (targetId === '#') return;
-                
-                const targetElement = document.querySelector(targetId);
-                if (targetElement) {
-                    window.scrollTo({
-                        top: targetElement.offsetTop - 100,
-                        behavior: 'smooth'
-                    });
+            });
+
+            document.addEventListener('keydown', function(e) {
+                if (
+                    (e.ctrlKey && e.key === 'c') ||
+                    (e.ctrlKey && e.key === 'u') ||
+                    (e.ctrlKey && e.shiftKey && e.key === 'I') ||
+                    e.key === 'F12'
+                ) {
+                    e.preventDefault();
                 }
             });
-        });
-        
-        // Set active nav link based on scroll position
-        const sections = document.querySelectorAll('section');
-        
-        window.addEventListener('scroll', () => {
-            let current = '';
-            
-            sections.forEach(section => {
-                const sectionTop = section.offsetTop;
-                const sectionHeight = section.clientHeight;
-                
-                if (pageYOffset >= (sectionTop - 150)) {
-                    current = section.getAttribute('id');
-                }
-            });
-            
-            navlinks.forEach(link => {
-                link.classList.remove('active');
-                if (link.getAttribute('href') === `#${current}`) {
-                    link.classList.add('active');
-                }
-            });
-        });
-        
-        // Disable right-click and inspect element
-        document.addEventListener('contextmenu', function(e) {
-            e.preventDefault();
-        });
-        
-        document.addEventListener('keydown', function(e) {
-            if (
-                (e.ctrlKey && e.key === 'c') || 
-                (e.ctrlKey && e.key === 'u') || 
-                (e.ctrlKey && e.shiftKey && e.key === 'I') || 
-                e.key === 'F12'
-            ) {
-                e.preventDefault();
+
+            // ===== FORM SUBMISSION HANDLER (Basic) =====
+            const contactForm = document.querySelector('.contact-box form');
+            if (contactForm) {
+                contactForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    alert('Thank you for your message! This is a demo. In production, this would send an email.');
+                    // Here you'd integrate with a service like Formspree, Netlify Forms, or a backend API
+                });
             }
+
         });
-    });
     </script>
+
 </body>
 </html>

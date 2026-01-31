@@ -1,97 +1,656 @@
-<div style="font-family: Arial, sans-serif; max-width: 800px; margin: auto; line-height: 1.6;">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Suraj Kumar Shaw - Hotel Management Job Application</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Calibri', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
 
-<h1 style="text-align:center; color:#2c3e50;">Suraj Kumar Shaw</h1>
-<p style="text-align:center;">
-📍 Dhanbad, Jharkhand, India | 📞 +91 8651744312 | 📧 srjshaw24@gmail.com<br>
-🌐 https://surajinfo.netlify.app | 💼 LinkedIn: surajshaw24
-</p>
+        body {
+            background-color: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+        }
 
-<hr>
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        }
 
-<h2 style="color:#34495e;">Career Objective</h2>
-<p>
-Customer-focused hospitality professional seeking opportunities in <b>Front Office, Reception, Housekeeping, and Guest Relations</b>. Dedicated to delivering excellent guest experiences and maintaining high service standards.
-</p>
+        /* Print-specific styles */
+        @media print {
+            body {
+                background: white;
+                margin: 0;
+                padding: 0;
+            }
+            
+            .container {
+                box-shadow: none;
+                max-width: 100%;
+            }
+            
+            .no-print {
+                display: none !important;
+            }
+            
+            .print-only {
+                display: block !important;
+            }
+            
+            a {
+                color: black !important;
+                text-decoration: none !important;
+            }
+        }
 
-<h2 style="color:#34495e;">Professional Summary</h2>
-<p>
-Motivated and disciplined professional with experience in hotel operations, administration, and client handling. Strong communication and coordination skills with proven ability to work effectively in fast-paced environments.
-</p>
+        .print-only {
+            display: none;
+        }
 
-<h2 style="color:#34495e;">Target Positions</h2>
-<ul>
-<li>Front Office Executive</li>
-<li>Receptionist</li>
-<li>Housekeeping Coordinator</li>
-<li>Guest Relations Executive</li>
-</ul>
+        /* Header Section */
+        .header {
+            background: linear-gradient(135deg, #1a5f7a 0%, #2c3e50 100%);
+            color: white;
+            padding: 40px;
+            position: relative;
+        }
 
-<h2 style="color:#34495e;">Work Experience</h2>
+        .name-title {
+            text-align: center;
+            margin-bottom: 20px;
+        }
 
-<h3>Front Office Executive / Guest Relations Assistant</h3>
-<p><b>Hotel City Inn (3-Star), Dhanbad</b> | Jan 2024 – Dec 2024</p>
-<ul>
-<li>Handled guest check-in and check-out procedures.</li>
-<li>Managed reservations, inquiries, and front desk operations.</li>
-<li>Coordinated with housekeeping for room readiness.</li>
-<li>Resolved guest complaints professionally.</li>
-<li>Maintained guest records and daily reports.</li>
-</ul>
+        .name {
+            font-size: 2.5rem;
+            font-weight: bold;
+            letter-spacing: 1px;
+            margin-bottom: 5px;
+        }
 
-<h3>Brand Marketing Manager / Operations Supervisor</h3>
-<p><b>Techplus Academy, Dhanbad</b> | Mar 2024 – Present</p>
-<ul>
-<li>Managed daily operations and customer services.</li>
-<li>Handled scheduling and coordination.</li>
-<li>Maintained service quality standards.</li>
-</ul>
+        .title {
+            font-size: 1.3rem;
+            color: #f8b400;
+            font-weight: 600;
+        }
 
-<h3>Personal Assistant / Client Coordinator</h3>
-<p><b>Riconex Pvt. Ltd., Ranchi</b> | May 2023 – Nov 2023</p>
-<ul>
-<li>Managed client interactions and follow-ups.</li>
-<li>Assisted in customer relationship management.</li>
-</ul>
+        .contact-info {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 30px;
+            margin-top: 20px;
+        }
 
-<h2 style="color:#34495e;">Education</h2>
-<ul>
-<li><b>B.Com</b> – BSK College Maithan, BBMK University (2022–2025)</li>
-<li><b>Advanced Diploma in Financial Accounting</b> – SSIT (2023–2024)</li>
-<li><b>12th (Commerce)</b> – S.H.M.S College (2020–2022)</li>
-<li><b>10th</b> – Guru Nanak Mission School (2019–2020)</li>
-</ul>
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
 
-<h2 style="color:#34495e;">Key Skills</h2>
-<table width="100%" cellpadding="5" cellspacing="0" border="1" style="border-collapse:collapse; text-align:center;">
-<tr>
-<td>Guest Handling</td>
-<td>Front Desk Support</td>
-<td>Housekeeping Coordination</td>
-<td>Complaint Handling</td>
-</tr>
-<tr>
-<td>Customer Service</td>
-<td>Documentation</td>
-<td>Teamwork</td>
-<td>MS Office</td>
-</tr>
-</table>
+        .contact-item i {
+            color: #f8b400;
+            font-size: 1.2rem;
+        }
 
-<h2 style="color:#34495e;">Languages</h2>
-<ul>
-<li>Hindi – Native</li>
-<li>English – Working Proficiency</li>
-</ul>
+        /* Control Buttons */
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-bottom: 2px solid #eee;
+        }
 
-<h2 style="color:#34495e;">Personal Information</h2>
-<ul>
-<li>Date of Birth: 05 January 2005</li>
-<li>Gender: Male</li>
-<li>Nationality: Indian</li>
-<li>Passport: W7755309</li>
-</ul>
+        .btn {
+            padding: 12px 25px;
+            background: #1a5f7a;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s;
+        }
 
-<hr>
-<p style="text-align:center; font-size:12px; color:gray;">Declaration: I hereby declare that the above information is true to the best of my knowledge.</p>
+        .btn:hover {
+            background: #144a60;
+            transform: translateY(-2px);
+        }
 
-</div>
+        .btn.print {
+            background: #28a745;
+        }
+
+        .btn.print:hover {
+            background: #218838;
+        }
+
+        .btn.download {
+            background: #17a2b8;
+        }
+
+        .btn.download:hover {
+            background: #138496;
+        }
+
+        /* Main Content */
+        .content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            padding: 40px;
+        }
+
+        .column {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        /* Section Styling */
+        .section {
+            margin-bottom: 25px;
+        }
+
+        .section-title {
+            color: #1a5f7a;
+            font-size: 1.4rem;
+            padding-bottom: 8px;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #f8b400;
+            font-weight: bold;
+        }
+
+        /* Career Objective */
+        .objective {
+            background: #f8f9fa;
+            padding: 20px;
+            border-left: 4px solid #1a5f7a;
+            font-style: italic;
+            line-height: 1.8;
+            grid-column: 1 / -1;
+        }
+
+        /* Experience Items */
+        .experience-item, .education-item {
+            margin-bottom: 25px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .experience-item:last-child, .education-item:last-child {
+            border-bottom: none;
+        }
+
+        .job-title {
+            color: #2c3e50;
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .company {
+            color: #1a5f7a;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .duration {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .responsibilities {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        .responsibilities li {
+            position: relative;
+            padding-left: 25px;
+            margin-bottom: 8px;
+            line-height: 1.5;
+        }
+
+        .responsibilities li:before {
+            content: "▸";
+            color: #f8b400;
+            position: absolute;
+            left: 0;
+            font-weight: bold;
+        }
+
+        /* Skills Section */
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+
+        .skill-category {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            border-left: 3px solid #1a5f7a;
+        }
+
+        .skill-category h4 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+        }
+
+        .skill-list {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        .skill-list li {
+            padding: 3px 0;
+            font-size: 0.95rem;
+        }
+
+        /* Languages & Personal Info */
+        .languages, .personal-info {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+        }
+
+        .language-item, .personal-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px dashed #ddd;
+        }
+
+        .language-item:last-child, .personal-item:last-child {
+            border-bottom: none;
+        }
+
+        .language-name, .personal-label {
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .language-level, .personal-value {
+            color: #666;
+        }
+
+        /* Footer */
+        .footer {
+            background: #2c3e50;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .footer-text {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .content {
+                grid-template-columns: 1fr;
+                padding: 25px;
+            }
+            
+            .header {
+                padding: 30px 20px;
+            }
+            
+            .name {
+                font-size: 2rem;
+            }
+            
+            .contact-info {
+                gap: 15px;
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .skills-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .controls {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .btn {
+                width: 100%;
+                max-width: 300px;
+                justify-content: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header {
+                padding: 25px 15px;
+            }
+            
+            .content {
+                padding: 20px 15px;
+            }
+            
+            .section-title {
+                font-size: 1.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Print Notice (only shows when printing) -->
+        <div class="print-only" style="text-align: center; padding: 10px; font-size: 0.8rem; color: #666;">
+            Resume of Suraj Kumar Shaw - Hotel Management Professional - Printed on <span id="printDate"></span>
+        </div>
+
+        <!-- Header Section -->
+        <div class="header">
+            <div class="name-title">
+                <h1 class="name">Suraj Kumar Shaw</h1>
+                <p class="title">Hotel Management Professional</p>
+            </div>
+            
+            <div class="contact-info">
+                <div class="contact-item">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <span>Dhanbad, Jharkhand, India</span>
+                </div>
+                <div class="contact-item">
+                    <i class="fas fa-phone"></i>
+                    <span>+91 8651744312</span>
+                </div>
+                <div class="contact-item">
+                    <i class="fas fa-envelope"></i>
+                    <span>srjshaw24@gmail.com</span>
+                </div>
+                <div class="contact-item">
+                    <i class="fas fa-globe"></i>
+                    <span>surajinfo.netlify.app</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Control Buttons -->
+        <div class="controls no-print">
+            <button class="btn print" onclick="window.print()">
+                <i class="fas fa-print"></i> Print Resume
+            </button>
+            <button class="btn download" onclick="downloadPDF()">
+                <i class="fas fa-download"></i> Download as PDF
+            </button>
+            <button class="btn" onclick="shareResume()">
+                <i class="fas fa-share-alt"></i> Share Resume
+            </button>
+        </div>
+
+        <!-- Main Content -->
+        <div class="content">
+            <!-- Career Objective -->
+            <div class="objective">
+                <p><strong>Career Objective:</strong> Customer-focused hospitality professional seeking opportunities in <strong>Front Office, Reception, Housekeeping, and Guest Relations</strong>. Dedicated to delivering excellent guest experiences, maintaining service standards, and supporting smooth hotel operations.</p>
+            </div>
+
+            <!-- Left Column -->
+            <div class="column">
+                <!-- Professional Experience -->
+                <div class="section">
+                    <h2 class="section-title">Professional Experience</h2>
+                    
+                    <div class="experience-item">
+                        <h3 class="job-title">Front Office Executive / Guest Relations Assistant</h3>
+                        <span class="company">Hotel City Inn (3-Star), Dhanbad</span>
+                        <span class="duration">January 2024 – December 2024</span>
+                        <ul class="responsibilities">
+                            <li>Handled guest check-in and check-out procedures efficiently</li>
+                            <li>Managed front desk operations, reservations, and inquiries</li>
+                            <li>Assisted guests with room services and local information</li>
+                            <li>Coordinated with housekeeping for room readiness</li>
+                            <li>Resolved guest complaints professionally to ensure satisfaction</li>
+                            <li>Maintained daily reports and guest records</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="experience-item">
+                        <h3 class="job-title">Brand Marketing Manager / Operations Supervisor</h3>
+                        <span class="company">Techplus Academy, Dhanbad</span>
+                        <span class="duration">March 2024 – Present</span>
+                        <ul class="responsibilities">
+                            <li>Managed daily operations and handled student/client services</li>
+                            <li>Attended inquiries, scheduling, and coordination</li>
+                            <li>Maintained service quality and customer satisfaction</li>
+                            <li>Trained staff in professional conduct and communication</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="experience-item">
+                        <h3 class="job-title">Personal Assistant / Client Coordinator</h3>
+                        <span class="company">Riconex Pvt. Ltd., Ranchi</span>
+                        <span class="duration">May 2023 – November 2023</span>
+                        <ul class="responsibilities">
+                            <li>Handled client interactions, appointments, and follow-ups</li>
+                            <li>Assisted in customer service and relationship management</li>
+                            <li>Ensured smooth communication between teams and clients</li>
+                            <li>Helped improve repeat customer rate by 30%</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Education -->
+                <div class="section">
+                    <h2 class="section-title">Education</h2>
+                    
+                    <div class="education-item">
+                        <h3 class="job-title">Bachelor of Commerce (B.Com)</h3>
+                        <span class="company">BSK College Maithan, BBMK University</span>
+                        <span class="duration">2022 – 2025</span>
+                    </div>
+                    
+                    <div class="education-item">
+                        <h3 class="job-title">Advanced Diploma in Financial Accounting</h3>
+                        <span class="company">Swift Shine InfoTech (SSIT), Dhanbad</span>
+                        <span class="duration">2023 – 2024</span>
+                    </div>
+                    
+                    <div class="education-item">
+                        <h3 class="job-title">Intermediate (12th – Commerce)</h3>
+                        <span class="company">S.H.M.S College, JAC Board</span>
+                        <span class="duration">2020 – 2022</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Column -->
+            <div class="column">
+                <!-- Skills -->
+                <div class="section">
+                    <h2 class="section-title">Key Skills</h2>
+                    <div class="skills-grid">
+                        <div class="skill-category">
+                            <h4>Front Office & Reception</h4>
+                            <ul class="skill-list">
+                                <li>Guest Check-in & Check-out</li>
+                                <li>Reservation Management</li>
+                                <li>Professional Communication</li>
+                                <li>Visitor Management</li>
+                                <li>Inquiry Handling</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="skill-category">
+                            <h4>Housekeeping Coordination</h4>
+                            <ul class="skill-list">
+                                <li>Room Status Monitoring</li>
+                                <li>Cleaning Schedule Support</li>
+                                <li>Coordination with Staff</li>
+                                <li>Cleanliness Standards</li>
+                                <li>Inventory Management</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="skill-category">
+                            <h4>Guest Relations</h4>
+                            <ul class="skill-list">
+                                <li>Complaint Handling</li>
+                                <li>Service Recovery</li>
+                                <li>Personalized Assistance</li>
+                                <li>Guest Loyalty Building</li>
+                                <li>Feedback Collection</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="skill-category">
+                            <h4>General Skills</h4>
+                            <ul class="skill-list">
+                                <li>Customer Service Excellence</li>
+                                <li>Teamwork & Coordination</li>
+                                <li>Time Management</li>
+                                <li>Documentation & Reporting</li>
+                                <li>Microsoft Office</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Languages -->
+                <div class="section">
+                    <h2 class="section-title">Languages</h2>
+                    <div class="languages">
+                        <div class="language-item">
+                            <span class="language-name">Hindi</span>
+                            <span class="language-level">Native Proficiency</span>
+                        </div>
+                        <div class="language-item">
+                            <span class="language-name">English</span>
+                            <span class="language-level">Working Proficiency</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Personal Information -->
+                <div class="section">
+                    <h2 class="section-title">Personal Information</h2>
+                    <div class="personal-info">
+                        <div class="personal-item">
+                            <span class="personal-label">Date of Birth:</span>
+                            <span class="personal-value">05 January 2005</span>
+                        </div>
+                        <div class="personal-item">
+                            <span class="personal-label">Gender:</span>
+                            <span class="personal-value">Male</span>
+                        </div>
+                        <div class="personal-item">
+                            <span class="personal-label">Nationality:</span>
+                            <span class="personal-value">Indian</span>
+                        </div>
+                        <div class="personal-item">
+                            <span class="personal-label">Passport No:</span>
+                            <span class="personal-value">W7755309</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Target Positions -->
+                <div class="section">
+                    <h2 class="section-title">Target Positions</h2>
+                    <div class="skills-grid">
+                        <div class="skill-category" style="background: #e8f4fd; border-left-color: #17a2b8;">
+                            <h4>Front Office Executive</h4>
+                        </div>
+                        <div class="skill-category" style="background: #e8f4fd; border-left-color: #17a2b8;">
+                            <h4>Receptionist</h4>
+                        </div>
+                        <div class="skill-category" style="background: #e8f4fd; border-left-color: #17a2b8;">
+                            <h4>Housekeeping Coordinator</h4>
+                        </div>
+                        <div class="skill-category" style="background: #e8f4fd; border-left-color: #17a2b8;">
+                            <h4>Guest Relations Executive</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <p class="footer-text">References available upon request • Available for immediate interview</p>
+            <p class="footer-text">© 2024 Suraj Kumar Shaw • Hotel Management Professional</p>
+        </div>
+    </div>
+
+    <script>
+        // Set current date for print
+        document.getElementById('printDate').textContent = new Date().toLocaleDateString();
+        
+        // Function to handle PDF download (simulated - in real implementation, use a PDF library)
+        function downloadPDF() {
+            alert('In a real implementation, this would generate and download a PDF. For now, please use the Print function and save as PDF.');
+            // In production, you would use:
+            // window.print() with @media print styles
+            // Or a library like jsPDF
+        }
+        
+        // Function to share resume
+        function shareResume() {
+            if (navigator.share) {
+                navigator.share({
+                    title: 'Suraj Kumar Shaw - Hotel Management Resume',
+                    text: 'Check out my hotel management resume',
+                    url: window.location.href
+                });
+            } else {
+                // Fallback for browsers that don't support Web Share API
+                const textArea = document.createElement('textarea');
+                textArea.value = window.location.href;
+                document.body.appendChild(textArea);
+                textArea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textArea);
+                alert('Resume link copied to clipboard!');
+            }
+        }
+        
+        // Optimize for printing
+        window.addEventListener('beforeprint', () => {
+            document.body.classList.add('printing');
+        });
+        
+        window.addEventListener('afterprint', () => {
+            document.body.classList.remove('printing');
+        });
+        
+        // Auto-format phone number for better readability
+        document.addEventListener('DOMContentLoaded', function() {
+            const phoneElement = document.querySelector('.contact-item:nth-child(2) span');
+            if (phoneElement) {
+                const phone = phoneElement.textContent;
+                if (phone.length === 12) {
+                    phoneElement.textContent = phone.replace(/(\+91)(\d{5})(\d{5})/, '$1 $2 $3');
+                }
+            }
+        });
+    </script>
+</body>
+</html>

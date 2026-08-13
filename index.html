@@ -114,7 +114,7 @@
             <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1">Mobile Number</label>
             <div class="relative">
               <span class="absolute left-3.5 top-3.5 text-slate-400 font-medium text-sm">+91</span>
-              <input type="tel" id="authMobile" maxlength="10" value="9876543210" placeholder="9876543210" class="w-full pl-12 pr-4 py-3 bg-slate-50 dark:bg-slate-700/50 border border-slate-200 dark:border-slate-600 rounded-xl focus:ring-2 focus:ring-brand-500 text-slate-900 dark:text-white outline-none font-medium text-sm transition" required />
+              <input type="tel" id="authMobile" maxlength="10" value="8651744312" placeholder="8651744312" class="w-full pl-12 pr-4 py-3 bg-slate-50 dark:bg-slate-700/50 border border-slate-200 dark:border-slate-600 rounded-xl focus:ring-2 focus:ring-brand-500 text-slate-900 dark:text-white outline-none font-medium text-sm transition" required />
             </div>
           </div>
 
@@ -627,7 +627,7 @@
   <!-- INSTANT SYNCHRONOUS LOGIN ENGINE (GUARANTEED NO-WAIT ACCESS) -->
   <script>
     window.enterDashboard = function(mobile) {
-      const mob = mobile || document.getElementById('authMobile')?.value || '9876543210';
+      const mob = mobile || document.getElementById('authMobile')?.value || '8651744312';
       localStorage.setItem('gharPG_mobile', mob);
       localStorage.setItem('gharPG_isLoggedIn', 'true');
 
@@ -671,7 +671,7 @@
       if (otp === '123456' || otp.length === 6) {
         if (window.showToast) window.showToast('Login Verified!');
         const mobInput = document.getElementById('authMobile');
-        window.enterDashboard(mobInput ? mobInput.value : '9876543210');
+        window.enterDashboard(mobInput ? mobInput.value : '8651744312');
       } else {
         if (window.showToast) window.showToast('Invalid OTP', 'error');
       }
@@ -679,7 +679,7 @@
 
     window.quickDemoLogin = function() {
       const mobInput = document.getElementById('authMobile');
-      const mob = mobInput && mobInput.value ? mobInput.value : '9876543210';
+      const mob = mobInput && mobInput.value ? mobInput.value : '8651744312';
       if (window.showToast) window.showToast('Logged in as PG Owner!');
       window.enterDashboard(mob);
     };
@@ -687,7 +687,7 @@
     // Auto-check login state immediately on load
     if (localStorage.getItem('gharPG_isLoggedIn') === 'true') {
       window.addEventListener('DOMContentLoaded', () => {
-        window.enterDashboard(localStorage.getItem('gharPG_mobile') || '9876543210');
+        window.enterDashboard(localStorage.getItem('gharPG_mobile') || '8651744312');
       });
     }
 
@@ -809,7 +809,7 @@
     }
 
     function enterDashboard(mobile) {
-      const mob = mobile || document.getElementById('authMobile')?.value || '9876543210';
+      const mob = mobile || document.getElementById('authMobile')?.value || '8651744312';
       localStorage.setItem('gharPG_mobile', mob);
       localStorage.setItem('gharPG_isLoggedIn', 'true');
 
@@ -851,7 +851,7 @@
     }
 
     function quickDemoLogin() {
-      const mob = document.getElementById('authMobile').value || '9876543210';
+      const mob = document.getElementById('authMobile').value || '8651744312';
       showToast('Logged in as PG Owner!');
       enterDashboard(mob);
     }

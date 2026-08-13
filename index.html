@@ -3,7 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Ghar PG — Ultimate Cloud Management System</title>
+  <title>Ghar PG — Complete Cloud PG Operating System</title>
+  
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
@@ -13,40 +14,34 @@
         extend: {
           colors: {
             brand: {
-              50: '#f0f4ff',
-              100: '#e0e9fe',
-              500: '#3b82f6',
-              600: '#1d4ed8',
-              700: '#1e3c72',
-              800: '#0f2440',
-              900: '#0a172c',
+              50: '#eef2ff',
+              100: '#e0e7ff',
+              500: '#4f46e5',
+              600: '#4338ca',
+              700: '#3730a3',
+              800: '#1e1b4b',
+              900: '#0f172a',
             }
           }
         }
       }
     }
   </script>
+  
   <!-- Lucide Icons -->
   <script src="https://unpkg.com/lucide@latest"></script>
   <!-- Chart.js for Visual Stats -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <!-- Firebase SDKs -->
-  <script src="https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js"></script>
+  
+  <!-- Firebase Compat SDKs for robust functionality -->
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
 
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
     body {
       font-family: 'Plus Jakarta Sans', sans-serif;
-    }
-    .glass {
-      background: rgba(255, 255, 255, 0.7);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-    }
-    .dark .glass {
-      background: rgba(30, 41, 59, 0.7);
     }
     .custom-scrollbar::-webkit-scrollbar {
       width: 6px;
@@ -78,15 +73,15 @@
     }
   </style>
 </head>
-<body class="bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-100 min-h-full transition-colors duration-200">
+<body class="bg-slate-100 dark:bg-slate-900 text-slate-800 dark:text-slate-100 min-h-full transition-colors duration-200">
 
-  <!-- TOP APP BAR / HEADER (MOBILE) -->
+  <!-- TOP APP BAR (MOBILE) -->
   <div id="topNavbar" class="lg:hidden flex items-center justify-between p-4 bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700 sticky top-0 z-30 shadow-sm">
     <div class="flex items-center gap-2">
       <div class="p-2 bg-brand-600 text-white rounded-xl shadow-md">
         <i data-lucide="building-2" class="w-5 h-5"></i>
       </div>
-      <span class="font-bold text-lg text-brand-700 dark:text-brand-100">Ghar<span class="text-brand-500">PG</span></span>
+      <span class="font-extrabold text-lg text-slate-900 dark:text-white">Ghar<span class="text-brand-500">PG</span></span>
     </div>
     <div class="flex items-center gap-2">
       <button id="themeToggleMobile" class="p-2 rounded-xl bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300">
@@ -102,20 +97,20 @@
   <!-- MAIN WRAPPER -->
   <div class="max-w-7xl mx-auto p-3 sm:p-6 lg:p-8 min-h-screen">
     
-    <!-- AUTH MODAL / SCREEN -->
+    <!-- AUTH SCREEN -->
     <div id="authScreen" class="fixed inset-0 z-50 bg-slate-900/80 backdrop-blur-md flex items-center justify-center p-4">
       <div class="bg-white dark:bg-slate-800 w-full max-w-md p-6 sm:p-8 rounded-3xl shadow-2xl border border-slate-100 dark:border-slate-700 transition-all">
         <div class="text-center mb-6">
-          <div class="inline-flex p-3 bg-brand-500/10 dark:bg-brand-500/20 text-brand-600 dark:text-brand-400 rounded-2xl mb-3">
+          <div class="inline-flex p-3 bg-brand-500/10 text-brand-600 dark:text-brand-400 rounded-2xl mb-3">
             <i data-lucide="building-2" class="w-8 h-8"></i>
           </div>
-          <h2 class="text-2xl font-extrabold text-slate-900 dark:text-white">Ghar PG Manager</h2>
-          <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">Smart Cloud PG Management Solution</p>
+          <h2 class="text-2xl font-extrabold text-slate-900 dark:text-white">Ghar PG OS</h2>
+          <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Real-time Cloud PG Management System</p>
         </div>
 
         <form id="authForm" onsubmit="event.preventDefault();" class="space-y-4">
           <div>
-            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1">Mobile Number</label>
+            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1">Manager Mobile Number</label>
             <div class="relative">
               <span class="absolute left-3.5 top-3.5 text-slate-400 font-medium text-sm">+91</span>
               <input type="tel" id="authMobile" maxlength="10" placeholder="9876543210" class="w-full pl-12 pr-4 py-3 bg-slate-50 dark:bg-slate-700/50 border border-slate-200 dark:border-slate-600 rounded-xl focus:ring-2 focus:ring-brand-500 text-slate-900 dark:text-white outline-none font-medium text-sm transition" required />
@@ -123,36 +118,34 @@
           </div>
 
           <div id="otpSection" class="hidden space-y-2">
-            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">Enter OTP</label>
-            <div class="flex gap-2">
-              <input type="text" id="authOtp" maxlength="6" placeholder="6-digit OTP" class="w-full px-4 py-3 bg-slate-50 dark:bg-slate-700/50 border border-slate-200 dark:border-slate-600 rounded-xl focus:ring-2 focus:ring-brand-500 text-center text-slate-900 dark:text-white outline-none font-bold tracking-widest text-lg transition" />
-            </div>
+            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">Enter OTP Code</label>
+            <input type="text" id="authOtp" maxlength="6" placeholder="123456" class="w-full px-4 py-3 bg-slate-50 dark:bg-slate-700/50 border border-slate-200 dark:border-slate-600 rounded-xl focus:ring-2 focus:ring-brand-500 text-center text-slate-900 dark:text-white outline-none font-bold tracking-widest text-lg transition" />
           </div>
 
           <button type="button" id="sendOtpBtn" onclick="handleSendOTP()" class="w-full py-3.5 bg-brand-600 hover:bg-brand-700 text-white font-semibold rounded-xl shadow-lg shadow-brand-500/25 transition active:scale-[0.98]">
-            Send OTP
+            Get Access OTP
           </button>
           <button type="button" id="verifyOtpBtn" onclick="handleVerifyOTP()" class="hidden w-full py-3.5 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded-xl shadow-lg shadow-emerald-500/25 transition active:scale-[0.98]">
-            Verify &amp; Enter Dashboard
+            Verify &amp; Open Dashboard
           </button>
         </form>
-        <p class="text-xs text-center text-slate-400 dark:text-slate-500 mt-4">Protected with Firebase Auth &amp; Cloud Encryption</p>
+        <p class="text-[11px] text-center text-slate-400 dark:text-slate-500 mt-4">Protected with Firebase Auth &amp; Cloud Security</p>
       </div>
     </div>
 
     <!-- DASHBOARD CONTAINER -->
     <div id="appContainer" class="hidden grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
 
-      <!-- SIDEBAR -->
+      <!-- SIDEBAR NAV -->
       <aside id="sidebar" class="fixed inset-y-0 left-0 transform -translate-x-full lg:translate-x-0 lg:static lg:block lg:col-span-3 z-40 w-72 lg:w-full bg-white dark:bg-slate-800 border-r lg:border border-slate-200 dark:border-slate-700 lg:rounded-3xl p-5 shadow-xl lg:shadow-sm transition-transform duration-300">
-        <div class="flex items-center justify-between pb-6 mb-6 border-b border-slate-100 dark:border-slate-700">
+        <div class="flex items-center justify-between pb-5 mb-5 border-b border-slate-100 dark:border-slate-700">
           <div class="flex items-center gap-3">
             <div class="p-2.5 bg-brand-600 text-white rounded-2xl shadow-md">
               <i data-lucide="building-2" class="w-6 h-6"></i>
             </div>
             <div>
-              <h1 class="font-bold text-xl text-slate-900 dark:text-white leading-tight">Ghar<span class="text-brand-500">PG</span></h1>
-              <p class="text-xs text-slate-400">Cloud Edition</p>
+              <h1 class="font-extrabold text-xl text-slate-900 dark:text-white leading-tight">Ghar<span class="text-brand-500">PG</span></h1>
+              <p class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">Cloud Edition</p>
             </div>
           </div>
           <button id="closeSidebarMobile" class="lg:hidden text-slate-400 hover:text-slate-600">
@@ -160,148 +153,195 @@
           </button>
         </div>
 
-        <nav class="space-y-1.5" id="navigationTabs">
-          <button onclick="switchTab('dashboard')" data-tab="dashboard" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-2xl font-semibold text-sm transition text-white bg-brand-600 shadow-md shadow-brand-500/20">
-            <i data-lucide="layout-dashboard" class="w-5 h-5"></i> Dashboard
+        <nav class="space-y-1" id="navigationTabs">
+          <button onclick="switchTab('dashboard')" data-tab="dashboard" class="nav-btn w-full flex items-center gap-3 px-3.5 py-2.5 rounded-2xl font-semibold text-xs transition text-white bg-brand-600 shadow-md shadow-brand-500/20">
+            <i data-lucide="layout-dashboard" class="w-4 h-4"></i> Dashboard Overview
           </button>
-          <button onclick="switchTab('slips')" data-tab="slips" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-2xl font-semibold text-sm transition text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700/50">
-            <i data-lucide="receipt" class="w-5 h-5"></i> Rent Slips
+          <button onclick="switchTab('rooms')" data-tab="rooms" class="nav-btn w-full flex items-center gap-3 px-3.5 py-2.5 rounded-2xl font-semibold text-xs transition text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700/50">
+            <i data-lucide="bed-double" class="w-4 h-4"></i> Rooms &amp; Beds Matrix
           </button>
-          <button onclick="switchTab('guests')" data-tab="guests" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-2xl font-semibold text-sm transition text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700/50">
-            <i data-lucide="users" class="w-5 h-5"></i> Tenants &amp; Rooms
+          <button onclick="switchTab('guests')" data-tab="guests" class="nav-btn w-full flex items-center gap-3 px-3.5 py-2.5 rounded-2xl font-semibold text-xs transition text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700/50">
+            <i data-lucide="users" class="w-4 h-4"></i> Tenants &amp; KYC
           </button>
-          <button onclick="switchTab('maintenance')" data-tab="maintenance" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-2xl font-semibold text-sm transition text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700/50">
-            <i data-lucide="wrench" class="w-5 h-5"></i> Maintenance &amp; Complaints
+          <button onclick="switchTab('slips')" data-tab="slips" class="nav-btn w-full flex items-center gap-3 px-3.5 py-2.5 rounded-2xl font-semibold text-xs transition text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700/50">
+            <i data-lucide="receipt" class="w-4 h-4"></i> Rent Slips &amp; UPI QR
           </button>
-          <button onclick="switchTab('expenses')" data-tab="expenses" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-2xl font-semibold text-sm transition text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700/50">
-            <i data-lucide="wallet" class="w-5 h-5"></i> Expense Log
+          <button onclick="switchTab('mess')" data-tab="mess" class="nav-btn w-full flex items-center gap-3 px-3.5 py-2.5 rounded-2xl font-semibold text-xs transition text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700/50">
+            <i data-lucide="utensils" class="w-4 h-4"></i> Mess &amp; Food Planner
           </button>
-          <button onclick="switchTab('history')" data-tab="history" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-2xl font-semibold text-sm transition text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700/50">
-            <i data-lucide="history" class="w-5 h-5"></i> Transaction History
+          <button onclick="switchTab('notices')" data-tab="notices" class="nav-btn w-full flex items-center gap-3 px-3.5 py-2.5 rounded-2xl font-semibold text-xs transition text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700/50">
+            <i data-lucide="megaphone" class="w-4 h-4"></i> Digital Notice Board
           </button>
-          <button onclick="switchTab('settings')" data-tab="settings" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-2xl font-semibold text-sm transition text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700/50">
-            <i data-lucide="settings" class="w-5 h-5"></i> PG Settings
+          <button onclick="switchTab('maintenance')" data-tab="maintenance" class="nav-btn w-full flex items-center gap-3 px-3.5 py-2.5 rounded-2xl font-semibold text-xs transition text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700/50">
+            <i data-lucide="wrench" class="w-4 h-4"></i> Complaints &amp; Repair
+          </button>
+          <button onclick="switchTab('expenses')" data-tab="expenses" class="nav-btn w-full flex items-center gap-3 px-3.5 py-2.5 rounded-2xl font-semibold text-xs transition text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700/50">
+            <i data-lucide="wallet" class="w-4 h-4"></i> Expense Tracker
+          </button>
+          <button onclick="switchTab('history')" data-tab="history" class="nav-btn w-full flex items-center gap-3 px-3.5 py-2.5 rounded-2xl font-semibold text-xs transition text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700/50">
+            <i data-lucide="history" class="w-4 h-4"></i> Transaction Logs
+          </button>
+          <button onclick="switchTab('settings')" data-tab="settings" class="nav-btn w-full flex items-center gap-3 px-3.5 py-2.5 rounded-2xl font-semibold text-xs transition text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700/50">
+            <i data-lucide="settings" class="w-4 h-4"></i> PG Configuration
           </button>
         </nav>
 
-        <!-- USER CARD & THEME TOGGLE -->
-        <div class="mt-8 pt-6 border-t border-slate-100 dark:border-slate-700 space-y-3">
+        <!-- USER CARD -->
+        <div class="mt-6 pt-5 border-t border-slate-100 dark:border-slate-700 space-y-3">
           <div class="p-3 bg-slate-50 dark:bg-slate-700/50 rounded-2xl flex items-center gap-3">
-            <div class="w-10 h-10 rounded-full bg-brand-500 text-white flex items-center justify-center font-bold text-sm" id="userAvatar">A</div>
+            <div class="w-9 h-9 rounded-full bg-brand-600 text-white flex items-center justify-center font-bold text-xs" id="userAvatar">M</div>
             <div class="overflow-hidden flex-1">
-              <h4 class="font-bold text-sm truncate" id="userDisplayName">Manager</h4>
-              <p class="text-xs text-slate-400 truncate" id="userPhoneDisplay">+91 --</p>
+              <h4 class="font-bold text-xs text-slate-900 dark:text-white truncate" id="userDisplayName">PG Owner</h4>
+              <p class="text-[10px] text-slate-400 truncate" id="userPhoneDisplay">+91 ------</p>
             </div>
             <button onclick="handleLogout()" class="p-2 text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-950/30 rounded-xl transition" title="Logout">
               <i data-lucide="log-out" class="w-4 h-4"></i>
             </button>
           </div>
 
-          <button id="themeToggleDesktop" class="w-full py-2.5 px-4 bg-slate-100 dark:bg-slate-700/60 rounded-xl font-medium text-xs text-slate-600 dark:text-slate-300 flex items-center justify-between">
-            <span class="flex items-center gap-2"><i data-lucide="moon" class="w-4 h-4"></i> Theme</span>
-            <span class="font-semibold text-brand-500 dark:text-brand-400" id="themeModeText">Light Mode</span>
+          <button id="themeToggleDesktop" class="w-full py-2 px-3 bg-slate-100 dark:bg-slate-700/60 rounded-xl font-medium text-xs text-slate-600 dark:text-slate-300 flex items-center justify-between">
+            <span class="flex items-center gap-2"><i data-lucide="moon" class="w-3.5 h-3.5"></i> Mode</span>
+            <span class="font-semibold text-brand-600 dark:text-brand-400" id="themeModeText">Light Mode</span>
           </button>
         </div>
       </aside>
 
-      <!-- MAIN CONTENT CONTENT PANEL -->
+      <!-- MAIN PANEL CONTENT -->
       <main class="lg:col-span-9 space-y-6">
 
-        <!-- TAB 1: DASHBOARD -->
+        <!-- TAB 1: DASHBOARD OVERVIEW -->
         <section id="tab-dashboard" class="tab-content space-y-6">
-          <!-- WELCOME & QUICK SYNC -->
-          <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-gradient-to-r from-brand-700 to-brand-600 p-6 rounded-3xl text-white shadow-xl shadow-brand-600/10">
+          <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-gradient-to-r from-brand-800 via-brand-700 to-brand-600 p-6 rounded-3xl text-white shadow-xl shadow-brand-600/10">
             <div>
-              <span class="px-3 py-1 bg-white/20 rounded-full text-xs font-semibold uppercase tracking-wider">Live Cloud Dashboard</span>
-              <h2 class="text-2xl font-extrabold mt-2" id="welcomeMsg">Welcome, Manager!</h2>
-              <p class="text-sm text-brand-100 mt-1">Here is today's overview for your PG management.</p>
+              <span class="px-3 py-1 bg-white/20 rounded-full text-[10px] font-bold uppercase tracking-wider">PG Operations Live</span>
+              <h2 class="text-2xl font-extrabold mt-2" id="welcomeMsg">Namaste, Owner!</h2>
+              <p class="text-xs text-brand-100 mt-1">Real-time status of your property revenue, guests, and expenses.</p>
             </div>
-            <div class="flex gap-2">
-              <button onclick="refreshData()" class="px-4 py-2 bg-white/10 hover:bg-white/20 border border-white/20 rounded-2xl text-xs font-semibold backdrop-blur transition flex items-center gap-2">
-                <i data-lucide="refresh-cw" class="w-4 h-4"></i> Sync Data
-              </button>
+            <button onclick="refreshData()" class="px-4 py-2.5 bg-white/10 hover:bg-white/20 border border-white/20 rounded-2xl text-xs font-semibold backdrop-blur transition flex items-center gap-2">
+              <i data-lucide="refresh-cw" class="w-4 h-4"></i> Cloud Sync
+            </button>
+          </div>
+
+          <!-- METRICS METERS -->
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+            <div class="bg-white dark:bg-slate-800 p-4 rounded-3xl border border-slate-100 dark:border-slate-700 shadow-sm">
+              <div class="p-2 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 w-fit rounded-xl mb-2">
+                <i data-lucide="indian-rupee" class="w-4 h-4"></i>
+              </div>
+              <p class="text-[11px] font-medium text-slate-400">Monthly Revenue</p>
+              <h3 class="text-xl font-extrabold text-slate-900 dark:text-white mt-1" id="dashCollected">₹0</h3>
+            </div>
+
+            <div class="bg-white dark:bg-slate-800 p-4 rounded-3xl border border-slate-100 dark:border-slate-700 shadow-sm">
+              <div class="p-2 bg-amber-500/10 text-amber-600 dark:text-amber-400 w-fit rounded-xl mb-2">
+                <i data-lucide="clock" class="w-4 h-4"></i>
+              </div>
+              <p class="text-[11px] font-medium text-slate-400">Total Arrears / Due</p>
+              <h3 class="text-xl font-extrabold text-amber-600 dark:text-amber-400 mt-1" id="dashDues">₹0</h3>
+            </div>
+
+            <div class="bg-white dark:bg-slate-800 p-4 rounded-3xl border border-slate-100 dark:border-slate-700 shadow-sm">
+              <div class="p-2 bg-blue-500/10 text-blue-600 dark:text-blue-400 w-fit rounded-xl mb-2">
+                <i data-lucide="users" class="w-4 h-4"></i>
+              </div>
+              <p class="text-[11px] font-medium text-slate-400">Active Tenants</p>
+              <h3 class="text-xl font-extrabold text-slate-900 dark:text-white mt-1" id="dashTenants">0</h3>
+            </div>
+
+            <div class="bg-white dark:bg-slate-800 p-4 rounded-3xl border border-slate-100 dark:border-slate-700 shadow-sm">
+              <div class="p-2 bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 w-fit rounded-xl mb-2">
+                <i data-lucide="trending-up" class="w-4 h-4"></i>
+              </div>
+              <p class="text-[11px] font-medium text-slate-400">Net Profit</p>
+              <h3 class="text-xl font-extrabold text-emerald-500 mt-1" id="dashProfit">₹0</h3>
             </div>
           </div>
 
-          <!-- METRICS GRID -->
-          <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
-            <div class="bg-white dark:bg-slate-800 p-4 sm:p-5 rounded-3xl border border-slate-100 dark:border-slate-700 shadow-sm">
-              <div class="p-2.5 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 w-fit rounded-2xl mb-3">
-                <i data-lucide="indian-rupee" class="w-5 h-5"></i>
-              </div>
-              <p class="text-xs font-medium text-slate-400">Total Rent Collected</p>
-              <h3 class="text-xl sm:text-2xl font-extrabold text-slate-900 dark:text-white mt-1" id="dashCollected">₹0</h3>
-            </div>
-
-            <div class="bg-white dark:bg-slate-800 p-4 sm:p-5 rounded-3xl border border-slate-100 dark:border-slate-700 shadow-sm">
-              <div class="p-2.5 bg-amber-500/10 text-amber-600 dark:text-amber-400 w-fit rounded-2xl mb-3">
-                <i data-lucide="clock" class="w-5 h-5"></i>
-              </div>
-              <p class="text-xs font-medium text-slate-400">Pending Dues</p>
-              <h3 class="text-xl sm:text-2xl font-extrabold text-amber-600 dark:text-amber-400 mt-1" id="dashDues">₹0</h3>
-            </div>
-
-            <div class="bg-white dark:bg-slate-800 p-4 sm:p-5 rounded-3xl border border-slate-100 dark:border-slate-700 shadow-sm">
-              <div class="p-2.5 bg-blue-500/10 text-blue-600 dark:text-blue-400 w-fit rounded-2xl mb-3">
-                <i data-lucide="users" class="w-5 h-5"></i>
-              </div>
-              <p class="text-xs font-medium text-slate-400">Total Tenants</p>
-              <h3 class="text-xl sm:text-2xl font-extrabold text-slate-900 dark:text-white mt-1" id="dashTenants">0</h3>
-            </div>
-
-            <div class="bg-white dark:bg-slate-800 p-4 sm:p-5 rounded-3xl border border-slate-100 dark:border-slate-700 shadow-sm">
-              <div class="p-2.5 bg-rose-500/10 text-rose-600 dark:text-rose-400 w-fit rounded-2xl mb-3">
-                <i data-lucide="alert-triangle" class="w-5 h-5"></i>
-              </div>
-              <p class="text-xs font-medium text-slate-400">Active Issues</p>
-              <h3 class="text-xl sm:text-2xl font-extrabold text-slate-900 dark:text-white mt-1" id="dashIssues">0</h3>
-            </div>
-          </div>
-
-          <!-- QUICK ACTIONS & CHART -->
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div class="md:col-span-2 bg-white dark:bg-slate-800 p-6 rounded-3xl border border-slate-100 dark:border-slate-700 shadow-sm">
-              <h3 class="font-bold text-lg text-slate-900 dark:text-white mb-4">Revenue &amp; Expense Analytics</h3>
+          <!-- ANALYTICS CHARTS -->
+          <div class="grid grid-cols-1 md:grid-cols-12 gap-6">
+            <div class="md:col-span-8 bg-white dark:bg-slate-800 p-6 rounded-3xl border border-slate-100 dark:border-slate-700 shadow-sm">
+              <h3 class="font-bold text-sm text-slate-900 dark:text-white mb-4">Financial Overview (Revenue vs Expenses)</h3>
               <div class="h-64">
                 <canvas id="revenueChart"></canvas>
               </div>
             </div>
 
-            <div class="bg-white dark:bg-slate-800 p-6 rounded-3xl border border-slate-100 dark:border-slate-700 shadow-sm space-y-4">
-              <h3 class="font-bold text-lg text-slate-900 dark:text-white">Quick Management</h3>
-              <div class="grid grid-cols-1 gap-2.5">
-                <button onclick="switchTab('slips')" class="p-3.5 bg-slate-50 dark:bg-slate-700/50 hover:bg-brand-50 dark:hover:bg-brand-950/30 rounded-2xl border border-slate-200 dark:border-slate-700 font-semibold text-xs text-left text-slate-700 dark:text-slate-200 flex items-center justify-between transition group">
-                  <span class="flex items-center gap-2.5"><i data-lucide="plus-circle" class="w-4 h-4 text-brand-500"></i> Generate Rent Slip</span>
-                  <i data-lucide="chevron-right" class="w-4 h-4 text-slate-400 group-hover:translate-x-1 transition"></i>
-                </button>
-                <button onclick="switchTab('guests')" class="p-3.5 bg-slate-50 dark:bg-slate-700/50 hover:bg-brand-50 dark:hover:bg-brand-950/30 rounded-2xl border border-slate-200 dark:border-slate-700 font-semibold text-xs text-left text-slate-700 dark:text-slate-200 flex items-center justify-between transition group">
-                  <span class="flex items-center gap-2.5"><i data-lucide="user-plus" class="w-4 h-4 text-emerald-500"></i> Register New Tenant</span>
-                  <i data-lucide="chevron-right" class="w-4 h-4 text-slate-400 group-hover:translate-x-1 transition"></i>
-                </button>
-                <button onclick="switchTab('maintenance')" class="p-3.5 bg-slate-50 dark:bg-slate-700/50 hover:bg-brand-50 dark:hover:bg-brand-950/30 rounded-2xl border border-slate-200 dark:border-slate-700 font-semibold text-xs text-left text-slate-700 dark:text-slate-200 flex items-center justify-between transition group">
-                  <span class="flex items-center gap-2.5"><i data-lucide="wrench" class="w-4 h-4 text-amber-500"></i> Log Maintenance</span>
-                  <i data-lucide="chevron-right" class="w-4 h-4 text-slate-400 group-hover:translate-x-1 transition"></i>
-                </button>
-                <button onclick="switchTab('expenses')" class="p-3.5 bg-slate-50 dark:bg-slate-700/50 hover:bg-brand-50 dark:hover:bg-brand-950/30 rounded-2xl border border-slate-200 dark:border-slate-700 font-semibold text-xs text-left text-slate-700 dark:text-slate-200 flex items-center justify-between transition group">
-                  <span class="flex items-center gap-2.5"><i data-lucide="minus-circle" class="w-4 h-4 text-rose-500"></i> Record PG Expense</span>
-                  <i data-lucide="chevron-right" class="w-4 h-4 text-slate-400 group-hover:translate-x-1 transition"></i>
-                </button>
+            <div class="md:col-span-4 bg-white dark:bg-slate-800 p-6 rounded-3xl border border-slate-100 dark:border-slate-700 shadow-sm flex flex-col justify-between">
+              <div>
+                <h3 class="font-bold text-sm text-slate-900 dark:text-white mb-2">Expense Category Breakdown</h3>
+                <div class="h-44 flex justify-center">
+                  <canvas id="expenseCategoryChart"></canvas>
+                </div>
+              </div>
+              <div class="pt-4 border-t border-slate-100 dark:border-slate-700 text-xs space-y-1.5 text-slate-500">
+                <div class="flex justify-between"><span>Total Expenses Logged:</span><span class="font-bold text-rose-500" id="dashExpenseTotal">₹0</span></div>
+                <div class="flex justify-between"><span>Active Issues:</span><span class="font-bold text-amber-500" id="dashIssues">0</span></div>
               </div>
             </div>
           </div>
         </section>
 
-        <!-- TAB 2: RENT SLIPS -->
+        <!-- TAB 2: ROOMS & BEDS VISUAL MATRIX -->
+        <section id="tab-rooms" class="tab-content hidden space-y-6">
+          <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+            <div>
+              <h2 class="text-xl font-bold text-slate-900 dark:text-white">Rooms &amp; Beds Allocation Grid</h2>
+              <p class="text-xs text-slate-400">Live visual representation of occupied vs available beds in your PG.</p>
+            </div>
+            <div class="flex items-center gap-2">
+              <span class="inline-flex items-center gap-1 text-xs font-semibold text-emerald-600 bg-emerald-50 dark:bg-emerald-950/40 px-3 py-1 rounded-full"><span class="w-2 h-2 rounded-full bg-emerald-500"></span> Vacant</span>
+              <span class="inline-flex items-center gap-1 text-xs font-semibold text-indigo-600 bg-indigo-50 dark:bg-indigo-950/40 px-3 py-1 rounded-full"><span class="w-2 h-2 rounded-full bg-indigo-500"></span> Occupied</span>
+            </div>
+          </div>
+
+          <div id="roomGridContainer" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+            <!-- Dynamic Room Cards generated via JS -->
+          </div>
+        </section>
+
+        <!-- TAB 3: TENANTS & KYC -->
+        <section id="tab-guests" class="tab-content hidden space-y-6">
+          <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+            <div>
+              <h2 class="text-xl font-bold text-slate-900 dark:text-white">Tenants Directory &amp; KYC Records</h2>
+              <p class="text-xs text-slate-400">Complete resident directory with Aadhaar &amp; emergency contact info.</p>
+            </div>
+            <button onclick="openTenantModal()" class="px-4 py-2.5 bg-brand-600 hover:bg-brand-700 text-white font-semibold text-xs rounded-2xl shadow-md transition flex items-center gap-2">
+              <i data-lucide="user-plus" class="w-4 h-4"></i> Add Tenant Record
+            </button>
+          </div>
+
+          <div class="bg-white dark:bg-slate-800 rounded-3xl border border-slate-100 dark:border-slate-700 shadow-sm overflow-hidden">
+            <div class="overflow-x-auto">
+              <table class="w-full text-left border-collapse text-xs sm:text-sm">
+                <thead>
+                  <tr class="bg-slate-50 dark:bg-slate-700/50 text-slate-400 font-semibold uppercase tracking-wider text-[10px] border-b border-slate-100 dark:border-slate-700">
+                    <th class="p-4">Tenant Name</th>
+                    <th class="p-4">Room / Share</th>
+                    <th class="p-4">Rent &amp; Deposit</th>
+                    <th class="p-4">Contact &amp; Aadhaar</th>
+                    <th class="p-4">Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="tenantTableBody" class="divide-y divide-slate-100 dark:divide-slate-700/50">
+                  <!-- Dynamic content -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- TAB 4: RENT SLIPS & UPI QR CODE -->
         <section id="tab-slips" class="tab-content hidden space-y-6">
           <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
             <!-- SLIP FORM -->
             <div class="lg:col-span-6 bg-white dark:bg-slate-800 p-6 rounded-3xl border border-slate-100 dark:border-slate-700 shadow-sm space-y-4">
               <h3 class="font-bold text-lg text-slate-900 dark:text-white border-b border-slate-100 dark:border-slate-700 pb-3">
-                📄 Generate Rent Receipt
+                📄 Generate Official Receipt
               </h3>
               <form id="slipForm" onsubmit="event.preventDefault();" class="space-y-3">
                 <div>
-                  <label class="block text-xs font-semibold text-slate-500 mb-1">Select Tenant</label>
+                  <label class="block text-xs font-semibold text-slate-500 mb-1">Select Resident</label>
                   <select id="slipTenantSelect" onchange="autoFillTenantData()" class="w-full px-3.5 py-2.5 bg-slate-50 dark:bg-slate-700/50 border border-slate-200 dark:border-slate-600 rounded-xl text-sm outline-none focus:ring-2 focus:ring-brand-500">
                     <option value="">-- Choose Tenant --</option>
                   </select>
@@ -309,7 +349,7 @@
                 <div class="grid grid-cols-2 gap-3">
                   <div>
                     <label class="block text-xs font-semibold text-slate-500 mb-1">Room No.</label>
-                    <input type="text" id="slipRoom" placeholder="102" class="w-full px-3.5 py-2.5 bg-slate-50 dark:bg-slate-700/50 border border-slate-200 dark:border-slate-600 rounded-xl text-sm outline-none" required />
+                    <input type="text" id="slipRoom" placeholder="101" class="w-full px-3.5 py-2.5 bg-slate-50 dark:bg-slate-700/50 border border-slate-200 dark:border-slate-600 rounded-xl text-sm outline-none" required />
                   </div>
                   <div>
                     <label class="block text-xs font-semibold text-slate-500 mb-1">Sharing Type</label>
@@ -322,11 +362,11 @@
                 </div>
                 <div class="grid grid-cols-2 gap-3">
                   <div>
-                    <label class="block text-xs font-semibold text-slate-500 mb-1">Month</label>
+                    <label class="block text-xs font-semibold text-slate-500 mb-1">Month Period</label>
                     <input type="month" id="slipMonth" class="w-full px-3.5 py-2.5 bg-slate-50 dark:bg-slate-700/50 border border-slate-200 dark:border-slate-600 rounded-xl text-sm outline-none" />
                   </div>
                   <div>
-                    <label class="block text-xs font-semibold text-slate-500 mb-1">Payment Mode</label>
+                    <label class="block text-xs font-semibold text-slate-500 mb-1">Payment Method</label>
                     <select id="slipMode" class="w-full px-3.5 py-2.5 bg-slate-50 dark:bg-slate-700/50 border border-slate-200 dark:border-slate-600 rounded-xl text-sm outline-none">
                       <option value="UPI">UPI / GPay / PhonePe</option>
                       <option value="Cash">Cash</option>
@@ -337,105 +377,135 @@
                 <div class="grid grid-cols-2 gap-3">
                   <div>
                     <label class="block text-xs font-semibold text-slate-500 mb-1">Rent Amount (₹)</label>
-                    <input type="number" id="slipRent" placeholder="5000" class="w-full px-3.5 py-2.5 bg-slate-50 dark:bg-slate-700/50 border border-slate-200 dark:border-slate-600 rounded-xl text-sm outline-none" required />
+                    <input type="number" id="slipRent" oninput="updateReceiptPreview()" placeholder="5000" class="w-full px-3.5 py-2.5 bg-slate-50 dark:bg-slate-700/50 border border-slate-200 dark:border-slate-600 rounded-xl text-sm outline-none" required />
                   </div>
                   <div>
-                    <label class="block text-xs font-semibold text-slate-500 mb-1">Previous Due (₹)</label>
-                    <input type="number" id="slipDue" value="0" class="w-full px-3.5 py-2.5 bg-slate-50 dark:bg-slate-700/50 border border-slate-200 dark:border-slate-600 rounded-xl text-sm outline-none" />
+                    <label class="block text-xs font-semibold text-slate-500 mb-1">Previous Dues (₹)</label>
+                    <input type="number" id="slipDue" oninput="updateReceiptPreview()" value="0" class="w-full px-3.5 py-2.5 bg-slate-50 dark:bg-slate-700/50 border border-slate-200 dark:border-slate-600 rounded-xl text-sm outline-none" />
                   </div>
                 </div>
                 <button type="button" onclick="handleGenerateSlip()" class="w-full py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-sm rounded-xl shadow-md transition">
-                  Generate Slip &amp; Save
+                  Save Receipt &amp; Log Payment
                 </button>
               </form>
             </div>
 
-            <!-- SLIP PREVIEW -->
+            <!-- SLIP PREVIEW & REAL DYNAMIC UPI QR -->
             <div class="lg:col-span-6 bg-white dark:bg-slate-800 p-6 rounded-3xl border border-slate-100 dark:border-slate-700 shadow-sm space-y-4">
               <div class="flex items-center justify-between border-b border-slate-100 dark:border-slate-700 pb-3">
-                <h3 class="font-bold text-lg text-slate-900 dark:text-white">Receipt Preview</h3>
+                <h3 class="font-bold text-lg text-slate-900 dark:text-white">Receipt &amp; UPI QR</h3>
                 <div class="flex gap-2">
                   <button onclick="shareWhatsApp()" class="p-2 bg-emerald-500/10 text-emerald-600 hover:bg-emerald-500/20 rounded-xl text-xs font-semibold transition flex items-center gap-1">
-                    <i data-lucide="send" class="w-4 h-4"></i> WhatsApp
+                    <i data-lucide="send" class="w-4 h-4"></i> Send WhatsApp
                   </button>
                   <button onclick="window.print()" class="p-2 bg-brand-500/10 text-brand-600 hover:bg-brand-500/20 rounded-xl text-xs font-semibold transition flex items-center gap-1">
-                    <i data-lucide="printer" class="w-4 h-4"></i> Print / PDF
+                    <i data-lucide="printer" class="w-4 h-4"></i> Print Receipt
                   </button>
                 </div>
               </div>
 
               <div id="printableSlip" class="p-5 bg-slate-50 dark:bg-slate-900 rounded-2xl border-2 border-dashed border-brand-300 dark:border-slate-700 space-y-3 text-sm">
-                <div class="text-center pb-3 border-b border-slate-200 dark:border-slate-800">
+                <div class="text-center pb-2 border-b border-slate-200 dark:border-slate-800">
                   <h2 class="font-extrabold text-lg text-brand-700 dark:text-brand-400" id="prevPgName">Ghar PG Accommodation</h2>
-                  <p class="text-xs text-slate-400" id="prevPgAddress">Official Payment Receipt</p>
+                  <p class="text-xs text-slate-400" id="prevPgAddress">Official Payment Voucher</p>
                 </div>
+
                 <div class="space-y-1.5 text-xs">
                   <div class="flex justify-between"><span class="text-slate-400">Receipt No:</span><span class="font-bold" id="prevNo">#---</span></div>
                   <div class="flex justify-between"><span class="text-slate-400">Date:</span><span class="font-semibold" id="prevDate">--/--/----</span></div>
-                  <div class="flex justify-between"><span class="text-slate-400">Tenant Name:</span><span class="font-semibold" id="prevTenant">--</span></div>
-                  <div class="flex justify-between"><span class="text-slate-400">Room &amp; Type:</span><span class="font-semibold" id="prevRoom">--</span></div>
+                  <div class="flex justify-between"><span class="text-slate-400">Resident Name:</span><span class="font-semibold" id="prevTenant">--</span></div>
+                  <div class="flex justify-between"><span class="text-slate-400">Room Allocation:</span><span class="font-semibold" id="prevRoom">--</span></div>
                   <div class="flex justify-between"><span class="text-slate-400">Rent Period:</span><span class="font-semibold" id="prevMonth">--</span></div>
-                  <div class="flex justify-between"><span class="text-slate-400">Payment Mode:</span><span class="font-semibold text-emerald-600" id="prevMode">--</span></div>
+                  <div class="flex justify-between"><span class="text-slate-400">Mode:</span><span class="font-semibold text-emerald-600" id="prevMode">--</span></div>
                   <hr class="border-slate-200 dark:border-slate-800 my-2" />
                   <div class="flex justify-between"><span class="text-slate-400">Monthly Rent:</span><span class="font-semibold" id="prevRent">₹0</span></div>
                   <div class="flex justify-between"><span class="text-slate-400">Arrears / Due:</span><span class="font-semibold" id="prevDue">₹0</span></div>
                   <div class="flex justify-between text-base font-bold text-slate-900 dark:text-white pt-2 border-t border-slate-200 dark:border-slate-800">
-                    <span>Total Amount Paid:</span>
+                    <span>Total Amount Payable:</span>
                     <span class="text-brand-600 dark:text-brand-400" id="prevTotal">₹0</span>
                   </div>
                 </div>
-                <div class="pt-3 text-center text-[10px] text-slate-400 border-t border-slate-200 dark:border-slate-800">
-                  Thank you for staying with us! System Generated Receipt.
+
+                <!-- DYNAMIC REAL UPI QR CODE -->
+                <div class="pt-3 border-t border-slate-200 dark:border-slate-800 text-center flex flex-col items-center">
+                  <p class="text-[11px] font-semibold text-slate-500 mb-2">Scan &amp; Pay via GPay / PhonePe / Paytm</p>
+                  <img id="upiQrCodeImg" src="https://api.qrserver.com/v1/create-qr-code/?size=140x140&data=upi%3A%2F%2Fpay%3Fpa%3Dgharpg%40upi%26pn%3DGharPG%26am%3D0" alt="UPI QR Code" class="w-32 h-32 rounded-xl border p-1 bg-white shadow-sm" />
+                  <p class="text-[10px] text-slate-400 mt-1" id="upiIdDisplay">UPI ID: gharpg@upi</p>
                 </div>
               </div>
             </div>
           </div>
         </section>
 
-        <!-- TAB 3: TENANTS & ROOMS -->
-        <section id="tab-guests" class="tab-content hidden space-y-6">
-          <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+        <!-- TAB 5: MESS & FOOD PLANNER -->
+        <section id="tab-mess" class="tab-content hidden space-y-6">
+          <div class="flex justify-between items-center">
             <div>
-              <h2 class="text-xl font-bold text-slate-900 dark:text-white">Tenants Directory</h2>
-              <p class="text-xs text-slate-400">Manage room allocations and guest records.</p>
+              <h2 class="text-xl font-bold text-slate-900 dark:text-white">Mess &amp; Weekly Meals Menu</h2>
+              <p class="text-xs text-slate-400">Manage daily breakfast, lunch, and dinner schedules for PG residents.</p>
             </div>
-            <button onclick="openTenantModal()" class="px-4 py-2.5 bg-brand-600 hover:bg-brand-700 text-white font-semibold text-xs rounded-2xl shadow-md transition flex items-center gap-2">
-              <i data-lucide="user-plus" class="w-4 h-4"></i> Add New Tenant
+            <button onclick="saveMessMenu()" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-xs rounded-2xl shadow-md transition">
+              Save Menu Plan
             </button>
           </div>
 
-          <!-- TENANTS TABLE -->
-          <div class="bg-white dark:bg-slate-800 rounded-3xl border border-slate-100 dark:border-slate-700 shadow-sm overflow-hidden">
-            <div class="overflow-x-auto">
-              <table class="w-full text-left border-collapse text-xs sm:text-sm">
-                <thead>
-                  <tr class="bg-slate-50 dark:bg-slate-700/50 text-slate-400 font-semibold uppercase tracking-wider text-[10px] border-b border-slate-100 dark:border-slate-700">
-                    <th class="p-4">Tenant Info</th>
-                    <th class="p-4">Room / Share</th>
-                    <th class="p-4">Rent</th>
-                    <th class="p-4">Mobile</th>
-                    <th class="p-4">Actions</th>
-                  </tr>
-                </thead>
-                <tbody id="tenantTableBody" class="divide-y divide-slate-100 dark:divide-slate-700/50">
-                  <!-- Dynamic content -->
-                </tbody>
-              </table>
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" id="messPlannerGrid">
+            <!-- Dynamic Mess Menu Days generated in JS -->
+          </div>
+        </section>
+
+        <!-- TAB 6: DIGITAL NOTICE BOARD -->
+        <section id="tab-notices" class="tab-content hidden space-y-6">
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+            <div class="lg:col-span-5 bg-white dark:bg-slate-800 p-6 rounded-3xl border border-slate-100 dark:border-slate-700 shadow-sm space-y-4">
+              <h3 class="font-bold text-lg text-slate-900 dark:text-white border-b border-slate-100 dark:border-slate-700 pb-3">
+                📢 Broadcast New Announcement
+              </h3>
+              <form id="noticeForm" onsubmit="event.preventDefault();" class="space-y-3">
+                <div>
+                  <label class="block text-xs font-semibold text-slate-500 mb-1">Notice Heading</label>
+                  <input type="text" id="noticeTitle" placeholder="e.g. Tanker Water Maintenance Today" class="w-full px-3.5 py-2.5 bg-slate-50 dark:bg-slate-700/50 border border-slate-200 dark:border-slate-600 rounded-xl text-sm outline-none" required />
+                </div>
+                <div>
+                  <label class="block text-xs font-semibold text-slate-500 mb-1">Priority Badge</label>
+                  <select id="noticePriority" class="w-full px-3.5 py-2.5 bg-slate-50 dark:bg-slate-700/50 border border-slate-200 dark:border-slate-600 rounded-xl text-sm outline-none">
+                    <option value="Normal">Normal Announcement</option>
+                    <option value="Important" selected>Important Notice</option>
+                    <option value="Urgent">Urgent Emergency</option>
+                  </select>
+                </div>
+                <div>
+                  <label class="block text-xs font-semibold text-slate-500 mb-1">Message Content</label>
+                  <textarea id="noticeContent" rows="4" placeholder="Write notice details for residents..." class="w-full px-3.5 py-2.5 bg-slate-50 dark:bg-slate-700/50 border border-slate-200 dark:border-slate-600 rounded-xl text-sm outline-none resize-none"></textarea>
+                </div>
+                <button type="button" onclick="handleSaveNotice()" class="w-full py-3 bg-brand-600 hover:bg-brand-700 text-white font-semibold text-sm rounded-xl shadow-md transition">
+                  Post Announcement
+                </button>
+              </form>
+            </div>
+
+            <div class="lg:col-span-7 bg-white dark:bg-slate-800 p-6 rounded-3xl border border-slate-100 dark:border-slate-700 shadow-sm space-y-4">
+              <h3 class="font-bold text-lg text-slate-900 dark:text-white border-b border-slate-100 dark:border-slate-700 pb-3">
+                Active Digital Notices
+              </h3>
+              <div id="noticeListContainer" class="space-y-3 max-h-[500px] overflow-y-auto pr-1 custom-scrollbar">
+                <!-- Dynamic notices -->
+              </div>
             </div>
           </div>
         </section>
 
-        <!-- TAB 4: MAINTENANCE -->
+        <!-- TAB 7: MAINTENANCE -->
         <section id="tab-maintenance" class="tab-content hidden space-y-6">
           <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
             <div class="lg:col-span-5 bg-white dark:bg-slate-800 p-6 rounded-3xl border border-slate-100 dark:border-slate-700 shadow-sm space-y-4">
               <h3 class="font-bold text-lg text-slate-900 dark:text-white border-b border-slate-100 dark:border-slate-700 pb-3">
-                🔧 Log Maintenance Issue
+                🔧 Log Complaint / Maintenance
               </h3>
               <form id="maintForm" onsubmit="event.preventDefault();" class="space-y-3">
                 <div>
                   <label class="block text-xs font-semibold text-slate-500 mb-1">Issue Title</label>
-                  <input type="text" id="maintTitle" placeholder="e.g., Room 201 Fan Repair" class="w-full px-3.5 py-2.5 bg-slate-50 dark:bg-slate-700/50 border border-slate-200 dark:border-slate-600 rounded-xl text-sm outline-none" required />
+                  <input type="text" id="maintTitle" placeholder="Room 202 Geyser Leakage" class="w-full px-3.5 py-2.5 bg-slate-50 dark:bg-slate-700/50 border border-slate-200 dark:border-slate-600 rounded-xl text-sm outline-none" required />
                 </div>
                 <div class="grid grid-cols-2 gap-3">
                   <div>
@@ -456,18 +526,18 @@
                   </div>
                 </div>
                 <div>
-                  <label class="block text-xs font-semibold text-slate-500 mb-1">Description</label>
-                  <textarea id="maintDesc" rows="3" placeholder="Describe the issue..." class="w-full px-3.5 py-2.5 bg-slate-50 dark:bg-slate-700/50 border border-slate-200 dark:border-slate-600 rounded-xl text-sm outline-none resize-none"></textarea>
+                  <label class="block text-xs font-semibold text-slate-500 mb-1">Details &amp; Location</label>
+                  <textarea id="maintDesc" rows="3" placeholder="Specify room number or area..." class="w-full px-3.5 py-2.5 bg-slate-50 dark:bg-slate-700/50 border border-slate-200 dark:border-slate-600 rounded-xl text-sm outline-none resize-none"></textarea>
                 </div>
                 <button type="button" onclick="handleSaveMaintenance()" class="w-full py-3 bg-amber-600 hover:bg-amber-700 text-white font-semibold text-sm rounded-xl shadow-md transition">
-                  Save Issue Log
+                  Save Ticket Log
                 </button>
               </form>
             </div>
 
             <div class="lg:col-span-7 bg-white dark:bg-slate-800 p-6 rounded-3xl border border-slate-100 dark:border-slate-700 shadow-sm space-y-4">
               <h3 class="font-bold text-lg text-slate-900 dark:text-white border-b border-slate-100 dark:border-slate-700 pb-3">
-                Active Maintenance Logs
+                Active Maintenance Complaints
               </h3>
               <div id="maintListContainer" class="space-y-3 max-h-[500px] overflow-y-auto pr-1 custom-scrollbar">
                 <!-- Dynamic logs -->
@@ -476,22 +546,22 @@
           </div>
         </section>
 
-        <!-- TAB 5: EXPENSES -->
+        <!-- TAB 8: EXPENSES -->
         <section id="tab-expenses" class="tab-content hidden space-y-6">
           <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
             <div class="lg:col-span-5 bg-white dark:bg-slate-800 p-6 rounded-3xl border border-slate-100 dark:border-slate-700 shadow-sm space-y-4">
               <h3 class="font-bold text-lg text-slate-900 dark:text-white border-b border-slate-100 dark:border-slate-700 pb-3">
-                💸 Log PG Expense
+                💸 Record Property Expense
               </h3>
               <form id="expenseForm" onsubmit="event.preventDefault();" class="space-y-3">
                 <div>
                   <label class="block text-xs font-semibold text-slate-500 mb-1">Expense Title</label>
-                  <input type="text" id="expTitle" placeholder="Electricity Bill / Grocery" class="w-full px-3.5 py-2.5 bg-slate-50 dark:bg-slate-700/50 border border-slate-200 dark:border-slate-600 rounded-xl text-sm outline-none" required />
+                  <input type="text" id="expTitle" placeholder="Commercial Electricity Bill" class="w-full px-3.5 py-2.5 bg-slate-50 dark:bg-slate-700/50 border border-slate-200 dark:border-slate-600 rounded-xl text-sm outline-none" required />
                 </div>
                 <div class="grid grid-cols-2 gap-3">
                   <div>
                     <label class="block text-xs font-semibold text-slate-500 mb-1">Amount (₹)</label>
-                    <input type="number" id="expAmount" placeholder="1200" class="w-full px-3.5 py-2.5 bg-slate-50 dark:bg-slate-700/50 border border-slate-200 dark:border-slate-600 rounded-xl text-sm outline-none" required />
+                    <input type="number" id="expAmount" placeholder="3500" class="w-full px-3.5 py-2.5 bg-slate-50 dark:bg-slate-700/50 border border-slate-200 dark:border-slate-600 rounded-xl text-sm outline-none" required />
                   </div>
                   <div>
                     <label class="block text-xs font-semibold text-slate-500 mb-1">Category</label>
@@ -506,14 +576,14 @@
                   </div>
                 </div>
                 <button type="button" onclick="handleSaveExpense()" class="w-full py-3 bg-rose-600 hover:bg-rose-700 text-white font-semibold text-sm rounded-xl shadow-md transition">
-                  Record Expense
+                  Save Expense Record
                 </button>
               </form>
             </div>
 
             <div class="lg:col-span-7 bg-white dark:bg-slate-800 p-6 rounded-3xl border border-slate-100 dark:border-slate-700 shadow-sm space-y-4">
               <h3 class="font-bold text-lg text-slate-900 dark:text-white border-b border-slate-100 dark:border-slate-700 pb-3">
-                Expense Records
+                Expense Records Log
               </h3>
               <div id="expenseListContainer" class="space-y-3 max-h-[500px] overflow-y-auto pr-1 custom-scrollbar">
                 <!-- Dynamic expenses -->
@@ -522,49 +592,47 @@
           </div>
         </section>
 
-        <!-- TAB 6: HISTORY -->
+        <!-- TAB 9: HISTORY -->
         <section id="tab-history" class="tab-content hidden space-y-6">
           <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
             <div>
-              <h2 class="text-xl font-bold text-slate-900 dark:text-white">Transaction Logs &amp; History</h2>
-              <p class="text-xs text-slate-400">All historical records saved safely.</p>
+              <h2 class="text-xl font-bold text-slate-900 dark:text-white">Transaction Logs &amp; Audit Trail</h2>
+              <p class="text-xs text-slate-400">All historical rent receipts, dates, and amounts stored safely in cloud.</p>
             </div>
-            <div class="flex gap-2">
-              <button onclick="exportCSV()" class="px-4 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-xs rounded-2xl shadow-md transition flex items-center gap-2">
-                <i data-lucide="download" class="w-4 h-4"></i> Export CSV
-              </button>
-            </div>
+            <button onclick="exportCSV()" class="px-4 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-xs rounded-2xl shadow-md transition flex items-center gap-2">
+              <i data-lucide="download" class="w-4 h-4"></i> Export CSV Report
+            </button>
           </div>
 
           <div class="bg-white dark:bg-slate-800 p-6 rounded-3xl border border-slate-100 dark:border-slate-700 shadow-sm space-y-4">
-            <input type="text" id="historySearch" oninput="filterHistory()" placeholder="🔍 Search transaction by tenant name or room..." class="w-full px-4 py-3 bg-slate-50 dark:bg-slate-700/50 border border-slate-200 dark:border-slate-600 rounded-xl text-sm outline-none" />
+            <input type="text" id="historySearch" oninput="filterHistory()" placeholder="🔍 Filter by resident name, room number or slip code..." class="w-full px-4 py-3 bg-slate-50 dark:bg-slate-700/50 border border-slate-200 dark:border-slate-600 rounded-xl text-sm outline-none" />
             <div id="historyLogsContainer" class="space-y-2 max-h-[500px] overflow-y-auto custom-scrollbar">
               <!-- Dynamic items -->
             </div>
           </div>
         </section>
 
-        <!-- TAB 7: SETTINGS -->
+        <!-- TAB 10: SETTINGS -->
         <section id="tab-settings" class="tab-content hidden space-y-6">
           <div class="bg-white dark:bg-slate-800 p-6 rounded-3xl border border-slate-100 dark:border-slate-700 shadow-sm space-y-4 max-w-xl">
             <h3 class="font-bold text-lg text-slate-900 dark:text-white border-b border-slate-100 dark:border-slate-700 pb-3">
-              ⚙️ PG Profile &amp; Settings
+              ⚙️ PG Profile &amp; UPI Configuration
             </h3>
             <form id="settingsForm" onsubmit="event.preventDefault();" class="space-y-4">
               <div>
-                <label class="block text-xs font-semibold text-slate-500 mb-1">PG Name</label>
+                <label class="block text-xs font-semibold text-slate-500 mb-1">PG Business Name</label>
                 <input type="text" id="setPgName" value="Ghar PG Accommodation" class="w-full px-3.5 py-2.5 bg-slate-50 dark:bg-slate-700/50 border border-slate-200 dark:border-slate-600 rounded-xl text-sm outline-none" />
               </div>
               <div>
-                <label class="block text-xs font-semibold text-slate-500 mb-1">PG Address</label>
+                <label class="block text-xs font-semibold text-slate-500 mb-1">Property Address</label>
                 <input type="text" id="setPgAddress" value="Station Road, City Center" class="w-full px-3.5 py-2.5 bg-slate-50 dark:bg-slate-700/50 border border-slate-200 dark:border-slate-600 rounded-xl text-sm outline-none" />
               </div>
               <div>
-                <label class="block text-xs font-semibold text-slate-500 mb-1">UPI ID for Rent Payments</label>
-                <input type="text" id="setUpiId" placeholder="owner@upi" class="w-full px-3.5 py-2.5 bg-slate-50 dark:bg-slate-700/50 border border-slate-200 dark:border-slate-600 rounded-xl text-sm outline-none" />
+                <label class="block text-xs font-semibold text-slate-500 mb-1">Owner / PG UPI ID (Used for Dynamic QR Code)</label>
+                <input type="text" id="setUpiId" value="gharpg@upi" placeholder="owner@upi" oninput="updateReceiptPreview()" class="w-full px-3.5 py-2.5 bg-slate-50 dark:bg-slate-700/50 border border-slate-200 dark:border-slate-600 rounded-xl text-sm outline-none" />
               </div>
               <button type="button" onclick="saveSettings()" class="w-full py-3 bg-brand-600 hover:bg-brand-700 text-white font-semibold text-sm rounded-xl shadow-md transition">
-                Save Profile Settings
+                Save PG Profile Settings
               </button>
             </form>
           </div>
@@ -574,11 +642,11 @@
     </div>
   </div>
 
-  <!-- MODAL: ADD/EDIT TENANT -->
+  <!-- MODAL: ADD/EDIT TENANT RECORD -->
   <div id="tenantModal" class="fixed inset-0 z-50 bg-slate-900/80 backdrop-blur-md hidden flex items-center justify-center p-4">
-    <div class="bg-white dark:bg-slate-800 w-full max-w-lg p-6 rounded-3xl shadow-2xl border border-slate-100 dark:border-slate-700 space-y-4">
+    <div class="bg-white dark:bg-slate-800 w-full max-w-lg p-6 rounded-3xl shadow-2xl border border-slate-100 dark:border-slate-700 space-y-4 max-h-[90vh] overflow-y-auto custom-scrollbar">
       <div class="flex justify-between items-center border-b border-slate-100 dark:border-slate-700 pb-3">
-        <h3 class="font-bold text-lg text-slate-900 dark:text-white" id="tenantModalTitle">Register New Tenant</h3>
+        <h3 class="font-bold text-lg text-slate-900 dark:text-white" id="tenantModalTitle">Register New Resident</h3>
         <button onclick="closeTenantModal()" class="p-1 text-slate-400 hover:text-slate-600"><i data-lucide="x" class="w-5 h-5"></i></button>
       </div>
 
@@ -594,11 +662,15 @@
             <input type="tel" id="tMobile" placeholder="9876543210" maxlength="10" class="w-full px-3.5 py-2.5 bg-slate-50 dark:bg-slate-700/50 border border-slate-200 dark:border-slate-600 rounded-xl text-sm outline-none" required />
           </div>
           <div>
-            <label class="block text-xs font-semibold text-slate-500 mb-1">Room No.</label>
-            <input type="text" id="tRoom" placeholder="101" class="w-full px-3.5 py-2.5 bg-slate-50 dark:bg-slate-700/50 border border-slate-200 dark:border-slate-600 rounded-xl text-sm outline-none" required />
+            <label class="block text-xs font-semibold text-slate-500 mb-1">Emergency Contact</label>
+            <input type="tel" id="tEmergency" placeholder="Parent/Guardian" maxlength="10" class="w-full px-3.5 py-2.5 bg-slate-50 dark:bg-slate-700/50 border border-slate-200 dark:border-slate-600 rounded-xl text-sm outline-none" />
           </div>
         </div>
         <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-semibold text-slate-500 mb-1">Room No.</label>
+            <input type="text" id="tRoom" placeholder="101" class="w-full px-3.5 py-2.5 bg-slate-50 dark:bg-slate-700/50 border border-slate-200 dark:border-slate-600 rounded-xl text-sm outline-none" required />
+          </div>
           <div>
             <label class="block text-xs font-semibold text-slate-500 mb-1">Sharing Type</label>
             <select id="tSharing" class="w-full px-3.5 py-2.5 bg-slate-50 dark:bg-slate-700/50 border border-slate-200 dark:border-slate-600 rounded-xl text-sm outline-none">
@@ -607,10 +679,20 @@
               <option value="Triple Share">Triple Share</option>
             </select>
           </div>
+        </div>
+        <div class="grid grid-cols-2 gap-3">
           <div>
             <label class="block text-xs font-semibold text-slate-500 mb-1">Monthly Rent (₹)</label>
             <input type="number" id="tRent" placeholder="5000" class="w-full px-3.5 py-2.5 bg-slate-50 dark:bg-slate-700/50 border border-slate-200 dark:border-slate-600 rounded-xl text-sm outline-none" required />
           </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-500 mb-1">Security Deposit (₹)</label>
+            <input type="number" id="tDeposit" placeholder="5000" class="w-full px-3.5 py-2.5 bg-slate-50 dark:bg-slate-700/50 border border-slate-200 dark:border-slate-600 rounded-xl text-sm outline-none" />
+          </div>
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-slate-500 mb-1">Aadhaar ID Number (KYC)</label>
+          <input type="text" id="tAadhaar" placeholder="12-digit Aadhaar Number" maxlength="12" class="w-full px-3.5 py-2.5 bg-slate-50 dark:bg-slate-700/50 border border-slate-200 dark:border-slate-600 rounded-xl text-sm outline-none" />
         </div>
         <button type="button" onclick="handleSaveTenant()" class="w-full py-3 bg-brand-600 hover:bg-brand-700 text-white font-semibold text-sm rounded-xl shadow-md transition">
           Save Tenant Details
@@ -619,20 +701,21 @@
     </div>
   </div>
 
-  <!-- TOAST NOTIFICATION -->
+  <!-- TOAST NOTIFICATION CONTAINER -->
   <div id="toast" class="fixed bottom-5 right-5 z-50 hidden px-5 py-3.5 rounded-2xl shadow-2xl text-white font-semibold text-sm flex items-center gap-2 transition-all transform translate-y-10">
     <i data-lucide="check-circle" class="w-5 h-5"></i>
     <span id="toastMsg">Success</span>
   </div>
 
-  <!-- SCRIPT LOGIC -->
   <script>
     // Initialize Lucide Icons
     lucide.createIcons();
 
-    // ==================== FIREBASE PERSISTENCE SETUP ====================
+    // ==================== FIREBASE SETUP ====================
     const firebaseConfig = JSON.parse(__firebase_config);
-    const app = firebase.initializeApp(firebaseConfig);
+    if (!firebase.apps.length) {
+      firebase.initializeApp(firebaseConfig);
+    }
     const auth = firebase.auth();
     const db = firebase.firestore();
     const appId = typeof __app_id !== 'undefined' ? __app_id : 'ghar-pg-app';
@@ -643,9 +726,21 @@
     let receipts = [];
     let maintenanceLogs = [];
     let expenses = [];
+    let notices = [];
+    let messMenu = {
+      Monday: { b: 'Puri Sabzi', l: 'Dal, Rice, Roti, Aloo', d: 'Paneer Butter Masala, Roti' },
+      Tuesday: { b: 'Poha & Chai', l: 'Rajma Chawal, Salad', d: 'Egg Curry / Mix Veg' },
+      Wednesday: { b: 'Idli Sambhar', l: 'Kadhi Pakoda, Rice', d: 'Chicken Curry / Dal Tadka' },
+      Thursday: { b: 'Aloo Paratha', l: 'Chole Rice, Roti', d: 'Sev Tamatar, Chapati' },
+      Friday: { b: 'Upma', l: 'Veg Biryani, Raita', d: 'Dal Makhani, Jeera Rice' },
+      Saturday: { b: 'Uttapam', l: 'Khichdi, Papad, Achar', d: 'Malai Kofta, Naan' },
+      Sunday: { b: 'Masala Dosa', l: 'Special Thali', d: 'Veg Pulao, Gulab Jamun' }
+    };
+    
     let revenueChartInstance = null;
+    let expenseChartInstance = null;
 
-    // Helper Functions
+    // Toast Alert
     function showToast(msg, type = 'success') {
       const toast = document.getElementById('toast');
       const toastMsg = document.getElementById('toastMsg');
@@ -687,6 +782,7 @@
         document.getElementById('appContainer').classList.remove('hidden');
         
         setupFirestoreListeners();
+        renderMessMenuGrid();
       } else {
         document.getElementById('authScreen').classList.remove('hidden');
         document.getElementById('appContainer').classList.add('hidden');
@@ -704,13 +800,13 @@
       document.getElementById('sendOtpBtn').classList.add('hidden');
       document.getElementById('verifyOtpBtn').classList.remove('hidden');
       document.getElementById('authOtp').value = '123456';
-      showToast('Demo OTP Sent: 123456');
+      showToast('Demo Access OTP: 123456');
     }
 
     function handleVerifyOTP() {
       const otp = document.getElementById('authOtp').value;
       if (otp === '123456' || otp.length === 6) {
-        showToast('Login Verified');
+        showToast('Access Granted');
         if (!auth.currentUser) initAuth();
         else {
           document.getElementById('authScreen').classList.add('hidden');
@@ -718,7 +814,7 @@
           setupFirestoreListeners();
         }
       } else {
-        showToast('Invalid OTP', 'error');
+        showToast('Invalid OTP code', 'error');
       }
     }
 
@@ -728,7 +824,7 @@
       });
     }
 
-    // ==================== FIRESTORE DATA SYNC ====================
+    // ==================== FIRESTORE LISTENERS ====================
     function setupFirestoreListeners() {
       if (!currentUser) return;
 
@@ -738,6 +834,7 @@
         tenants = [];
         snap.forEach((doc) => tenants.push({ id: doc.id, ...doc.data() }));
         renderTenants();
+        renderRoomGrid();
         populateTenantDropdown();
         updateDashboard();
       }, (err) => console.error("Tenants snapshot error:", err));
@@ -768,21 +865,84 @@
         renderExpenses();
         updateDashboard();
       }, (err) => console.error("Expenses snapshot error:", err));
+
+      // 5. Digital Notices
+      const noticeRef = db.collection('artifacts').doc(appId).collection('public').doc('data').collection('notices');
+      noticeRef.onSnapshot((snap) => {
+        notices = [];
+        snap.forEach((doc) => notices.push({ id: doc.id, ...doc.data() }));
+        renderNotices();
+      }, (err) => console.error("Notices snapshot error:", err));
+    }
+
+    // ==================== ROOM & BED MATRIX LOGIC ====================
+    function renderRoomGrid() {
+      const container = document.getElementById('roomGridContainer');
+      const standardRooms = ['101', '102', '103', '201', '202', '203'];
+      
+      container.innerHTML = standardRooms.map(roomNo => {
+        const roomTenants = tenants.filter(t => t.room === roomNo);
+        const bed1 = roomTenants[0];
+        const bed2 = roomTenants[1];
+
+        return `
+          <div class="bg-white dark:bg-slate-800 p-5 rounded-3xl border border-slate-100 dark:border-slate-700 shadow-sm space-y-3">
+            <div class="flex justify-between items-center border-b border-slate-100 dark:border-slate-700 pb-2.5">
+              <div>
+                <h3 class="font-bold text-base text-slate-900 dark:text-white">Room #${roomNo}</h3>
+                <p class="text-[11px] text-slate-400">Double Sharing</p>
+              </div>
+              <span class="px-2.5 py-1 rounded-full text-[10px] font-bold ${
+                roomTenants.length >= 2 ? 'bg-indigo-100 text-indigo-600' : 'bg-emerald-100 text-emerald-600'
+              }">${roomTenants.length}/2 Occupied</span>
+            </div>
+
+            <!-- Beds Grid -->
+            <div class="space-y-2">
+              <div class="p-3 rounded-2xl border ${bed1 ? 'bg-indigo-50/50 border-indigo-200 dark:bg-indigo-950/20' : 'bg-slate-50 border-dashed border-slate-300 dark:bg-slate-700/30'} flex justify-between items-center">
+                <div>
+                  <span class="text-[10px] uppercase tracking-wider font-bold text-slate-400">Bed A</span>
+                  <h4 class="font-bold text-xs ${bed1 ? 'text-indigo-900 dark:text-indigo-200' : 'text-slate-400'}">${bed1 ? bed1.name : 'Vacant Bed'}</h4>
+                </div>
+                ${bed1 ? `<span class="text-xs font-semibold text-emerald-600">₹${bed1.rent}</span>` : 
+                  `<button onclick="openTenantModalWithRoom('${roomNo}')" class="px-2.5 py-1 bg-emerald-600 text-white rounded-xl text-[10px] font-bold shadow-sm">Assign</button>`}
+              </div>
+
+              <div class="p-3 rounded-2xl border ${bed2 ? 'bg-indigo-50/50 border-indigo-200 dark:bg-indigo-950/20' : 'bg-slate-50 border-dashed border-slate-300 dark:bg-slate-700/30'} flex justify-between items-center">
+                <div>
+                  <span class="text-[10px] uppercase tracking-wider font-bold text-slate-400">Bed B</span>
+                  <h4 class="font-bold text-xs ${bed2 ? 'text-indigo-900 dark:text-indigo-200' : 'text-slate-400'}">${bed2 ? bed2.name : 'Vacant Bed'}</h4>
+                </div>
+                ${bed2 ? `<span class="text-xs font-semibold text-emerald-600">₹${bed2.rent}</span>` : 
+                  `<button onclick="openTenantModalWithRoom('${roomNo}')" class="px-2.5 py-1 bg-emerald-600 text-white rounded-xl text-[10px] font-bold shadow-sm">Assign</button>`}
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function openTenantModalWithRoom(roomNo) {
+      openTenantModal();
+      document.getElementById('tRoom').value = roomNo;
     }
 
     // ==================== TENANTS MANAGEMENT ====================
     function openTenantModal(id = null) {
       document.getElementById('editTenantId').value = id || '';
-      document.getElementById('tenantModalTitle').innerText = id ? 'Edit Tenant' : 'Register New Tenant';
+      document.getElementById('tenantModalTitle').innerText = id ? 'Edit Resident Record' : 'Register New Resident';
       
       if (id) {
         const t = tenants.find(x => x.id === id);
         if (t) {
           document.getElementById('tName').value = t.name || '';
           document.getElementById('tMobile').value = t.mobile || '';
+          document.getElementById('tEmergency').value = t.emergency || '';
           document.getElementById('tRoom').value = t.room || '';
           document.getElementById('tSharing').value = t.sharing || 'Double Share';
           document.getElementById('tRent').value = t.rent || '';
+          document.getElementById('tDeposit').value = t.deposit || '';
+          document.getElementById('tAadhaar').value = t.aadhaar || '';
         }
       } else {
         document.getElementById('tenantForm').reset();
@@ -799,22 +959,25 @@
       const id = document.getElementById('editTenantId').value;
       const name = document.getElementById('tName').value;
       const mobile = document.getElementById('tMobile').value;
+      const emergency = document.getElementById('tEmergency').value;
       const room = document.getElementById('tRoom').value;
       const sharing = document.getElementById('tSharing').value;
       const rent = Number(document.getElementById('tRent').value);
+      const deposit = Number(document.getElementById('tDeposit').value) || 0;
+      const aadhaar = document.getElementById('tAadhaar').value;
 
       if (!name || !mobile || !room) {
-        showToast('Please fill all mandatory fields', 'error');
+        showToast('Fill name, mobile, and room number', 'error');
         return;
       }
 
-      const payload = { name, mobile, room, sharing, rent, updatedAt: new Date().toISOString() };
+      const payload = { name, mobile, emergency, room, sharing, rent, deposit, aadhaar, updatedAt: new Date().toISOString() };
       const colRef = db.collection('artifacts').doc(appId).collection('public').doc('data').collection('tenants');
 
       try {
         if (id) {
           await colRef.doc(id).update(payload);
-          showToast('Tenant details updated');
+          showToast('Tenant profile updated');
         } else {
           await colRef.add({ ...payload, createdAt: new Date().toISOString() });
           showToast('New tenant registered');
@@ -827,7 +990,7 @@
 
     async function deleteTenant(id) {
       if (!currentUser) return;
-      if (confirm('Are you sure you want to remove this tenant?')) {
+      if (confirm('Are you sure you want to checkout/remove this tenant?')) {
         try {
           await db.collection('artifacts').doc(appId).collection('public').doc('data').collection('tenants').doc(id).delete();
           showToast('Tenant removed');
@@ -841,17 +1004,32 @@
       const tbody = document.getElementById('tenantTableBody');
       tbody.innerHTML = tenants.map(t => `
         <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/30 transition">
-          <td class="p-4 font-bold text-slate-900 dark:text-white">${t.name}</td>
-          <td class="p-4">Room ${t.room} <span class="text-xs font-normal text-slate-400">(${t.sharing})</span></td>
-          <td class="p-4 font-bold text-emerald-600">₹${t.rent}</td>
-          <td class="p-4 text-slate-500">${t.mobile}</td>
-          <td class="p-4 flex gap-2">
+          <td class="p-4">
+            <div class="font-bold text-slate-900 dark:text-white">${t.name}</div>
+            <div class="text-[10px] text-slate-400">KYC: ${t.aadhaar ? '✅ Verified' : '⚠️ Pending'}</div>
+          </td>
+          <td class="p-4 font-semibold">Room ${t.room} <span class="text-xs font-normal text-slate-400">(${t.sharing})</span></td>
+          <td class="p-4">
+            <span class="font-bold text-emerald-600">₹${t.rent}/mo</span>
+            <div class="text-[10px] text-slate-400">Deposit: ₹${t.deposit || 0}</div>
+          </td>
+          <td class="p-4 text-slate-500">
+            <div>${t.mobile}</div>
+            <div class="text-[10px] text-slate-400">Emg: ${t.emergency || '--'}</div>
+          </td>
+          <td class="p-4 flex gap-1.5">
+            <button onclick="sendWhatsAppReminder('${t.name}', '${t.mobile}', '${t.rent}')" class="p-2 text-emerald-600 bg-emerald-50 dark:bg-emerald-950/40 rounded-xl" title="Rent Reminder"><i data-lucide="bell" class="w-4 h-4"></i></button>
             <button onclick="openTenantModal('${t.id}')" class="p-2 text-brand-600 hover:bg-brand-50 rounded-xl"><i data-lucide="edit-3" class="w-4 h-4"></i></button>
             <button onclick="deleteTenant('${t.id}')" class="p-2 text-rose-600 hover:bg-rose-50 rounded-xl"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
           </td>
         </tr>
       `).join('');
       lucide.createIcons();
+    }
+
+    function sendWhatsAppReminder(name, mobile, rent) {
+      const text = `Namaste ${name}, This is a friendly reminder for your PG monthly rent payment of ₹${rent}. Thank you! - Ghar PG`;
+      window.open(`https://wa.me/91${mobile}?text=${encodeURIComponent(text)}`, '_blank');
     }
 
     function populateTenantDropdown() {
@@ -867,15 +1045,44 @@
         document.getElementById('slipRoom').value = t.room;
         document.getElementById('slipSharing').value = t.sharing;
         document.getElementById('slipRent').value = t.rent;
+        updateReceiptPreview();
       }
     }
 
-    // ==================== RENT SLIPS LOGIC ====================
+    // ==================== RENT RECEIPT & UPI QR LOGIC ====================
+    function updateReceiptPreview() {
+      const tenantId = document.getElementById('slipTenantSelect').value;
+      const tenant = tenants.find(x => x.id === tenantId);
+      const name = tenant ? tenant.name : 'Resident Name';
+      const room = document.getElementById('slipRoom').value || '--';
+      const sharing = document.getElementById('slipSharing').value;
+      const month = document.getElementById('slipMonth').value || 'Current Month';
+      const mode = document.getElementById('slipMode').value;
+      const rent = Number(document.getElementById('slipRent').value) || 0;
+      const due = Number(document.getElementById('slipDue').value) || 0;
+      const total = rent + due;
+      const upiId = document.getElementById('setUpiId').value || 'gharpg@upi';
+
+      document.getElementById('prevTenant').innerText = name;
+      document.getElementById('prevRoom').innerText = `Room ${room} (${sharing})`;
+      document.getElementById('prevMonth').innerText = month;
+      document.getElementById('prevMode').innerText = mode;
+      document.getElementById('prevRent').innerText = `₹${rent}`;
+      document.getElementById('prevDue').innerText = `₹${due}`;
+      document.getElementById('prevTotal').innerText = `₹${total}`;
+      document.getElementById('upiIdDisplay').innerText = `UPI ID: ${upiId}`;
+
+      // Dynamic UPI String generator
+      const upiString = `upi://pay?pa=${encodeURIComponent(upiId)}&pn=${encodeURIComponent("Ghar PG")}&am=${total}&cu=INR&tn=${encodeURIComponent("Rent Payment")}`;
+      const qrApiUrl = `https://api.qrserver.com/v1/create-qr-code/?size=140x140&data=${encodeURIComponent(upiString)}`;
+      document.getElementById('upiQrCodeImg').src = qrApiUrl;
+    }
+
     async function handleGenerateSlip() {
       if (!currentUser) return;
       const tenantId = document.getElementById('slipTenantSelect').value;
       const tenant = tenants.find(x => x.id === tenantId);
-      const name = tenant ? tenant.name : 'Guest';
+      const name = tenant ? tenant.name : 'Resident';
       const room = document.getElementById('slipRoom').value;
       const sharing = document.getElementById('slipSharing').value;
       const month = document.getElementById('slipMonth').value || 'Current Month';
@@ -893,19 +1100,9 @@
 
       try {
         await db.collection('artifacts').doc(appId).collection('public').doc('data').collection('receipts').add(payload);
-        
-        // Update Preview
         document.getElementById('prevNo').innerText = slipNo;
         document.getElementById('prevDate').innerText = date;
-        document.getElementById('prevTenant').innerText = name;
-        document.getElementById('prevRoom').innerText = `Room ${room} (${sharing})`;
-        document.getElementById('prevMonth').innerText = month;
-        document.getElementById('prevMode').innerText = mode;
-        document.getElementById('prevRent').innerText = `₹${rent}`;
-        document.getElementById('prevDue').innerText = `₹${due}`;
-        document.getElementById('prevTotal').innerText = `₹${total}`;
-
-        showToast('Receipt Generated & Saved!');
+        showToast('Receipt Saved to Cloud!');
       } catch (e) {
         showToast('Failed to save receipt', 'error');
       }
@@ -919,7 +1116,73 @@
       window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank');
     }
 
-    // ==================== MAINTENANCE LOGIC ====================
+    // ==================== MESS & NOTICES LOGIC ====================
+    function renderMessMenuGrid() {
+      const container = document.getElementById('messPlannerGrid');
+      const days = Object.keys(messMenu);
+
+      container.innerHTML = days.map(day => `
+        <div class="bg-white dark:bg-slate-800 p-4 rounded-3xl border border-slate-100 dark:border-slate-700 shadow-sm space-y-2.5">
+          <h4 class="font-bold text-sm text-brand-600 dark:text-brand-400 border-b pb-2 dark:border-slate-700">${day}</h4>
+          <div>
+            <label class="text-[10px] font-bold text-slate-400 uppercase">Breakfast</label>
+            <input type="text" value="${messMenu[day].b}" onchange="messMenu['${day}'].b = this.value" class="w-full text-xs p-2 bg-slate-50 dark:bg-slate-700/50 border border-slate-200 dark:border-slate-600 rounded-xl outline-none" />
+          </div>
+          <div>
+            <label class="text-[10px] font-bold text-slate-400 uppercase">Lunch</label>
+            <input type="text" value="${messMenu[day].l}" onchange="messMenu['${day}'].l = this.value" class="w-full text-xs p-2 bg-slate-50 dark:bg-slate-700/50 border border-slate-200 dark:border-slate-600 rounded-xl outline-none" />
+          </div>
+          <div>
+            <label class="text-[10px] font-bold text-slate-400 uppercase">Dinner</label>
+            <input type="text" value="${messMenu[day].d}" onchange="messMenu['${day}'].d = this.value" class="w-full text-xs p-2 bg-slate-50 dark:bg-slate-700/50 border border-slate-200 dark:border-slate-600 rounded-xl outline-none" />
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function saveMessMenu() {
+      showToast('Mess Menu Plan Updated!');
+    }
+
+    async function handleSaveNotice() {
+      if (!currentUser) return;
+      const title = document.getElementById('noticeTitle').value;
+      const priority = document.getElementById('noticePriority').value;
+      const content = document.getElementById('noticeContent').value;
+
+      if (!title) {
+        showToast('Fill notice title', 'error');
+        return;
+      }
+
+      const payload = { title, priority, content, date: new Date().toLocaleDateString('en-IN') };
+
+      try {
+        await db.collection('artifacts').doc(appId).collection('public').doc('data').collection('notices').add(payload);
+        document.getElementById('noticeForm').reset();
+        showToast('Notice Broadcasted!');
+      } catch (e) {
+        showToast('Failed to post notice', 'error');
+      }
+    }
+
+    function renderNotices() {
+      const container = document.getElementById('noticeListContainer');
+      container.innerHTML = notices.map(n => `
+        <div class="p-4 bg-slate-50 dark:bg-slate-700/50 rounded-2xl border border-slate-100 dark:border-slate-700 space-y-1">
+          <div class="flex justify-between items-center">
+            <h4 class="font-bold text-sm text-slate-900 dark:text-white">${n.title}</h4>
+            <span class="px-2 py-0.5 rounded-full text-[10px] font-bold ${
+              n.priority === 'Urgent' ? 'bg-rose-100 text-rose-600' : 'bg-brand-100 text-brand-600'
+            }">${n.priority}</span>
+          </div>
+          <p class="text-xs text-slate-400">${n.content || ''}</p>
+          <div class="text-[10px] text-slate-400 pt-1">${n.date}</div>
+        </div>
+      `).join('');
+    }
+
+    // ==================== MAINTENANCE & EXPENSES LOGIC ====================
     async function handleSaveMaintenance() {
       if (!currentUser) return;
       const title = document.getElementById('maintTitle').value;
@@ -963,7 +1226,6 @@
       `).join('');
     }
 
-    // ==================== EXPENSE LOGIC ====================
     async function handleSaveExpense() {
       if (!currentUser) return;
       const title = document.getElementById('expTitle').value;
@@ -999,7 +1261,7 @@
       `).join('');
     }
 
-    // ==================== HISTORY & CSV EXPORT ====================
+    // ==================== HISTORY & CHARTS ====================
     function renderHistory() {
       const container = document.getElementById('historyLogsContainer');
       container.innerHTML = receipts.map(r => `
@@ -1030,10 +1292,10 @@
 
     function exportCSV() {
       if (receipts.length === 0) {
-        showToast('No history data available', 'error');
+        showToast('No transaction data to export', 'error');
         return;
       }
-      let csv = 'Receipt No,Tenant,Room,Month,Total Paid,Date\n';
+      let csv = 'Slip Code,Tenant,Room,Month,Total Paid,Date\n';
       receipts.forEach(r => {
         csv += `"${r.slipNo}","${r.name}","${r.room}","${r.month}","${r.total}","${r.date}"\n`;
       });
@@ -1041,25 +1303,29 @@
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
-      a.download = `GharPG_Transactions.csv`;
+      a.download = `GharPG_Full_Report.csv`;
       a.click();
       showToast('Exported CSV');
     }
 
-    // ==================== DASHBOARD REFRESH & CHARTS ====================
     function updateDashboard() {
       const totalRev = receipts.reduce((acc, curr) => acc + (curr.total || 0), 0);
       const totalDues = receipts.reduce((acc, curr) => acc + (curr.due || 0), 0);
-      
+      const totalExp = expenses.reduce((acc, c) => acc + (c.amount || 0), 0);
+      const netProfit = totalRev - totalExp;
+
       document.getElementById('dashCollected').innerText = `₹${totalRev.toLocaleString()}`;
       document.getElementById('dashDues').innerText = `₹${totalDues.toLocaleString()}`;
       document.getElementById('dashTenants').innerText = tenants.length;
       document.getElementById('dashIssues').innerText = maintenanceLogs.filter(x => x.status !== 'Resolved').length;
+      document.getElementById('dashProfit').innerText = `₹${netProfit.toLocaleString()}`;
+      document.getElementById('dashExpenseTotal').innerText = `₹${totalExp.toLocaleString()}`;
 
-      renderChart(totalRev, expenses.reduce((acc, c) => acc + (c.amount || 0), 0));
+      renderBarChart(totalRev, totalExp);
+      renderPieChart();
     }
 
-    function renderChart(revenue, expense) {
+    function renderBarChart(revenue, expense) {
       const ctx = document.getElementById('revenueChart').getContext('2d');
       if (revenueChartInstance) revenueChartInstance.destroy();
 
@@ -1071,6 +1337,30 @@
             data: [revenue, expense],
             backgroundColor: ['#10b981', '#f43f5e'],
             borderRadius: 12
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: { legend: { display: false } }
+        }
+      });
+    }
+
+    function renderPieChart() {
+      const ctx = document.getElementById('expenseCategoryChart').getContext('2d');
+      if (expenseChartInstance) expenseChartInstance.destroy();
+
+      const cats = ['Electricity', 'Water', 'Mess / Food', 'Internet / Wifi', 'Repairs', 'Others'];
+      const catTotals = cats.map(c => expenses.filter(e => e.category === c).reduce((sum, e) => sum + e.amount, 0));
+
+      expenseChartInstance = new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+          labels: cats,
+          datasets: [{
+            data: catTotals.some(v => v > 0) ? catTotals : [1, 1, 1, 1, 1, 1],
+            backgroundColor: ['#3b82f6', '#06b6d4', '#f59e0b', '#8b5cf6', '#ef4444', '#64748b']
           }]
         },
         options: {
@@ -1093,17 +1383,15 @@
 
       document.querySelectorAll('.nav-btn').forEach(btn => {
         if (btn.dataset.tab === tabId) {
-          btn.className = "nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-2xl font-semibold text-sm transition text-white bg-brand-600 shadow-md shadow-brand-500/20";
+          btn.className = "nav-btn w-full flex items-center gap-3 px-3.5 py-2.5 rounded-2xl font-semibold text-xs transition text-white bg-brand-600 shadow-md shadow-brand-500/20";
         } else {
-          btn.className = "nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-2xl font-semibold text-sm transition text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700/50";
+          btn.className = "nav-btn w-full flex items-center gap-3 px-3.5 py-2.5 rounded-2xl font-semibold text-xs transition text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700/50";
         }
       });
 
-      // Hide mobile menu when item selected
       document.getElementById('sidebar').classList.add('-translate-x-full');
     }
 
-    // Theme Toggle
     let isDark = localStorage.getItem('gharPG_theme') === 'dark';
     function applyTheme() {
       if (isDark) {
@@ -1126,7 +1414,6 @@
     });
     applyTheme();
 
-    // Mobile Menu Controls
     document.getElementById('mobileMenuBtn').addEventListener('click', () => {
       document.getElementById('sidebar').classList.remove('-translate-x-full');
     });
@@ -1136,11 +1423,14 @@
 
     function saveSettings() {
       const name = document.getElementById('setPgName').value;
+      const upi = document.getElementById('setUpiId').value;
       document.getElementById('prevPgName').innerText = name;
-      showToast('PG Profile Settings Saved!');
+      document.getElementById('upiIdDisplay').innerText = `UPI ID: ${upi}`;
+      updateReceiptPreview();
+      showToast('PG Settings Saved!');
     }
 
-    // Start App & Auth Listener
+    // Initialize Auth Session
     initAuth();
   </script>
 </body>

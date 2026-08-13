@@ -3,8 +3,19 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Ghar PG — Ultimate Cloud Management System</title>
-  <!-- Tailwind CSS CDN -->
+  <title>Ghar PG — Cloud Management System</title>
+
+  <!-- Apply saved theme before paint to avoid flash -->
+  <script>
+    (function () {
+      try {
+        if (localStorage.getItem('gharPG_theme') === 'dark') {
+          document.documentElement.classList.add('dark');
+        }
+      } catch (e) {}
+    })();
+  </script>
+
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
@@ -13,94 +24,56 @@
         extend: {
           colors: {
             brand: {
-              50: '#f0f4ff',
-              100: '#e0e9fe',
-              500: '#3b82f6',
-              600: '#1d4ed8',
-              700: '#1e3c72',
-              800: '#0f2440',
-              900: '#0a172c',
+              50: '#f0f4ff', 100: '#e0e9fe', 500: '#3b82f6',
+              600: '#1d4ed8', 700: '#1e3c72', 800: '#0f2440', 900: '#0a172c',
             }
           }
         }
       }
-    }
+    };
   </script>
-  <!-- Lucide Icons -->
   <script src="https://unpkg.com/lucide@latest"></script>
-  <!-- Chart.js for Visual Stats -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
-    body {
-      font-family: 'Plus Jakarta Sans', sans-serif;
-    }
-    .glass {
-      background: rgba(255, 255, 255, 0.7);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-    }
-    .dark .glass {
-      background: rgba(30, 41, 59, 0.7);
-    }
-    .custom-scrollbar::-webkit-scrollbar {
-      width: 6px;
-      height: 6px;
-    }
-    .custom-scrollbar::-webkit-scrollbar-track {
-      background: transparent;
-    }
-    .custom-scrollbar::-webkit-scrollbar-thumb {
-      background: #cbd5e1;
-      border-radius: 9999px;
-    }
-    .dark .custom-scrollbar::-webkit-scrollbar-thumb {
-      background: #475569;
-    }
+    body { font-family: 'Plus Jakarta Sans', sans-serif; }
+    .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
+    .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+    .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 9999px; }
+    .dark .custom-scrollbar::-webkit-scrollbar-thumb { background: #475569; }
     @media print {
-      body * {
-        visibility: hidden;
-      }
-      #printableSlip, #printableSlip * {
-        visibility: visible;
-      }
-      #printableSlip {
-        position: absolute;
-        left: 0;
-        top: 0;
-        width: 100%;
-      }
+      body * { visibility: hidden; }
+      #printableSlip, #printableSlip * { visibility: visible; }
+      #printableSlip { position: absolute; left: 0; top: 0; width: 100%; }
     }
+    .empty-state { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 2.5rem 1rem; text-align: center; color: #94a3b8; }
   </style>
 </head>
 <body class="bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-100 min-h-full transition-colors duration-200">
 
-  <!-- TOP APP BAR / HEADER (MOBILE) -->
+  <!-- TOP APP BAR (MOBILE) -->
   <div id="topNavbar" class="lg:hidden flex items-center justify-between p-4 bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700 sticky top-0 z-30 shadow-sm">
     <div class="flex items-center gap-2">
-      <div class="p-2 bg-brand-600 text-white rounded-xl shadow-md">
-        <i data-lucide="building-2" class="w-5 h-5"></i>
-      </div>
+      <div class="p-2 bg-brand-600 text-white rounded-xl shadow-md"><i data-lucide="building-2" class="w-5 h-5"></i></div>
       <span class="font-bold text-lg text-brand-700 dark:text-brand-100">Ghar<span class="text-brand-500">PG</span></span>
     </div>
     <div class="flex items-center gap-2">
-      <button id="themeToggleMobile" onclick="toggleDarkMode()" class="p-2 rounded-xl bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300">
+      <button onclick="toggleDarkMode()" class="p-2 rounded-xl bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300">
         <i data-lucide="moon" class="w-5 h-5 dark:hidden"></i>
         <i data-lucide="sun" class="w-5 h-5 hidden dark:block"></i>
       </button>
-      <button id="mobileMenuBtn" onclick="toggleMobileSidebar()" class="p-2 rounded-xl bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300">
+      <button onclick="toggleMobileSidebar()" class="p-2 rounded-xl bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300">
         <i data-lucide="menu" class="w-6 h-6"></i>
       </button>
     </div>
   </div>
 
-  <!-- MAIN WRAPPER -->
   <div class="max-w-7xl mx-auto p-3 sm:p-6 lg:p-8 min-h-screen">
-    
-    <!-- AUTH MODAL / SCREEN -->
+
+    <!-- AUTH SCREEN -->
     <div id="authScreen" class="fixed inset-0 z-50 bg-slate-900/80 backdrop-blur-md flex items-center justify-center p-4">
-      <div class="bg-white dark:bg-slate-800 w-full max-w-md p-6 sm:p-8 rounded-3xl shadow-2xl border border-slate-100 dark:border-slate-700 transition-all">
+      <div class="bg-white dark:bg-slate-800 w-full max-w-md p-6 sm:p-8 rounded-3xl shadow-2xl border border-slate-100 dark:border-slate-700">
         <div class="text-center mb-6">
           <div class="inline-flex p-3 bg-brand-500/10 dark:bg-brand-500/20 text-brand-600 dark:text-brand-400 rounded-2xl mb-3">
             <i data-lucide="building-2" class="w-8 h-8"></i>
@@ -114,28 +87,20 @@
             <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1">Mobile Number</label>
             <div class="relative">
               <span class="absolute left-3.5 top-3.5 text-slate-400 font-medium text-sm">+91</span>
-              <input type="tel" id="authMobile" maxlength="10" value="8651744312" placeholder="8651744312" class="w-full pl-12 pr-4 py-3 bg-slate-50 dark:bg-slate-700/50 border border-slate-200 dark:border-slate-600 rounded-xl focus:ring-2 focus:ring-brand-500 text-slate-900 dark:text-white outline-none font-medium text-sm transition" required />
+              <input type="tel" id="authMobile" maxlength="10" value="8651744312" placeholder="9876543210" class="w-full pl-12 pr-4 py-3 bg-slate-50 dark:bg-slate-700/50 border border-slate-200 dark:border-slate-600 rounded-xl focus:ring-2 focus:ring-brand-500 outline-none font-medium text-sm" required />
             </div>
           </div>
 
           <div id="otpSection" class="hidden space-y-2">
             <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">Enter OTP</label>
-            <div class="flex gap-2">
-              <input type="text" id="authOtp" maxlength="6" value="123456" placeholder="6-digit OTP" class="w-full px-4 py-3 bg-slate-50 dark:bg-slate-700/50 border border-slate-200 dark:border-slate-600 rounded-xl focus:ring-2 focus:ring-brand-500 text-center text-slate-900 dark:text-white outline-none font-bold tracking-widest text-lg transition" />
-            </div>
+            <input type="text" id="authOtp" maxlength="6" value="123456" placeholder="6-digit OTP" class="w-full px-4 py-3 bg-slate-50 dark:bg-slate-700/50 border border-slate-200 dark:border-slate-600 rounded-xl focus:ring-2 focus:ring-brand-500 text-center outline-none font-bold tracking-widest text-lg" />
           </div>
 
-          <button type="button" id="sendOtpBtn" onclick="handleSendOTP()" class="w-full py-3.5 bg-brand-600 hover:bg-brand-700 text-white font-semibold rounded-xl shadow-lg shadow-brand-500/25 transition active:scale-[0.98]">
-            Send OTP
-          </button>
-          <button type="button" id="verifyOtpBtn" onclick="handleVerifyOTP()" class="hidden w-full py-3.5 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded-xl shadow-lg shadow-emerald-500/25 transition active:scale-[0.98]">
-            Verify &amp; Enter Dashboard
-          </button>
-          <button type="button" onclick="quickDemoLogin()" class="w-full py-2.5 bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-200 font-medium text-xs rounded-xl transition flex items-center justify-center gap-1">
-            ⚡ Quick Manager Login (1-Click)
-          </button>
+          <button type="button" id="sendOtpBtn" onclick="handleSendOTP()" class="w-full py-3.5 bg-brand-600 hover:bg-brand-700 text-white font-semibold rounded-xl shadow-lg shadow-brand-500/25 transition active:scale-[0.98]">Send OTP</button>
+          <button type="button" id="verifyOtpBtn" onclick="handleVerifyOTP()" class="hidden w-full py-3.5 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded-xl shadow-lg shadow-emerald-500/25 transition active:scale-[0.98]">Verify &amp; Enter Dashboard</button>
+          <button type="button" onclick="quickDemoLogin()" class="w-full py-2.5 bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-200 font-medium text-xs rounded-xl transition">⚡ Quick Manager Login (1-Click)</button>
         </form>
-        <p class="text-xs text-center text-slate-400 dark:text-slate-500 mt-4">Protected with Firebase Auth &amp; Encrypted Cloud</p>
+        <p class="text-xs text-center text-slate-400 dark:text-slate-500 mt-4">Data is stored securely on this device.</p>
       </div>
     </div>
 
@@ -146,17 +111,13 @@
       <aside id="sidebar" class="fixed inset-y-0 left-0 transform -translate-x-full lg:translate-x-0 lg:static lg:block lg:col-span-3 z-40 w-72 lg:w-full bg-white dark:bg-slate-800 border-r lg:border border-slate-200 dark:border-slate-700 lg:rounded-3xl p-5 shadow-xl lg:shadow-sm transition-transform duration-300">
         <div class="flex items-center justify-between pb-6 mb-6 border-b border-slate-100 dark:border-slate-700">
           <div class="flex items-center gap-3">
-            <div class="p-2.5 bg-brand-600 text-white rounded-2xl shadow-md">
-              <i data-lucide="building-2" class="w-6 h-6"></i>
-            </div>
+            <div class="p-2.5 bg-brand-600 text-white rounded-2xl shadow-md"><i data-lucide="building-2" class="w-6 h-6"></i></div>
             <div>
               <h1 class="font-bold text-xl text-slate-900 dark:text-white leading-tight">Ghar<span class="text-brand-500">PG</span></h1>
               <p class="text-xs text-slate-400">Cloud Edition</p>
             </div>
           </div>
-          <button id="closeSidebarMobile" onclick="toggleMobileSidebar()" class="lg:hidden text-slate-400 hover:text-slate-600">
-            <i data-lucide="x" class="w-6 h-6"></i>
-          </button>
+          <button onclick="toggleMobileSidebar()" class="lg:hidden text-slate-400 hover:text-slate-600"><i data-lucide="x" class="w-6 h-6"></i></button>
         </div>
 
         <nav class="space-y-1.5" id="navigationTabs">
@@ -170,7 +131,7 @@
             <i data-lucide="users" class="w-5 h-5"></i> Tenants &amp; Rooms
           </button>
           <button onclick="switchTab('maintenance')" data-tab="maintenance" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-2xl font-semibold text-sm transition text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700/50">
-            <i data-lucide="wrench" class="w-5 h-5"></i> Maintenance &amp; Complaints
+            <i data-lucide="wrench" class="w-5 h-5"></i> Maintenance
           </button>
           <button onclick="switchTab('expenses')" data-tab="expenses" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-2xl font-semibold text-sm transition text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700/50">
             <i data-lucide="wallet" class="w-5 h-5"></i> Expense Log
@@ -183,7 +144,6 @@
           </button>
         </nav>
 
-        <!-- USER CARD & THEME TOGGLE -->
         <div class="mt-8 pt-6 border-t border-slate-100 dark:border-slate-700 space-y-3">
           <div class="p-3 bg-slate-50 dark:bg-slate-700/50 rounded-2xl flex items-center gap-3">
             <div class="w-10 h-10 rounded-full bg-brand-500 text-white flex items-center justify-center font-bold text-sm" id="userAvatar">P</div>
@@ -191,81 +151,59 @@
               <h4 class="font-bold text-sm truncate" id="userDisplayName">PG Owner</h4>
               <p class="text-xs text-slate-400 truncate" id="userPhoneDisplay">+91 9876543210</p>
             </div>
-            <button onclick="handleLogout()" class="p-2 text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-950/30 rounded-xl transition" title="Logout">
-              <i data-lucide="log-out" class="w-4 h-4"></i>
-            </button>
+            <button onclick="handleLogout()" class="p-2 text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-950/30 rounded-xl transition" title="Logout"><i data-lucide="log-out" class="w-4 h-4"></i></button>
           </div>
-
-          <button id="themeToggleDesktop" onclick="toggleDarkMode()" class="w-full py-2.5 px-4 bg-slate-100 dark:bg-slate-700/60 rounded-xl font-medium text-xs text-slate-600 dark:text-slate-300 flex items-center justify-between">
+          <button onclick="toggleDarkMode()" class="w-full py-2.5 px-4 bg-slate-100 dark:bg-slate-700/60 rounded-xl font-medium text-xs text-slate-600 dark:text-slate-300 flex items-center justify-between">
             <span class="flex items-center gap-2"><i data-lucide="moon" class="w-4 h-4"></i> Theme</span>
             <span class="font-semibold text-brand-500 dark:text-brand-400" id="themeModeText">Light Mode</span>
           </button>
         </div>
       </aside>
 
-      <!-- MAIN CONTENT CONTENT PANEL -->
+      <!-- MAIN CONTENT -->
       <main class="lg:col-span-9 space-y-6">
 
-        <!-- TAB 1: DASHBOARD -->
+        <!-- DASHBOARD -->
         <section id="tab-dashboard" class="tab-content space-y-6">
-          <!-- WELCOME & QUICK SYNC -->
           <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-gradient-to-r from-brand-700 to-brand-600 p-6 rounded-3xl text-white shadow-xl shadow-brand-600/10">
             <div>
-              <span class="px-3 py-1 bg-white/20 rounded-full text-xs font-semibold uppercase tracking-wider">Live Cloud Dashboard</span>
+              <span class="px-3 py-1 bg-white/20 rounded-full text-xs font-semibold uppercase tracking-wider">Live Dashboard</span>
               <h2 class="text-2xl font-extrabold mt-2" id="welcomeMsg">Welcome, Manager!</h2>
-              <p class="text-sm text-brand-100 mt-1">Here is today's overview for your PG management.</p>
+              <p class="text-sm text-brand-100 mt-1" id="netBalanceMsg">Here is today's overview for your PG.</p>
             </div>
-            <div class="flex gap-2">
-              <button onclick="refreshData()" class="px-4 py-2 bg-white/10 hover:bg-white/20 border border-white/20 rounded-2xl text-xs font-semibold backdrop-blur transition flex items-center gap-2">
-                <i data-lucide="refresh-cw" class="w-4 h-4"></i> Sync Data
-              </button>
-            </div>
+            <button onclick="refreshData()" class="px-4 py-2 bg-white/10 hover:bg-white/20 border border-white/20 rounded-2xl text-xs font-semibold backdrop-blur transition flex items-center gap-2">
+              <i data-lucide="refresh-cw" class="w-4 h-4"></i> Refresh
+            </button>
           </div>
 
-          <!-- METRICS GRID -->
           <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
             <div class="bg-white dark:bg-slate-800 p-4 sm:p-5 rounded-3xl border border-slate-100 dark:border-slate-700 shadow-sm">
-              <div class="p-2.5 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 w-fit rounded-2xl mb-3">
-                <i data-lucide="indian-rupee" class="w-5 h-5"></i>
-              </div>
+              <div class="p-2.5 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 w-fit rounded-2xl mb-3"><i data-lucide="indian-rupee" class="w-5 h-5"></i></div>
               <p class="text-xs font-medium text-slate-400">Total Rent Collected</p>
               <h3 class="text-xl sm:text-2xl font-extrabold text-slate-900 dark:text-white mt-1" id="dashCollected">₹0</h3>
             </div>
-
             <div class="bg-white dark:bg-slate-800 p-4 sm:p-5 rounded-3xl border border-slate-100 dark:border-slate-700 shadow-sm">
-              <div class="p-2.5 bg-amber-500/10 text-amber-600 dark:text-amber-400 w-fit rounded-2xl mb-3">
-                <i data-lucide="clock" class="w-5 h-5"></i>
-              </div>
+              <div class="p-2.5 bg-amber-500/10 text-amber-600 dark:text-amber-400 w-fit rounded-2xl mb-3"><i data-lucide="clock" class="w-5 h-5"></i></div>
               <p class="text-xs font-medium text-slate-400">Pending Dues</p>
               <h3 class="text-xl sm:text-2xl font-extrabold text-amber-600 dark:text-amber-400 mt-1" id="dashDues">₹0</h3>
             </div>
-
             <div class="bg-white dark:bg-slate-800 p-4 sm:p-5 rounded-3xl border border-slate-100 dark:border-slate-700 shadow-sm">
-              <div class="p-2.5 bg-blue-500/10 text-blue-600 dark:text-blue-400 w-fit rounded-2xl mb-3">
-                <i data-lucide="users" class="w-5 h-5"></i>
-              </div>
+              <div class="p-2.5 bg-blue-500/10 text-blue-600 dark:text-blue-400 w-fit rounded-2xl mb-3"><i data-lucide="users" class="w-5 h-5"></i></div>
               <p class="text-xs font-medium text-slate-400">Total Tenants</p>
               <h3 class="text-xl sm:text-2xl font-extrabold text-slate-900 dark:text-white mt-1" id="dashTenants">0</h3>
             </div>
-
             <div class="bg-white dark:bg-slate-800 p-4 sm:p-5 rounded-3xl border border-slate-100 dark:border-slate-700 shadow-sm">
-              <div class="p-2.5 bg-rose-500/10 text-rose-600 dark:text-rose-400 w-fit rounded-2xl mb-3">
-                <i data-lucide="alert-triangle" class="w-5 h-5"></i>
-              </div>
+              <div class="p-2.5 bg-rose-500/10 text-rose-600 dark:text-rose-400 w-fit rounded-2xl mb-3"><i data-lucide="alert-triangle" class="w-5 h-5"></i></div>
               <p class="text-xs font-medium text-slate-400">Active Issues</p>
               <h3 class="text-xl sm:text-2xl font-extrabold text-slate-900 dark:text-white mt-1" id="dashIssues">0</h3>
             </div>
           </div>
 
-          <!-- QUICK ACTIONS & CHART -->
           <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div class="md:col-span-2 bg-white dark:bg-slate-800 p-6 rounded-3xl border border-slate-100 dark:border-slate-700 shadow-sm">
               <h3 class="font-bold text-lg text-slate-900 dark:text-white mb-4">Revenue &amp; Expense Analytics</h3>
-              <div class="h-64">
-                <canvas id="revenueChart"></canvas>
-              </div>
+              <div class="h-64"><canvas id="revenueChart"></canvas></div>
             </div>
-
             <div class="bg-white dark:bg-slate-800 p-6 rounded-3xl border border-slate-100 dark:border-slate-700 shadow-sm space-y-4">
               <h3 class="font-bold text-lg text-slate-900 dark:text-white">Quick Management</h3>
               <div class="grid grid-cols-1 gap-2.5">
@@ -290,14 +228,11 @@
           </div>
         </section>
 
-        <!-- TAB 2: RENT SLIPS -->
+        <!-- RENT SLIPS -->
         <section id="tab-slips" class="tab-content hidden space-y-6">
           <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
-            <!-- SLIP FORM -->
             <div class="lg:col-span-6 bg-white dark:bg-slate-800 p-6 rounded-3xl border border-slate-100 dark:border-slate-700 shadow-sm space-y-4">
-              <h3 class="font-bold text-lg text-slate-900 dark:text-white border-b border-slate-100 dark:border-slate-700 pb-3">
-                📄 Generate Rent Receipt
-              </h3>
+              <h3 class="font-bold text-lg text-slate-900 dark:text-white border-b border-slate-100 dark:border-slate-700 pb-3">📄 Generate Rent Receipt</h3>
               <form id="slipForm" onsubmit="event.preventDefault();" class="space-y-3">
                 <div>
                   <label class="block text-xs font-semibold text-slate-500 mb-1">Select Tenant</label>
@@ -336,33 +271,25 @@
                 <div class="grid grid-cols-2 gap-3">
                   <div>
                     <label class="block text-xs font-semibold text-slate-500 mb-1">Rent Amount (₹)</label>
-                    <input type="number" id="slipRent" placeholder="5000" class="w-full px-3.5 py-2.5 bg-slate-50 dark:bg-slate-700/50 border border-slate-200 dark:border-slate-600 rounded-xl text-sm outline-none" required />
+                    <input type="number" min="0" id="slipRent" placeholder="5000" class="w-full px-3.5 py-2.5 bg-slate-50 dark:bg-slate-700/50 border border-slate-200 dark:border-slate-600 rounded-xl text-sm outline-none" required />
                   </div>
                   <div>
                     <label class="block text-xs font-semibold text-slate-500 mb-1">Previous Due (₹)</label>
-                    <input type="number" id="slipDue" value="0" class="w-full px-3.5 py-2.5 bg-slate-50 dark:bg-slate-700/50 border border-slate-200 dark:border-slate-600 rounded-xl text-sm outline-none" />
+                    <input type="number" min="0" id="slipDue" value="0" class="w-full px-3.5 py-2.5 bg-slate-50 dark:bg-slate-700/50 border border-slate-200 dark:border-slate-600 rounded-xl text-sm outline-none" />
                   </div>
                 </div>
-                <button type="button" onclick="handleGenerateSlip()" class="w-full py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-sm rounded-xl shadow-md transition">
-                  Generate Slip &amp; Save
-                </button>
+                <button type="button" onclick="handleGenerateSlip()" class="w-full py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-sm rounded-xl shadow-md transition">Generate Slip &amp; Save</button>
               </form>
             </div>
 
-            <!-- SLIP PREVIEW -->
             <div class="lg:col-span-6 bg-white dark:bg-slate-800 p-6 rounded-3xl border border-slate-100 dark:border-slate-700 shadow-sm space-y-4">
               <div class="flex items-center justify-between border-b border-slate-100 dark:border-slate-700 pb-3">
                 <h3 class="font-bold text-lg text-slate-900 dark:text-white">Receipt Preview</h3>
                 <div class="flex gap-2">
-                  <button onclick="shareWhatsApp()" class="p-2 bg-emerald-500/10 text-emerald-600 hover:bg-emerald-500/20 rounded-xl text-xs font-semibold transition flex items-center gap-1">
-                    <i data-lucide="send" class="w-4 h-4"></i> WhatsApp
-                  </button>
-                  <button onclick="window.print()" class="p-2 bg-brand-500/10 text-brand-600 hover:bg-brand-500/20 rounded-xl text-xs font-semibold transition flex items-center gap-1">
-                    <i data-lucide="printer" class="w-4 h-4"></i> Print / PDF
-                  </button>
+                  <button onclick="shareWhatsApp()" class="p-2 bg-emerald-500/10 text-emerald-600 hover:bg-emerald-500/20 rounded-xl text-xs font-semibold transition flex items-center gap-1"><i data-lucide="send" class="w-4 h-4"></i> WhatsApp</button>
+                  <button onclick="window.print()" class="p-2 bg-brand-500/10 text-brand-600 hover:bg-brand-500/20 rounded-xl text-xs font-semibold transition flex items-center gap-1"><i data-lucide="printer" class="w-4 h-4"></i> Print / PDF</button>
                 </div>
               </div>
-
               <div id="printableSlip" class="p-5 bg-slate-50 dark:bg-slate-900 rounded-2xl border-2 border-dashed border-brand-300 dark:border-slate-700 space-y-3 text-sm">
                 <div class="text-center pb-3 border-b border-slate-200 dark:border-slate-800">
                   <h2 class="font-extrabold text-lg text-brand-700 dark:text-brand-400" id="prevPgName">Ghar PG Accommodation</h2>
@@ -379,32 +306,29 @@
                   <div class="flex justify-between"><span class="text-slate-400">Monthly Rent:</span><span class="font-semibold" id="prevRent">₹0</span></div>
                   <div class="flex justify-between"><span class="text-slate-400">Arrears / Due:</span><span class="font-semibold" id="prevDue">₹0</span></div>
                   <div class="flex justify-between text-base font-bold text-slate-900 dark:text-white pt-2 border-t border-slate-200 dark:border-slate-800">
-                    <span>Total Amount Paid:</span>
-                    <span class="text-brand-600 dark:text-brand-400" id="prevTotal">₹0</span>
+                    <span>Total Amount Paid:</span><span class="text-brand-600 dark:text-brand-400" id="prevTotal">₹0</span>
                   </div>
                 </div>
-                <div class="pt-3 text-center text-[10px] text-slate-400 border-t border-slate-200 dark:border-slate-800">
-                  Thank you for staying with us! System Generated Receipt.
-                </div>
+                <div class="pt-3 text-center text-[10px] text-slate-400 border-t border-slate-200 dark:border-slate-800">Thank you for staying with us! System Generated Receipt.</div>
               </div>
             </div>
           </div>
         </section>
 
-        <!-- TAB 3: TENANTS & ROOMS -->
+        <!-- TENANTS -->
         <section id="tab-guests" class="tab-content hidden space-y-6">
           <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
             <div>
               <h2 class="text-xl font-bold text-slate-900 dark:text-white">Tenants Directory</h2>
               <p class="text-xs text-slate-400">Manage room allocations and guest records.</p>
             </div>
-            <button onclick="openTenantModal()" class="px-4 py-2.5 bg-brand-600 hover:bg-brand-700 text-white font-semibold text-xs rounded-2xl shadow-md transition flex items-center gap-2">
-              <i data-lucide="user-plus" class="w-4 h-4"></i> Add New Tenant
-            </button>
+            <button onclick="openTenantModal()" class="px-4 py-2.5 bg-brand-600 hover:bg-brand-700 text-white font-semibold text-xs rounded-2xl shadow-md transition flex items-center gap-2"><i data-lucide="user-plus" class="w-4 h-4"></i> Add New Tenant</button>
           </div>
 
-          <!-- TENANTS TABLE -->
           <div class="bg-white dark:bg-slate-800 rounded-3xl border border-slate-100 dark:border-slate-700 shadow-sm overflow-hidden">
+            <div class="p-4 border-b border-slate-100 dark:border-slate-700">
+              <input type="text" id="tenantSearch" oninput="renderTenants()" placeholder="🔍 Search tenant by name, room or mobile..." class="w-full px-4 py-2.5 bg-slate-50 dark:bg-slate-700/50 border border-slate-200 dark:border-slate-600 rounded-xl text-sm outline-none" />
+            </div>
             <div class="overflow-x-auto">
               <table class="w-full text-left border-collapse text-xs sm:text-sm">
                 <thead>
@@ -416,21 +340,22 @@
                     <th class="p-4">Actions</th>
                   </tr>
                 </thead>
-                <tbody id="tenantTableBody" class="divide-y divide-slate-100 dark:divide-slate-700/50">
-                  <!-- Dynamic content -->
-                </tbody>
+                <tbody id="tenantTableBody" class="divide-y divide-slate-100 dark:divide-slate-700/50"></tbody>
               </table>
+            </div>
+            <div id="tenantEmptyState" class="empty-state hidden">
+              <i data-lucide="users" class="w-10 h-10 mb-2"></i>
+              <p class="text-sm font-medium">No tenants found</p>
+              <p class="text-xs">Add your first tenant to get started.</p>
             </div>
           </div>
         </section>
 
-        <!-- TAB 4: MAINTENANCE -->
+        <!-- MAINTENANCE -->
         <section id="tab-maintenance" class="tab-content hidden space-y-6">
           <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
             <div class="lg:col-span-5 bg-white dark:bg-slate-800 p-6 rounded-3xl border border-slate-100 dark:border-slate-700 shadow-sm space-y-4">
-              <h3 class="font-bold text-lg text-slate-900 dark:text-white border-b border-slate-100 dark:border-slate-700 pb-3">
-                🔧 Log Maintenance Issue
-              </h3>
+              <h3 class="font-bold text-lg text-slate-900 dark:text-white border-b border-slate-100 dark:border-slate-700 pb-3">🔧 Log Maintenance Issue</h3>
               <form id="maintForm" onsubmit="event.preventDefault();" class="space-y-3">
                 <div>
                   <label class="block text-xs font-semibold text-slate-500 mb-1">Issue Title</label>
@@ -458,30 +383,27 @@
                   <label class="block text-xs font-semibold text-slate-500 mb-1">Description</label>
                   <textarea id="maintDesc" rows="3" placeholder="Describe the issue..." class="w-full px-3.5 py-2.5 bg-slate-50 dark:bg-slate-700/50 border border-slate-200 dark:border-slate-600 rounded-xl text-sm outline-none resize-none"></textarea>
                 </div>
-                <button type="button" onclick="handleSaveMaintenance()" class="w-full py-3 bg-amber-600 hover:bg-amber-700 text-white font-semibold text-sm rounded-xl shadow-md transition">
-                  Save Issue Log
-                </button>
+                <button type="button" onclick="handleSaveMaintenance()" class="w-full py-3 bg-amber-600 hover:bg-amber-700 text-white font-semibold text-sm rounded-xl shadow-md transition">Save Issue Log</button>
               </form>
             </div>
 
             <div class="lg:col-span-7 bg-white dark:bg-slate-800 p-6 rounded-3xl border border-slate-100 dark:border-slate-700 shadow-sm space-y-4">
-              <h3 class="font-bold text-lg text-slate-900 dark:text-white border-b border-slate-100 dark:border-slate-700 pb-3">
-                Active Maintenance Logs
-              </h3>
-              <div id="maintListContainer" class="space-y-3 max-h-[500px] overflow-y-auto pr-1 custom-scrollbar">
-                <!-- Dynamic logs -->
+              <h3 class="font-bold text-lg text-slate-900 dark:text-white border-b border-slate-100 dark:border-slate-700 pb-3">Maintenance Logs</h3>
+              <div id="maintListContainer" class="space-y-3 max-h-[500px] overflow-y-auto pr-1 custom-scrollbar"></div>
+              <div id="maintEmptyState" class="empty-state hidden">
+                <i data-lucide="wrench" class="w-10 h-10 mb-2"></i>
+                <p class="text-sm font-medium">No maintenance issues</p>
+                <p class="text-xs">Logged issues will appear here.</p>
               </div>
             </div>
           </div>
         </section>
 
-        <!-- TAB 5: EXPENSES -->
+        <!-- EXPENSES -->
         <section id="tab-expenses" class="tab-content hidden space-y-6">
           <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
             <div class="lg:col-span-5 bg-white dark:bg-slate-800 p-6 rounded-3xl border border-slate-100 dark:border-slate-700 shadow-sm space-y-4">
-              <h3 class="font-bold text-lg text-slate-900 dark:text-white border-b border-slate-100 dark:border-slate-700 pb-3">
-                💸 Log PG Expense
-              </h3>
+              <h3 class="font-bold text-lg text-slate-900 dark:text-white border-b border-slate-100 dark:border-slate-700 pb-3">💸 Log PG Expense</h3>
               <form id="expenseForm" onsubmit="event.preventDefault();" class="space-y-3">
                 <div>
                   <label class="block text-xs font-semibold text-slate-500 mb-1">Expense Title</label>
@@ -490,7 +412,7 @@
                 <div class="grid grid-cols-2 gap-3">
                   <div>
                     <label class="block text-xs font-semibold text-slate-500 mb-1">Amount (₹)</label>
-                    <input type="number" id="expAmount" placeholder="1200" class="w-full px-3.5 py-2.5 bg-slate-50 dark:bg-slate-700/50 border border-slate-200 dark:border-slate-600 rounded-xl text-sm outline-none" required />
+                    <input type="number" min="0" id="expAmount" placeholder="1200" class="w-full px-3.5 py-2.5 bg-slate-50 dark:bg-slate-700/50 border border-slate-200 dark:border-slate-600 rounded-xl text-sm outline-none" required />
                   </div>
                   <div>
                     <label class="block text-xs font-semibold text-slate-500 mb-1">Category</label>
@@ -504,51 +426,50 @@
                     </select>
                   </div>
                 </div>
-                <button type="button" onclick="handleSaveExpense()" class="w-full py-3 bg-rose-600 hover:bg-rose-700 text-white font-semibold text-sm rounded-xl shadow-md transition">
-                  Record Expense
-                </button>
+                <button type="button" onclick="handleSaveExpense()" class="w-full py-3 bg-rose-600 hover:bg-rose-700 text-white font-semibold text-sm rounded-xl shadow-md transition">Record Expense</button>
               </form>
             </div>
 
             <div class="lg:col-span-7 bg-white dark:bg-slate-800 p-6 rounded-3xl border border-slate-100 dark:border-slate-700 shadow-sm space-y-4">
-              <h3 class="font-bold text-lg text-slate-900 dark:text-white border-b border-slate-100 dark:border-slate-700 pb-3">
-                Expense Records
-              </h3>
-              <div id="expenseListContainer" class="space-y-3 max-h-[500px] overflow-y-auto pr-1 custom-scrollbar">
-                <!-- Dynamic expenses -->
+              <div class="flex items-center justify-between border-b border-slate-100 dark:border-slate-700 pb-3">
+                <h3 class="font-bold text-lg text-slate-900 dark:text-white">Expense Records</h3>
+                <span class="text-xs font-bold text-rose-600" id="expenseTotalBadge">₹0 total</span>
+              </div>
+              <div id="expenseListContainer" class="space-y-3 max-h-[500px] overflow-y-auto pr-1 custom-scrollbar"></div>
+              <div id="expenseEmptyState" class="empty-state hidden">
+                <i data-lucide="wallet" class="w-10 h-10 mb-2"></i>
+                <p class="text-sm font-medium">No expenses recorded</p>
+                <p class="text-xs">Record your first PG expense above.</p>
               </div>
             </div>
           </div>
         </section>
 
-        <!-- TAB 6: HISTORY -->
+        <!-- HISTORY -->
         <section id="tab-history" class="tab-content hidden space-y-6">
           <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
             <div>
               <h2 class="text-xl font-bold text-slate-900 dark:text-white">Transaction Logs &amp; History</h2>
-              <p class="text-xs text-slate-400">All historical records saved safely.</p>
+              <p class="text-xs text-slate-400">All historical records saved on this device.</p>
             </div>
-            <div class="flex gap-2">
-              <button onclick="exportCSV()" class="px-4 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-xs rounded-2xl shadow-md transition flex items-center gap-2">
-                <i data-lucide="download" class="w-4 h-4"></i> Export CSV
-              </button>
-            </div>
+            <button onclick="exportCSV()" class="px-4 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-xs rounded-2xl shadow-md transition flex items-center gap-2"><i data-lucide="download" class="w-4 h-4"></i> Export CSV</button>
           </div>
 
           <div class="bg-white dark:bg-slate-800 p-6 rounded-3xl border border-slate-100 dark:border-slate-700 shadow-sm space-y-4">
-            <input type="text" id="historySearch" oninput="filterHistory()" placeholder="🔍 Search transaction by tenant name or room..." class="w-full px-4 py-3 bg-slate-50 dark:bg-slate-700/50 border border-slate-200 dark:border-slate-600 rounded-xl text-sm outline-none" />
-            <div id="historyLogsContainer" class="space-y-2 max-h-[500px] overflow-y-auto custom-scrollbar">
-              <!-- Dynamic items -->
+            <input type="text" id="historySearch" oninput="renderHistory()" placeholder="🔍 Search transaction by tenant name or room..." class="w-full px-4 py-3 bg-slate-50 dark:bg-slate-700/50 border border-slate-200 dark:border-slate-600 rounded-xl text-sm outline-none" />
+            <div id="historyLogsContainer" class="space-y-2 max-h-[500px] overflow-y-auto custom-scrollbar"></div>
+            <div id="historyEmptyState" class="empty-state hidden">
+              <i data-lucide="receipt" class="w-10 h-10 mb-2"></i>
+              <p class="text-sm font-medium">No transactions yet</p>
+              <p class="text-xs">Generated rent slips will show up here.</p>
             </div>
           </div>
         </section>
 
-        <!-- TAB 7: SETTINGS -->
+        <!-- SETTINGS -->
         <section id="tab-settings" class="tab-content hidden space-y-6">
           <div class="bg-white dark:bg-slate-800 p-6 rounded-3xl border border-slate-100 dark:border-slate-700 shadow-sm space-y-4 max-w-xl">
-            <h3 class="font-bold text-lg text-slate-900 dark:text-white border-b border-slate-100 dark:border-slate-700 pb-3">
-              ⚙️ PG Profile &amp; Settings
-            </h3>
+            <h3 class="font-bold text-lg text-slate-900 dark:text-white border-b border-slate-100 dark:border-slate-700 pb-3">⚙️ PG Profile &amp; Settings</h3>
             <form id="settingsForm" onsubmit="event.preventDefault();" class="space-y-4">
               <div>
                 <label class="block text-xs font-semibold text-slate-500 mb-1">PG Name</label>
@@ -562,10 +483,17 @@
                 <label class="block text-xs font-semibold text-slate-500 mb-1">UPI ID for Rent Payments</label>
                 <input type="text" id="setUpiId" placeholder="owner@upi" class="w-full px-3.5 py-2.5 bg-slate-50 dark:bg-slate-700/50 border border-slate-200 dark:border-slate-600 rounded-xl text-sm outline-none" />
               </div>
-              <button type="button" onclick="saveSettings()" class="w-full py-3 bg-brand-600 hover:bg-brand-700 text-white font-semibold text-sm rounded-xl shadow-md transition">
-                Save Profile Settings
-              </button>
+              <button type="button" onclick="saveSettings()" class="w-full py-3 bg-brand-600 hover:bg-brand-700 text-white font-semibold text-sm rounded-xl shadow-md transition">Save Profile Settings</button>
             </form>
+          </div>
+
+          <div class="bg-white dark:bg-slate-800 p-6 rounded-3xl border border-slate-100 dark:border-slate-700 shadow-sm space-y-3 max-w-xl">
+            <h3 class="font-bold text-lg text-slate-900 dark:text-white border-b border-slate-100 dark:border-slate-700 pb-3">🗄️ Data</h3>
+            <p class="text-xs text-slate-500 dark:text-slate-400">All data is stored locally in this browser. Use export/reset carefully — reset cannot be undone.</p>
+            <div class="flex gap-3">
+              <button onclick="exportCSV()" class="flex-1 py-2.5 bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-200 font-semibold text-xs rounded-xl transition">Export CSV</button>
+              <button onclick="handleResetData()" class="flex-1 py-2.5 bg-rose-50 dark:bg-rose-950/30 text-rose-600 font-semibold text-xs rounded-xl transition">Reset All Data</button>
+            </div>
           </div>
         </section>
 
@@ -573,14 +501,13 @@
     </div>
   </div>
 
-  <!-- MODAL: ADD/EDIT TENANT -->
+  <!-- TENANT MODAL -->
   <div id="tenantModal" class="fixed inset-0 z-50 bg-slate-900/80 backdrop-blur-md hidden flex items-center justify-center p-4">
     <div class="bg-white dark:bg-slate-800 w-full max-w-lg p-6 rounded-3xl shadow-2xl border border-slate-100 dark:border-slate-700 space-y-4">
       <div class="flex justify-between items-center border-b border-slate-100 dark:border-slate-700 pb-3">
         <h3 class="font-bold text-lg text-slate-900 dark:text-white" id="tenantModalTitle">Register New Tenant</h3>
         <button onclick="closeTenantModal()" class="p-1 text-slate-400 hover:text-slate-600"><i data-lucide="x" class="w-5 h-5"></i></button>
       </div>
-
       <form id="tenantForm" onsubmit="event.preventDefault();" class="space-y-3">
         <input type="hidden" id="editTenantId" />
         <div>
@@ -608,228 +535,123 @@
           </div>
           <div>
             <label class="block text-xs font-semibold text-slate-500 mb-1">Monthly Rent (₹)</label>
-            <input type="number" id="tRent" placeholder="5000" class="w-full px-3.5 py-2.5 bg-slate-50 dark:bg-slate-700/50 border border-slate-200 dark:border-slate-600 rounded-xl text-sm outline-none" required />
+            <input type="number" min="0" id="tRent" placeholder="5000" class="w-full px-3.5 py-2.5 bg-slate-50 dark:bg-slate-700/50 border border-slate-200 dark:border-slate-600 rounded-xl text-sm outline-none" required />
           </div>
         </div>
-        <button type="button" onclick="handleSaveTenant()" class="w-full py-3 bg-brand-600 hover:bg-brand-700 text-white font-semibold text-sm rounded-xl shadow-md transition">
-          Save Tenant Details
-        </button>
+        <button type="button" onclick="handleSaveTenant()" class="w-full py-3 bg-brand-600 hover:bg-brand-700 text-white font-semibold text-sm rounded-xl shadow-md transition">Save Tenant Details</button>
       </form>
     </div>
   </div>
 
-  <!-- TOAST NOTIFICATION -->
+  <!-- TOAST -->
   <div id="toast" class="fixed bottom-5 right-5 z-50 hidden px-5 py-3.5 rounded-2xl shadow-2xl text-white font-semibold text-sm flex items-center gap-2 transition-all transform translate-y-10">
     <i data-lucide="check-circle" class="w-5 h-5"></i>
     <span id="toastMsg">Success</span>
   </div>
 
-  <!-- INSTANT SYNCHRONOUS LOGIN ENGINE (GUARANTEED NO-WAIT ACCESS) -->
   <script>
-    window.enterDashboard = function(mobile) {
-      const mob = mobile || document.getElementById('authMobile')?.value || '8651744312';
-      localStorage.setItem('gharPG_mobile', mob);
-      localStorage.setItem('gharPG_isLoggedIn', 'true');
-
-      const phoneEl = document.getElementById('userPhoneDisplay');
-      if (phoneEl) phoneEl.innerText = `+91 ${mob}`;
-      const nameEl = document.getElementById('userDisplayName');
-      if (nameEl) nameEl.innerText = 'PG Owner';
-      const avatarEl = document.getElementById('userAvatar');
-      if (avatarEl) avatarEl.innerText = 'P';
-
-      const authScr = document.getElementById('authScreen');
-      if (authScr) authScr.classList.add('hidden');
-      
-      const appCont = document.getElementById('appContainer');
-      if (appCont) appCont.classList.remove('hidden');
-
-      if (typeof window.seedDemoDataIfEmpty === 'function') window.seedDemoDataIfEmpty();
-      if (typeof window.setupFirestoreListeners === 'function') window.setupFirestoreListeners();
-      if (window.lucide) lucide.createIcons();
+    // ==================== LOCAL DATA STORE ====================
+    const STORAGE_KEY = 'gharPG_store_v2';
+    let store = {
+      tenants: [],
+      receipts: [],
+      maintenance: [],
+      expenses: [],
+      settings: { pgName: 'Ghar PG Accommodation', pgAddress: 'Station Road, City Center', upiId: '' }
     };
-
-    window.handleSendOTP = function() {
-      const mobInput = document.getElementById('authMobile');
-      const mob = mobInput ? mobInput.value.trim() : '';
-      if (mob.length !== 10) {
-        if (window.showToast) window.showToast('Enter valid 10-digit mobile number', 'error');
-        return;
-      }
-      localStorage.setItem('gharPG_mobile', mob);
-      document.getElementById('otpSection')?.classList.remove('hidden');
-      document.getElementById('sendOtpBtn')?.classList.add('hidden');
-      document.getElementById('verifyOtpBtn')?.classList.remove('hidden');
-      const otpInput = document.getElementById('authOtp');
-      if (otpInput) otpInput.value = '123456';
-      if (window.showToast) window.showToast('Demo OTP Sent: 123456');
-    };
-
-    window.handleVerifyOTP = function() {
-      const otpInput = document.getElementById('authOtp');
-      const otp = otpInput ? otpInput.value.trim() : '';
-      if (otp === '123456' || otp.length === 6) {
-        if (window.showToast) window.showToast('Login Verified!');
-        const mobInput = document.getElementById('authMobile');
-        window.enterDashboard(mobInput ? mobInput.value : '8651744312');
-      } else {
-        if (window.showToast) window.showToast('Invalid OTP', 'error');
-      }
-    };
-
-    window.quickDemoLogin = function() {
-      const mobInput = document.getElementById('authMobile');
-      const mob = mobInput && mobInput.value ? mobInput.value : '8651744312';
-      if (window.showToast) window.showToast('Logged in as PG Owner!');
-      window.enterDashboard(mob);
-    };
-
-    // Auto-check login state immediately on load
-    if (localStorage.getItem('gharPG_isLoggedIn') === 'true') {
-      window.addEventListener('DOMContentLoaded', () => {
-        window.enterDashboard(localStorage.getItem('gharPG_mobile') || '8651744312');
-      });
-    }
-
-    // Attach direct DOM event listeners
-    document.addEventListener('DOMContentLoaded', () => {
-      document.getElementById('sendOtpBtn')?.addEventListener('click', window.handleSendOTP);
-      document.getElementById('verifyOtpBtn')?.addEventListener('click', window.handleVerifyOTP);
-    });
-  </script>
-
-  <!-- SCRIPT LOGIC (MODULAR FIREBASE V11 + GUARANTEED SESSION FALLBACK) -->
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-    import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-    import { getFirestore, collection, onSnapshot, doc, addDoc, updateDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
-
-    // Initialize Lucide Icons
-    if (window.lucide) {
-      lucide.createIcons();
-    }
-
-    // ==================== FIREBASE SETUP ====================
-    let app, auth, db;
-    const appId = typeof __app_id !== 'undefined' ? __app_id : 'ghar-pg-app';
-
-    try {
-      const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : { apiKey: "demo" };
-      app = initializeApp(firebaseConfig);
-      auth = getAuth(app);
-      db = getFirestore(app);
-    } catch (err) {
-      console.warn("Firebase config fallback notice:", err);
-    }
-
-    // Application state
-    let currentUser = null;
-    let tenants = [];
-    let receipts = [];
-    let maintenanceLogs = [];
-    let expenses = [];
     let revenueChartInstance = null;
 
-    // Helper Functions
-    function showToast(msg, type = 'success') {
+    function loadStore() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (raw) {
+          const parsed = JSON.parse(raw);
+          store = Object.assign(store, parsed);
+          return true;
+        }
+      } catch (e) { console.warn('Store load failed, using defaults', e); }
+      return false;
+    }
+
+    function saveStore() {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(store));
+      } catch (e) { console.warn('Store save failed', e); }
+    }
+
+    function seedDemoDataIfEmpty() {
+      const hadData = loadStore();
+      if (hadData) return;
+
+      store.tenants = [
+        { id: 't1', name: 'Rahul Sharma', mobile: '9876543210', room: '101', sharing: 'Double Share', rent: 5500 },
+        { id: 't2', name: 'Amit Verma', mobile: '9123456789', room: '102', sharing: 'Single Share', rent: 7000 },
+        { id: 't3', name: 'Priya Patel', mobile: '9988776655', room: '201', sharing: 'Double Share', rent: 5000 }
+      ];
+      store.receipts = [
+        { id: 'r1', slipNo: 'SLIP-1024', name: 'Rahul Sharma', room: '101', month: 'August 2026', mode: 'UPI', rent: 5500, due: 0, total: 5500, date: new Date().toLocaleDateString('en-IN') },
+        { id: 'r2', slipNo: 'SLIP-1025', name: 'Amit Verma', room: '102', month: 'August 2026', mode: 'Cash', rent: 7000, due: 500, total: 7500, date: new Date().toLocaleDateString('en-IN') }
+      ];
+      store.maintenance = [
+        { id: 'm1', title: 'Room 101 AC Service', priority: 'Medium', status: 'Pending', desc: 'Filter cleaning required', createdAt: new Date().toLocaleDateString('en-IN') }
+      ];
+      store.expenses = [
+        { id: 'e1', title: 'Electricity Bill', amount: 3200, category: 'Electricity', date: new Date().toLocaleDateString('en-IN') }
+      ];
+      saveStore();
+    }
+
+    // ==================== HELPERS ====================
+    function showToast(msg, type) {
+      type = type || 'success';
       const toast = document.getElementById('toast');
       const toastMsg = document.getElementById('toastMsg');
-      if (!toast || !toastMsg) return;
       toastMsg.innerText = msg;
-      
-      toast.className = `fixed bottom-5 right-5 z-50 px-5 py-3.5 rounded-2xl shadow-2xl text-white font-semibold text-sm flex items-center gap-2 transition-all ${
-        type === 'success' ? 'bg-emerald-600' : 'bg-rose-600'
-      }`;
-      
+      toast.className = 'fixed bottom-5 right-5 z-50 px-5 py-3.5 rounded-2xl shadow-2xl text-white font-semibold text-sm flex items-center gap-2 transition-all ' +
+        (type === 'success' ? 'bg-emerald-600' : 'bg-rose-600');
       toast.classList.remove('hidden', 'translate-y-10');
-      setTimeout(() => {
+      setTimeout(function () {
         toast.classList.add('translate-y-10');
-        setTimeout(() => toast.classList.add('hidden'), 300);
-      }, 3000);
+        setTimeout(function () { toast.classList.add('hidden'); }, 300);
+      }, 2500);
     }
 
-    // Initialize Default Demo Data if local/cloud state is empty
-    function seedDemoDataIfEmpty() {
-      if (tenants.length === 0) {
-        tenants = [
-          { id: 't1', name: 'Rahul Sharma', mobile: '9876543210', room: '101', sharing: 'Double Share', rent: 5500 },
-          { id: 't2', name: 'Amit Verma', mobile: '9123456789', room: '102', sharing: 'Single Share', rent: 7000 },
-          { id: 't3', name: 'Priya Patel', mobile: '9988776655', room: '201', sharing: 'Double Share', rent: 5000 }
-        ];
-        renderTenants();
-        populateTenantDropdown();
-      }
+    function rupee(n) { return '₹' + Number(n || 0).toLocaleString('en-IN'); }
+    function newId(prefix) { return prefix + '_' + Date.now() + '_' + Math.floor(Math.random() * 1000); }
+    function refreshIcons() { if (window.lucide) lucide.createIcons(); }
 
-      if (receipts.length === 0) {
-        receipts = [
-          { id: 'r1', slipNo: 'SLIP-1024', name: 'Rahul Sharma', room: '101', month: 'August 2026', mode: 'UPI', rent: 5500, due: 0, total: 5500, date: new Date().toLocaleDateString('en-IN') },
-          { id: 'r2', slipNo: 'SLIP-1025', name: 'Amit Verma', room: '102', month: 'August 2026', mode: 'Cash', rent: 7000, due: 500, total: 7500, date: new Date().toLocaleDateString('en-IN') }
-        ];
-        renderHistory();
-      }
-
-      if (maintenanceLogs.length === 0) {
-        maintenanceLogs = [
-          { id: 'm1', title: 'Room 101 AC Service', priority: 'Medium', status: 'Pending', desc: 'Filter cleaning required', createdAt: new Date().toLocaleDateString('en-IN') }
-        ];
-        renderMaintenanceLogs();
-      }
-
-      if (expenses.length === 0) {
-        expenses = [
-          { id: 'e1', title: 'Electricity Bill', amount: 3200, category: 'Electricity', date: new Date().toLocaleDateString('en-IN') }
-        ];
-        renderExpenses();
-      }
-
-      updateDashboard();
-    }
-
-    // ==================== AUTHENTICATION & LOGIN FLOW ====================
-    async function initAuth() {
-      if (!auth) return;
-      try {
-        if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
-          await signInWithCustomToken(auth, __initial_auth_token);
-        } else {
-          await signInAnonymously(auth);
-        }
-      } catch (err) {
-        console.warn("Auth init non-blocking warn:", err);
-      }
-    }
-
-    if (auth) {
-      onAuthStateChanged(auth, (user) => {
-        currentUser = user;
-        if (user && localStorage.getItem('gharPG_isLoggedIn') === 'true') {
-          enterDashboard(localStorage.getItem('gharPG_mobile') || '9876543210');
-        }
-      });
-    }
-
+    // ==================== AUTH ====================
     function enterDashboard(mobile) {
-      const mob = mobile || document.getElementById('authMobile')?.value || '8651744312';
+      const mob = mobile || document.getElementById('authMobile').value || '8651744312';
       localStorage.setItem('gharPG_mobile', mob);
       localStorage.setItem('gharPG_isLoggedIn', 'true');
 
-      document.getElementById('userPhoneDisplay').innerText = `+91 ${mob}`;
+      document.getElementById('userPhoneDisplay').innerText = '+91 ' + mob;
       document.getElementById('userDisplayName').innerText = 'PG Owner';
       document.getElementById('userAvatar').innerText = 'P';
-
       document.getElementById('authScreen').classList.add('hidden');
       document.getElementById('appContainer').classList.remove('hidden');
 
-      // Attempt live setup, or fall back seamlessly
-      setupFirestoreListeners();
       seedDemoDataIfEmpty();
-      if (window.lucide) lucide.createIcons();
+      document.getElementById('setPgName').value = store.settings.pgName;
+      document.getElementById('setPgAddress').value = store.settings.pgAddress;
+      document.getElementById('setUpiId').value = store.settings.upiId;
+      document.getElementById('prevPgName').innerText = store.settings.pgName;
+
+      renderTenants();
+      populateTenantDropdown();
+      renderMaintenanceLogs();
+      renderExpenses();
+      renderHistory();
+      updateDashboard();
+      applyThemeLabel();
+      refreshIcons();
     }
 
     function handleSendOTP() {
-      const mob = document.getElementById('authMobile').value;
-      if (mob.length !== 10) {
-        showToast('Enter valid 10-digit mobile number', 'error');
+      const mob = document.getElementById('authMobile').value.trim();
+      if (mob.length !== 10 || !/^[6-9]\d{9}$/.test(mob)) {
+        showToast('Enter a valid 10-digit mobile number', 'error');
         return;
       }
       localStorage.setItem('gharPG_mobile', mob);
@@ -840,9 +662,9 @@
       showToast('Demo OTP Sent: 123456');
     }
 
-    async function handleVerifyOTP() {
-      const otp = document.getElementById('authOtp').value;
-      if (otp === '123456' || otp.length === 6) {
+    function handleVerifyOTP() {
+      const otp = document.getElementById('authOtp').value.trim();
+      if (otp.length === 6) {
         showToast('Login Verified!');
         enterDashboard(document.getElementById('authMobile').value);
       } else {
@@ -858,76 +680,15 @@
 
     function handleLogout() {
       localStorage.removeItem('gharPG_isLoggedIn');
-      if (auth) signOut(auth).catch(() => {});
       location.reload();
     }
 
-    // Check auto-login status on start
-    if (localStorage.getItem('gharPG_isLoggedIn') === 'true') {
-      enterDashboard(localStorage.getItem('gharPG_mobile') || '9876543210');
-    }
-
-    // ==================== FIRESTORE DATA SYNC ====================
-    function setupFirestoreListeners() {
-      if (!currentUser || !db) return;
-
-      try {
-        // 1. Tenants Collection
-        const tenantsRef = collection(db, 'artifacts', appId, 'public', 'data', 'tenants');
-        onSnapshot(tenantsRef, (snap) => {
-          if (!snap.empty) {
-            tenants = [];
-            snap.forEach((doc) => tenants.push({ id: doc.id, ...doc.data() }));
-            renderTenants();
-            populateTenantDropdown();
-            updateDashboard();
-          }
-        }, (err) => console.warn("Tenants query fallback:", err));
-
-        // 2. Receipts Collection
-        const receiptsRef = collection(db, 'artifacts', appId, 'public', 'data', 'receipts');
-        onSnapshot(receiptsRef, (snap) => {
-          if (!snap.empty) {
-            receipts = [];
-            snap.forEach((doc) => receipts.push({ id: doc.id, ...doc.data() }));
-            renderHistory();
-            updateDashboard();
-          }
-        }, (err) => console.warn("Receipts query fallback:", err));
-
-        // 3. Maintenance Logs
-        const maintRef = collection(db, 'artifacts', appId, 'public', 'data', 'maintenance');
-        onSnapshot(maintRef, (snap) => {
-          if (!snap.empty) {
-            maintenanceLogs = [];
-            snap.forEach((doc) => maintenanceLogs.push({ id: doc.id, ...doc.data() }));
-            renderMaintenanceLogs();
-            updateDashboard();
-          }
-        }, (err) => console.warn("Maintenance query fallback:", err));
-
-        // 4. Expenses
-        const expRef = collection(db, 'artifacts', appId, 'public', 'data', 'expenses');
-        onSnapshot(expRef, (snap) => {
-          if (!snap.empty) {
-            expenses = [];
-            snap.forEach((doc) => expenses.push({ id: doc.id, ...doc.data() }));
-            renderExpenses();
-            updateDashboard();
-          }
-        }, (err) => console.warn("Expenses query fallback:", err));
-      } catch (e) {
-        console.warn("Firestore listeners bypass:", e);
-      }
-    }
-
-    // ==================== TENANTS MANAGEMENT ====================
-    function openTenantModal(id = null) {
+    // ==================== TENANTS ====================
+    function openTenantModal(id) {
       document.getElementById('editTenantId').value = id || '';
       document.getElementById('tenantModalTitle').innerText = id ? 'Edit Tenant' : 'Register New Tenant';
-      
       if (id) {
-        const t = tenants.find(x => x.id === id);
+        const t = store.tenants.find(function (x) { return x.id === id; });
         if (t) {
           document.getElementById('tName').value = t.name || '';
           document.getElementById('tMobile').value = t.mobile || '';
@@ -941,99 +702,90 @@
       document.getElementById('tenantModal').classList.remove('hidden');
     }
 
-    function closeTenantModal() {
-      document.getElementById('tenantModal').classList.add('hidden');
-    }
+    function closeTenantModal() { document.getElementById('tenantModal').classList.add('hidden'); }
 
-    async function handleSaveTenant() {
+    function handleSaveTenant() {
       const id = document.getElementById('editTenantId').value;
-      const name = document.getElementById('tName').value;
-      const mobile = document.getElementById('tMobile').value;
-      const room = document.getElementById('tRoom').value;
+      const name = document.getElementById('tName').value.trim();
+      const mobile = document.getElementById('tMobile').value.trim();
+      const room = document.getElementById('tRoom').value.trim();
       const sharing = document.getElementById('tSharing').value;
       const rent = Number(document.getElementById('tRent').value);
 
-      if (!name || !mobile || !room) {
+      if (!name || !room || !rent) {
         showToast('Please fill all mandatory fields', 'error');
         return;
       }
-
-      const payload = { name, mobile, room, sharing, rent, updatedAt: new Date().toISOString() };
-
-      if (currentUser && db) {
-        const colRef = collection(db, 'artifacts', appId, 'public', 'data', 'tenants');
-        try {
-          if (id) {
-            await updateDoc(doc(db, 'artifacts', appId, 'public', 'data', 'tenants', id), payload);
-          } else {
-            await addDoc(colRef, { ...payload, createdAt: new Date().toISOString() });
-          }
-        } catch (e) {
-          console.warn("Cloud save tenant fallback to local:", e);
-        }
+      if (!/^[6-9]\d{9}$/.test(mobile)) {
+        showToast('Enter a valid 10-digit mobile number', 'error');
+        return;
       }
 
-      // Local state update guarantee
       if (id) {
-        const idx = tenants.findIndex(x => x.id === id);
-        if (idx !== -1) tenants[idx] = { ...tenants[idx], ...payload };
+        const idx = store.tenants.findIndex(function (x) { return x.id === id; });
+        if (idx !== -1) store.tenants[idx] = Object.assign({}, store.tenants[idx], { name: name, mobile: mobile, room: room, sharing: sharing, rent: rent });
         showToast('Tenant details updated');
       } else {
-        tenants.push({ id: 't_' + Date.now(), ...payload });
+        store.tenants.push({ id: newId('t'), name: name, mobile: mobile, room: room, sharing: sharing, rent: rent });
         showToast('New tenant registered');
       }
 
+      saveStore();
       renderTenants();
       populateTenantDropdown();
       updateDashboard();
       closeTenantModal();
     }
 
-    async function deleteTenant(id) {
-      if (confirm('Are you sure you want to remove this tenant?')) {
-        if (currentUser && db) {
-          try {
-            await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'tenants', id));
-          } catch (e) {
-            console.warn("Cloud delete fallback:", e);
-          }
-        }
-        tenants = tenants.filter(x => x.id !== id);
-        renderTenants();
-        populateTenantDropdown();
-        updateDashboard();
-        showToast('Tenant removed');
-      }
+    function deleteTenant(id) {
+      if (!confirm('Remove this tenant? This cannot be undone.')) return;
+      store.tenants = store.tenants.filter(function (x) { return x.id !== id; });
+      saveStore();
+      renderTenants();
+      populateTenantDropdown();
+      updateDashboard();
+      showToast('Tenant removed');
     }
 
     function renderTenants() {
       const tbody = document.getElementById('tenantTableBody');
-      if (!tbody) return;
-      tbody.innerHTML = tenants.map(t => `
-        <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/30 transition">
-          <td class="p-4 font-bold text-slate-900 dark:text-white">${t.name}</td>
-          <td class="p-4">Room ${t.room} <span class="text-xs font-normal text-slate-400">(${t.sharing})</span></td>
-          <td class="p-4 font-bold text-emerald-600">₹${t.rent}</td>
-          <td class="p-4 text-slate-500">${t.mobile}</td>
-          <td class="p-4 flex gap-2">
-            <button onclick="openTenantModal('${t.id}')" class="p-2 text-brand-600 hover:bg-brand-50 rounded-xl"><i data-lucide="edit-3" class="w-4 h-4"></i></button>
-            <button onclick="deleteTenant('${t.id}')" class="p-2 text-rose-600 hover:bg-rose-50 rounded-xl"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
-          </td>
-        </tr>
-      `).join('');
-      if (window.lucide) lucide.createIcons();
+      const empty = document.getElementById('tenantEmptyState');
+      const q = (document.getElementById('tenantSearch').value || '').toLowerCase();
+      const list = store.tenants.filter(function (t) {
+        return t.name.toLowerCase().includes(q) || String(t.room).toLowerCase().includes(q) || t.mobile.includes(q);
+      });
+
+      if (list.length === 0) {
+        tbody.innerHTML = '';
+        empty.classList.remove('hidden');
+        refreshIcons();
+        return;
+      }
+      empty.classList.add('hidden');
+
+      tbody.innerHTML = list.map(function (t) {
+        return '<tr class="hover:bg-slate-50 dark:hover:bg-slate-700/30 transition">' +
+          '<td class="p-4 font-bold text-slate-900 dark:text-white">' + t.name + '</td>' +
+          '<td class="p-4">Room ' + t.room + ' <span class="text-xs font-normal text-slate-400">(' + t.sharing + ')</span></td>' +
+          '<td class="p-4 font-bold text-emerald-600">' + rupee(t.rent) + '</td>' +
+          '<td class="p-4 text-slate-500">' + t.mobile + '</td>' +
+          '<td class="p-4 flex gap-2">' +
+          '<button onclick="openTenantModal(\'' + t.id + '\')" class="p-2 text-brand-600 hover:bg-brand-50 dark:hover:bg-brand-950/30 rounded-xl"><i data-lucide="edit-3" class="w-4 h-4"></i></button>' +
+          '<button onclick="deleteTenant(\'' + t.id + '\')" class="p-2 text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950/30 rounded-xl"><i data-lucide="trash-2" class="w-4 h-4"></i></button>' +
+          '</td></tr>';
+      }).join('');
+      refreshIcons();
     }
 
     function populateTenantDropdown() {
       const sel = document.getElementById('slipTenantSelect');
-      if (!sel) return;
-      sel.innerHTML = '<option value="">-- Choose Tenant --</option>' + 
-        tenants.map(t => `<option value="${t.id}">${t.name} (Room ${t.room})</option>`).join('');
+      sel.innerHTML = '<option value="">-- Choose Tenant --</option>' +
+        store.tenants.map(function (t) { return '<option value="' + t.id + '">' + t.name + ' (Room ' + t.room + ')</option>'; }).join('');
     }
 
     function autoFillTenantData() {
       const id = document.getElementById('slipTenantSelect').value;
-      const t = tenants.find(x => x.id === id);
+      const t = store.tenants.find(function (x) { return x.id === id; });
       if (t) {
         document.getElementById('slipRoom').value = t.room;
         document.getElementById('slipSharing').value = t.sharing;
@@ -1041,46 +793,39 @@
       }
     }
 
-    // ==================== RENT SLIPS LOGIC ====================
-    async function handleGenerateSlip() {
+    // ==================== RENT SLIPS ====================
+    function handleGenerateSlip() {
       const tenantId = document.getElementById('slipTenantSelect').value;
-      const tenant = tenants.find(x => x.id === tenantId);
+      const tenant = store.tenants.find(function (x) { return x.id === tenantId; });
       const name = tenant ? tenant.name : 'Guest';
-      const room = document.getElementById('slipRoom').value;
+      const room = document.getElementById('slipRoom').value.trim();
       const sharing = document.getElementById('slipSharing').value;
       const month = document.getElementById('slipMonth').value || 'Current Month';
       const mode = document.getElementById('slipMode').value;
       const rent = Number(document.getElementById('slipRent').value);
-      const due = Number(document.getElementById('slipDue').value);
+      const due = Number(document.getElementById('slipDue').value) || 0;
+
+      if (!room || !rent) {
+        showToast('Fill room number and rent amount', 'error');
+        return;
+      }
+
       const total = rent + due;
       const slipNo = 'SLIP-' + Math.floor(1000 + Math.random() * 9000);
       const date = new Date().toLocaleDateString('en-IN');
 
-      const payload = {
-        slipNo, name, room, sharing, month, mode, rent, due, total, date,
-        createdAt: new Date().toISOString()
-      };
+      store.receipts.unshift({ id: newId('r'), slipNo: slipNo, name: name, room: room, sharing: sharing, month: month, mode: mode, rent: rent, due: due, total: total, date: date });
+      saveStore();
 
-      if (currentUser && db) {
-        try {
-          await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'receipts'), payload);
-        } catch (e) {
-          console.warn("Cloud slip save fallback:", e);
-        }
-      }
-
-      receipts.unshift({ id: 'r_' + Date.now(), ...payload });
-
-      // Update Preview
       document.getElementById('prevNo').innerText = slipNo;
       document.getElementById('prevDate').innerText = date;
       document.getElementById('prevTenant').innerText = name;
-      document.getElementById('prevRoom').innerText = `Room ${room} (${sharing})`;
+      document.getElementById('prevRoom').innerText = 'Room ' + room + ' (' + sharing + ')';
       document.getElementById('prevMonth').innerText = month;
       document.getElementById('prevMode').innerText = mode;
-      document.getElementById('prevRent').innerText = `₹${rent}`;
-      document.getElementById('prevDue').innerText = `₹${due}`;
-      document.getElementById('prevTotal').innerText = `₹${total}`;
+      document.getElementById('prevRent').innerText = rupee(rent);
+      document.getElementById('prevDue').innerText = rupee(due);
+      document.getElementById('prevTotal').innerText = rupee(total);
 
       renderHistory();
       updateDashboard();
@@ -1091,167 +836,219 @@
       const no = document.getElementById('prevNo').innerText;
       const tenant = document.getElementById('prevTenant').innerText;
       const total = document.getElementById('prevTotal').innerText;
-      const text = `Hello ${tenant}, Here is your rent receipt (${no}) of ${total}. Thank you for staying at Ghar PG!`;
-      window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank');
+      if (no === '#---') { showToast('Generate a slip first', 'error'); return; }
+      const text = 'Hello ' + tenant + ', Here is your rent receipt (' + no + ') of ' + total + '. Thank you for staying at ' + store.settings.pgName + '!';
+      window.open('https://wa.me/?text=' + encodeURIComponent(text), '_blank');
     }
 
-    // ==================== MAINTENANCE LOGIC ====================
-    async function handleSaveMaintenance() {
-      const title = document.getElementById('maintTitle').value;
+    function deleteReceipt(id) {
+      if (!confirm('Delete this transaction record?')) return;
+      store.receipts = store.receipts.filter(function (x) { return x.id !== id; });
+      saveStore();
+      renderHistory();
+      updateDashboard();
+      showToast('Transaction deleted');
+    }
+
+    function markReceiptPaid(id) {
+      const r = store.receipts.find(function (x) { return x.id === id; });
+      if (!r) return;
+      r.total -= r.due;
+      r.due = 0;
+      saveStore();
+      renderHistory();
+      updateDashboard();
+      showToast('Marked as fully paid');
+    }
+
+    // ==================== MAINTENANCE ====================
+    function handleSaveMaintenance() {
+      const title = document.getElementById('maintTitle').value.trim();
       const priority = document.getElementById('maintPriority').value;
       const status = document.getElementById('maintStatus').value;
-      const desc = document.getElementById('maintDesc').value;
+      const desc = document.getElementById('maintDesc').value.trim();
 
-      if (!title) {
-        showToast('Provide an issue title', 'error');
-        return;
-      }
+      if (!title) { showToast('Provide an issue title', 'error'); return; }
 
-      const payload = { title, priority, status, desc, createdAt: new Date().toLocaleDateString('en-IN') };
-
-      if (currentUser && db) {
-        try {
-          await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'maintenance'), payload);
-        } catch (e) {
-          console.warn("Cloud maintenance save fallback:", e);
-        }
-      }
-
-      maintenanceLogs.unshift({ id: 'm_' + Date.now(), ...payload });
+      store.maintenance.unshift({ id: newId('m'), title: title, priority: priority, status: status, desc: desc, createdAt: new Date().toLocaleDateString('en-IN') });
+      saveStore();
       document.getElementById('maintForm').reset();
+      document.getElementById('maintPriority').value = 'Medium';
+      document.getElementById('maintStatus').value = 'Pending';
       renderMaintenanceLogs();
       updateDashboard();
       showToast('Maintenance Issue Logged');
     }
 
-    function renderMaintenanceLogs() {
-      const container = document.getElementById('maintListContainer');
-      if (!container) return;
-      container.innerHTML = maintenanceLogs.map(m => `
-        <div class="p-4 bg-slate-50 dark:bg-slate-700/50 rounded-2xl border border-slate-100 dark:border-slate-700 flex justify-between items-center">
-          <div>
-            <div class="flex items-center gap-2">
-              <h4 class="font-bold text-sm text-slate-900 dark:text-white">${m.title}</h4>
-              <span class="px-2 py-0.5 rounded-full text-[10px] font-bold ${
-                m.priority === 'High' ? 'bg-rose-100 text-rose-600' : 'bg-amber-100 text-amber-600'
-              }">${m.priority}</span>
-            </div>
-            <p class="text-xs text-slate-400 mt-1">${m.desc || 'No description'}</p>
-          </div>
-          <span class="px-3 py-1 rounded-xl text-xs font-bold ${
-            m.status === 'Resolved' ? 'bg-emerald-100 text-emerald-600' : 'bg-slate-200 text-slate-600'
-          }">${m.status}</span>
-        </div>
-      `).join('');
+    function cycleMaintStatus(id) {
+      const m = store.maintenance.find(function (x) { return x.id === id; });
+      if (!m) return;
+      const order = ['Pending', 'In Progress', 'Resolved'];
+      const next = order[(order.indexOf(m.status) + 1) % order.length];
+      m.status = next;
+      saveStore();
+      renderMaintenanceLogs();
+      updateDashboard();
+      showToast('Status updated to ' + next);
     }
 
-    // ==================== EXPENSE LOGIC ====================
-    async function handleSaveExpense() {
-      const title = document.getElementById('expTitle').value;
+    function deleteMaintenance(id) {
+      if (!confirm('Delete this maintenance log?')) return;
+      store.maintenance = store.maintenance.filter(function (x) { return x.id !== id; });
+      saveStore();
+      renderMaintenanceLogs();
+      updateDashboard();
+      showToast('Maintenance log deleted');
+    }
+
+    function renderMaintenanceLogs() {
+      const container = document.getElementById('maintListContainer');
+      const empty = document.getElementById('maintEmptyState');
+      if (store.maintenance.length === 0) {
+        container.innerHTML = '';
+        empty.classList.remove('hidden');
+        refreshIcons();
+        return;
+      }
+      empty.classList.add('hidden');
+
+      container.innerHTML = store.maintenance.map(function (m) {
+        return '<div class="p-4 bg-slate-50 dark:bg-slate-700/50 rounded-2xl border border-slate-100 dark:border-slate-700 flex justify-between items-center gap-3">' +
+          '<div class="min-w-0">' +
+          '<div class="flex items-center gap-2 flex-wrap">' +
+          '<h4 class="font-bold text-sm text-slate-900 dark:text-white">' + m.title + '</h4>' +
+          '<span class="px-2 py-0.5 rounded-full text-[10px] font-bold ' + (m.priority === 'High' ? 'bg-rose-100 text-rose-600' : 'bg-amber-100 text-amber-600') + '">' + m.priority + '</span>' +
+          '</div>' +
+          '<p class="text-xs text-slate-400 mt-1">' + (m.desc || 'No description') + '</p>' +
+          '</div>' +
+          '<div class="flex items-center gap-2 shrink-0">' +
+          '<button onclick="cycleMaintStatus(\'' + m.id + '\')" class="px-3 py-1 rounded-xl text-xs font-bold transition ' + (m.status === 'Resolved' ? 'bg-emerald-100 text-emerald-600' : 'bg-slate-200 dark:bg-slate-600 text-slate-600 dark:text-slate-200') + '">' + m.status + '</button>' +
+          '<button onclick="deleteMaintenance(\'' + m.id + '\')" class="p-2 text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950/30 rounded-xl"><i data-lucide="trash-2" class="w-4 h-4"></i></button>' +
+          '</div></div>';
+      }).join('');
+      refreshIcons();
+    }
+
+    // ==================== EXPENSES ====================
+    function handleSaveExpense() {
+      const title = document.getElementById('expTitle').value.trim();
       const amount = Number(document.getElementById('expAmount').value);
       const category = document.getElementById('expCategory').value;
 
-      if (!title || !amount) {
-        showToast('Fill expense details', 'error');
-        return;
-      }
+      if (!title || !amount) { showToast('Fill expense details', 'error'); return; }
 
-      const payload = { title, amount, category, date: new Date().toLocaleDateString('en-IN') };
-
-      if (currentUser && db) {
-        try {
-          await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'expenses'), payload);
-        } catch (e) {
-          console.warn("Cloud expense save fallback:", e);
-        }
-      }
-
-      expenses.unshift({ id: 'e_' + Date.now(), ...payload });
+      store.expenses.unshift({ id: newId('e'), title: title, amount: amount, category: category, date: new Date().toLocaleDateString('en-IN') });
+      saveStore();
       document.getElementById('expenseForm').reset();
       renderExpenses();
       updateDashboard();
       showToast('Expense Recorded');
     }
 
+    function deleteExpense(id) {
+      if (!confirm('Delete this expense record?')) return;
+      store.expenses = store.expenses.filter(function (x) { return x.id !== id; });
+      saveStore();
+      renderExpenses();
+      updateDashboard();
+      showToast('Expense deleted');
+    }
+
     function renderExpenses() {
       const container = document.getElementById('expenseListContainer');
-      if (!container) return;
-      container.innerHTML = expenses.map(e => `
-        <div class="p-4 bg-slate-50 dark:bg-slate-700/50 rounded-2xl border border-slate-100 dark:border-slate-700 flex justify-between items-center">
-          <div>
-            <h4 class="font-bold text-sm text-slate-900 dark:text-white">${e.title}</h4>
-            <p class="text-xs text-slate-400 mt-0.5">${e.category} • ${e.date}</p>
-          </div>
-          <span class="font-bold text-rose-600">₹${e.amount}</span>
-        </div>
-      `).join('');
+      const empty = document.getElementById('expenseEmptyState');
+      const total = store.expenses.reduce(function (a, e) { return a + (e.amount || 0); }, 0);
+      document.getElementById('expenseTotalBadge').innerText = rupee(total) + ' total';
+
+      if (store.expenses.length === 0) {
+        container.innerHTML = '';
+        empty.classList.remove('hidden');
+        refreshIcons();
+        return;
+      }
+      empty.classList.add('hidden');
+
+      container.innerHTML = store.expenses.map(function (e) {
+        return '<div class="p-4 bg-slate-50 dark:bg-slate-700/50 rounded-2xl border border-slate-100 dark:border-slate-700 flex justify-between items-center">' +
+          '<div><h4 class="font-bold text-sm text-slate-900 dark:text-white">' + e.title + '</h4>' +
+          '<p class="text-xs text-slate-400 mt-0.5">' + e.category + ' • ' + e.date + '</p></div>' +
+          '<div class="flex items-center gap-2">' +
+          '<span class="font-bold text-rose-600">' + rupee(e.amount) + '</span>' +
+          '<button onclick="deleteExpense(\'' + e.id + '\')" class="p-2 text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950/30 rounded-xl"><i data-lucide="trash-2" class="w-4 h-4"></i></button>' +
+          '</div></div>';
+      }).join('');
+      refreshIcons();
     }
 
-    // ==================== HISTORY & CSV EXPORT ====================
+    // ==================== HISTORY & CSV ====================
     function renderHistory() {
       const container = document.getElementById('historyLogsContainer');
-      if (!container) return;
-      container.innerHTML = receipts.map(r => `
-        <div class="p-3.5 bg-slate-50 dark:bg-slate-700/30 rounded-2xl flex justify-between items-center text-xs">
-          <div>
-            <span class="font-bold text-slate-900 dark:text-white">${r.name}</span> (Room ${r.room})
-            <p class="text-[10px] text-slate-400">${r.slipNo} • ${r.date}</p>
-          </div>
-          <span class="font-bold text-emerald-600 text-sm">₹${r.total}</span>
-        </div>
-      `).join('');
-    }
+      const empty = document.getElementById('historyEmptyState');
+      const q = (document.getElementById('historySearch').value || '').toLowerCase();
+      const items = store.receipts.filter(function (r) {
+        return r.name.toLowerCase().includes(q) || String(r.room).toLowerCase().includes(q);
+      });
 
-    function filterHistory() {
-      const q = document.getElementById('historySearch').value.toLowerCase();
-      const items = receipts.filter(r => r.name.toLowerCase().includes(q) || r.room.toString().includes(q));
-      const container = document.getElementById('historyLogsContainer');
-      if (!container) return;
-      container.innerHTML = items.map(r => `
-        <div class="p-3.5 bg-slate-50 dark:bg-slate-700/30 rounded-2xl flex justify-between items-center text-xs">
-          <div>
-            <span class="font-bold text-slate-900 dark:text-white">${r.name}</span> (Room ${r.room})
-            <p class="text-[10px] text-slate-400">${r.slipNo} • ${r.date}</p>
-          </div>
-          <span class="font-bold text-emerald-600 text-sm">₹${r.total}</span>
-        </div>
-      `).join('');
+      if (items.length === 0) {
+        container.innerHTML = '';
+        empty.classList.remove('hidden');
+        refreshIcons();
+        return;
+      }
+      empty.classList.add('hidden');
+
+      container.innerHTML = items.map(function (r) {
+        return '<div class="p-3.5 bg-slate-50 dark:bg-slate-700/30 rounded-2xl flex justify-between items-center text-xs gap-2">' +
+          '<div class="min-w-0"><span class="font-bold text-slate-900 dark:text-white">' + r.name + '</span> (Room ' + r.room + ')' +
+          '<p class="text-[10px] text-slate-400">' + r.slipNo + ' • ' + r.date + (r.due > 0 ? ' • Due ' + rupee(r.due) : '') + '</p></div>' +
+          '<div class="flex items-center gap-2 shrink-0">' +
+          (r.due > 0 ? '<button onclick="markReceiptPaid(\'' + r.id + '\')" class="px-2.5 py-1 bg-emerald-100 text-emerald-700 rounded-lg text-[10px] font-bold">Mark Paid</button>' : '') +
+          '<span class="font-bold text-emerald-600 text-sm">' + rupee(r.total) + '</span>' +
+          '<button onclick="deleteReceipt(\'' + r.id + '\')" class="p-1.5 text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950/30 rounded-lg"><i data-lucide="trash-2" class="w-3.5 h-3.5"></i></button>' +
+          '</div></div>';
+      }).join('');
+      refreshIcons();
     }
 
     function exportCSV() {
-      if (receipts.length === 0) {
-        showToast('No history data available', 'error');
-        return;
-      }
-      let csv = 'Receipt No,Tenant,Room,Month,Total Paid,Date\n';
-      receipts.forEach(r => {
-        csv += `"${r.slipNo}","${r.name}","${r.room}","${r.month}","${r.total}","${r.date}"\n`;
+      if (store.receipts.length === 0) { showToast('No history data available', 'error'); return; }
+      let csv = 'Receipt No,Tenant,Room,Month,Total Paid,Due,Date\n';
+      store.receipts.forEach(function (r) {
+        csv += '"' + r.slipNo + '","' + r.name + '","' + r.room + '","' + r.month + '","' + r.total + '","' + r.due + '","' + r.date + '"\n';
       });
       const blob = new Blob([csv], { type: 'text/csv' });
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
-      a.download = `GharPG_Transactions.csv`;
+      a.download = 'GharPG_Transactions.csv';
       a.click();
+      URL.revokeObjectURL(url);
       showToast('Exported CSV');
     }
 
-    // ==================== DASHBOARD REFRESH & CHARTS ====================
+    function handleResetData() {
+      if (!confirm('This will permanently delete all tenants, receipts, maintenance logs and expenses stored on this device. Continue?')) return;
+      localStorage.removeItem(STORAGE_KEY);
+      showToast('All data reset');
+      setTimeout(function () { location.reload(); }, 600);
+    }
+
+    // ==================== DASHBOARD ====================
     function updateDashboard() {
-      const totalRev = receipts.reduce((acc, curr) => acc + (curr.total || 0), 0);
-      const totalDues = receipts.reduce((acc, curr) => acc + (curr.due || 0), 0);
-      
-      const elCol = document.getElementById('dashCollected');
-      const elDue = document.getElementById('dashDues');
-      const elTen = document.getElementById('dashTenants');
-      const elIss = document.getElementById('dashIssues');
+      const totalRev = store.receipts.reduce(function (a, r) { return a + (r.total || 0); }, 0);
+      const totalDues = store.receipts.reduce(function (a, r) { return a + (r.due || 0); }, 0);
+      const totalExp = store.expenses.reduce(function (a, e) { return a + (e.amount || 0); }, 0);
+      const activeIssues = store.maintenance.filter(function (x) { return x.status !== 'Resolved'; }).length;
 
-      if (elCol) elCol.innerText = `₹${totalRev.toLocaleString()}`;
-      if (elDue) elDue.innerText = `₹${totalDues.toLocaleString()}`;
-      if (elTen) elTen.innerText = tenants.length;
-      if (elIss) elIss.innerText = maintenanceLogs.filter(x => x.status !== 'Resolved').length;
+      document.getElementById('dashCollected').innerText = rupee(totalRev);
+      document.getElementById('dashDues').innerText = rupee(totalDues);
+      document.getElementById('dashTenants').innerText = store.tenants.length;
+      document.getElementById('dashIssues').innerText = activeIssues;
 
-      renderChart(totalRev, expenses.reduce((acc, c) => acc + (c.amount || 0), 0));
+      const net = totalRev - totalExp;
+      document.getElementById('netBalanceMsg').innerText = 'Net balance so far: ' + rupee(net) + ' (' + rupee(totalRev) + ' in, ' + rupee(totalExp) + ' out)';
+
+      renderChart(totalRev, totalExp);
     }
 
     function renderChart(revenue, expense) {
@@ -1259,93 +1056,72 @@
       if (!chartEl) return;
       const ctx = chartEl.getContext('2d');
       if (revenueChartInstance) revenueChartInstance.destroy();
-
       revenueChartInstance = new Chart(ctx, {
         type: 'bar',
         data: {
           labels: ['Total Revenue', 'Total Expenses'],
-          datasets: [{
-            data: [revenue, expense],
-            backgroundColor: ['#10b981', '#f43f5e'],
-            borderRadius: 12
-          }]
+          datasets: [{ data: [revenue, expense], backgroundColor: ['#10b981', '#f43f5e'], borderRadius: 12 }]
         },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          plugins: { legend: { display: false } }
-        }
+        options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
       });
     }
 
     function refreshData() {
-      setupFirestoreListeners();
-      showToast('Synced Data');
+      renderTenants();
+      populateTenantDropdown();
+      renderMaintenanceLogs();
+      renderExpenses();
+      renderHistory();
+      updateDashboard();
+      showToast('Refreshed');
     }
 
-    // Navigation & Theme
+    // ==================== NAVIGATION & THEME ====================
     function switchTab(tabId) {
-      document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
-      const activeTab = document.getElementById(`tab-${tabId}`);
+      document.querySelectorAll('.tab-content').forEach(function (el) { el.classList.add('hidden'); });
+      const activeTab = document.getElementById('tab-' + tabId);
       if (activeTab) activeTab.classList.remove('hidden');
 
-      document.querySelectorAll('.nav-btn').forEach(btn => {
-        if (btn.dataset.tab === tabId) {
-          btn.className = "nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-2xl font-semibold text-sm transition text-white bg-brand-600 shadow-md shadow-brand-500/20";
-        } else {
-          btn.className = "nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-2xl font-semibold text-sm transition text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700/50";
-        }
+      document.querySelectorAll('.nav-btn').forEach(function (btn) {
+        btn.className = btn.dataset.tab === tabId
+          ? 'nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-2xl font-semibold text-sm transition text-white bg-brand-600 shadow-md shadow-brand-500/20'
+          : 'nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-2xl font-semibold text-sm transition text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700/50';
       });
 
       document.getElementById('sidebar').classList.add('-translate-x-full');
     }
 
+    function applyThemeLabel() {
+      const isDark = document.documentElement.classList.contains('dark');
+      document.getElementById('themeModeText').innerText = isDark ? 'Dark Mode' : 'Light Mode';
+    }
+
     function toggleDarkMode() {
       const isDark = document.documentElement.classList.toggle('dark');
       localStorage.setItem('gharPG_theme', isDark ? 'dark' : 'light');
-      const textEl = document.getElementById('themeModeText');
-      if (textEl) textEl.innerText = isDark ? 'Dark Mode' : 'Light Mode';
+      applyThemeLabel();
     }
 
-    function toggleMobileSidebar() {
-      const sidebar = document.getElementById('sidebar');
-      if (sidebar) sidebar.classList.toggle('-translate-x-full');
-    }
+    function toggleMobileSidebar() { document.getElementById('sidebar').classList.toggle('-translate-x-full'); }
 
     function saveSettings() {
-      const name = document.getElementById('setPgName').value;
-      const elName = document.getElementById('prevPgName');
-      if (elName) elName.innerText = name;
+      store.settings.pgName = document.getElementById('setPgName').value.trim() || 'Ghar PG Accommodation';
+      store.settings.pgAddress = document.getElementById('setPgAddress').value.trim();
+      store.settings.upiId = document.getElementById('setUpiId').value.trim();
+      saveStore();
+      document.getElementById('prevPgName').innerText = store.settings.pgName;
       showToast('PG Profile Settings Saved!');
     }
 
-    // Attach all functions to window so inline onclick handlers work reliably
-    window.handleSendOTP = handleSendOTP;
-    window.handleVerifyOTP = handleVerifyOTP;
-    window.quickDemoLogin = quickDemoLogin;
-    window.handleLogout = handleLogout;
-    window.openTenantModal = openTenantModal;
-    window.closeTenantModal = closeTenantModal;
-    window.handleSaveTenant = handleSaveTenant;
-    window.deleteTenant = deleteTenant;
-    window.autoFillTenantData = autoFillTenantData;
-    window.handleGenerateSlip = handleGenerateSlip;
-    window.shareWhatsApp = shareWhatsApp;
-    window.handleSaveMaintenance = handleSaveMaintenance;
-    window.handleSaveExpense = handleSaveExpense;
-    window.filterHistory = filterHistory;
-    window.exportCSV = exportCSV;
-    window.refreshData = refreshData;
-    window.switchTab = switchTab;
-    window.toggleDarkMode = toggleDarkMode;
-    window.toggleMobileSidebar = toggleMobileSidebar;
-    window.saveSettings = saveSettings;
-    window.enterDashboard = enterDashboard;
-    window.seedDemoDataIfEmpty = seedDemoDataIfEmpty;
-    window.setupFirestoreListeners = setupFirestoreListeners;
-
-    // Start Auth
-    initAuth();
+    // ==================== INIT ====================
+    document.addEventListener('DOMContentLoaded', function () {
+      refreshIcons();
+      applyThemeLabel();
+      document.getElementById('authMobile').value = localStorage.getItem('gharPG_mobile') || '8651744312';
+      if (localStorage.getItem('gharPG_isLoggedIn') === 'true') {
+        enterDashboard(localStorage.getItem('gharPG_mobile') || '8651744312');
+      }
+    });
   </script>
 </body>
 </html>

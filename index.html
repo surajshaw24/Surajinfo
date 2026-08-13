@@ -1,922 +1,1147 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="hi" class="h-full">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Suraj Kumar Shaw - Hotel Management Professional | Ready to Join Immediately</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-    <style>
-        /* Professional Hotel Industry Colors */
-        :root {
-            --hotel-gold: #D4AF37;
-            --hotel-blue: #005073;
-            --hotel-maroon: #8B0000;
-            --hotel-cream: #FFF8E7;
-            --hotel-dark: #2C2C2C;
-            --hotel-light: #F5F5F5;
-            --hotel-success: #28a745;
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            line-height: 1.6;
-            color: var(--hotel-dark);
-            background-color: var(--hotel-cream);
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
-
-        /* Header - Hotel Professional Style */
-        .professional-header {
-            background: linear-gradient(rgba(0, 80, 115, 0.95), rgba(0, 80, 115, 0.95)),
-                        url('https://images.unsplash.com/photo-1566073771259-6a8506099945?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80');
-            background-size: cover;
-            background-position: center;
-            color: white;
-            padding: 40px 0;
-            position: relative;
-        }
-
-        .header-content {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-        }
-
-        .candidate-info h1 {
-            font-size: 2.8rem;
-            margin-bottom: 5px;
-            color: var(--hotel-gold);
-        }
-
-        .candidate-info .title {
-            font-size: 1.4rem;
-            font-weight: 300;
-            opacity: 0.9;
-            margin-bottom: 10px;
-        }
-
-        .hotel-badges {
-            display: flex;
-            gap: 15px;
-            margin-top: 15px;
-        }
-
-        .badge {
-            background: rgba(212, 175, 55, 0.2);
-            border: 1px solid var(--hotel-gold);
-            padding: 5px 15px;
-            border-radius: 20px;
-            font-size: 0.9rem;
-        }
-
-        .contact-quick {
-            background: rgba(255, 255, 255, 0.1);
-            padding: 20px;
-            border-radius: 10px;
-            backdrop-filter: blur(10px);
-        }
-
-        .contact-item {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 10px;
-        }
-
-        .contact-item i {
-            color: var(--hotel-gold);
-            width: 20px;
-        }
-
-        /* Job Application Status */
-        .job-status {
-            background: var(--hotel-gold);
-            color: var(--hotel-blue);
-            padding: 10px 0;
-            text-align: center;
-            font-weight: 600;
-            font-size: 1.1rem;
-        }
-
-        /* Quick Apply Section */
-        .quick-apply {
-            background: white;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
-            margin: -50px auto 30px;
-            max-width: 800px;
-            position: relative;
-            z-index: 10;
-        }
-
-        .apply-buttons {
-            display: flex;
-            gap: 20px;
-            justify-content: center;
-            margin-top: 20px;
-        }
-
-        .apply-btn {
-            padding: 12px 30px;
-            background: var(--hotel-blue);
-            color: white;
-            border: none;
-            border-radius: 5px;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            transition: all 0.3s;
-        }
-
-        .apply-btn:hover {
-            background: var(--hotel-maroon);
-            transform: translateY(-2px);
-        }
-
-        .apply-btn.print {
-            background: var(--hotel-gold);
-            color: var(--hotel-dark);
-        }
-
-        /* Main Content Layout */
-        .hotel-layout {
-            display: grid;
-            grid-template-columns: 2fr 1fr;
-            gap: 30px;
-            padding: 30px 0;
-        }
-
-        /* Left Column - Professional Experience */
-        .left-column {
-            display: flex;
-            flex-direction: column;
-            gap: 30px;
-        }
-
-        /* Right Column - Quick Info */
-        .right-column {
-            display: flex;
-            flex-direction: column;
-            gap: 30px;
-        }
-
-        /* Common Card Styling */
-        .info-card {
-            background: white;
-            border-radius: 10px;
-            padding: 30px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-            border-top: 4px solid var(--hotel-gold);
-        }
-
-        .info-card h2 {
-            color: var(--hotel-blue);
-            margin-bottom: 20px;
-            padding-bottom: 10px;
-            border-bottom: 2px solid var(--hotel-cream);
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .info-card h2 i {
-            color: var(--hotel-gold);
-        }
-
-        /* Career Objective */
-        .career-highlight {
-            background: linear-gradient(135deg, var(--hotel-blue), var(--hotel-maroon));
-            color: white;
-            padding: 25px;
-            border-radius: 10px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .career-highlight:before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            right: -50%;
-            width: 200px;
-            height: 200px;
-            background: rgba(212, 175, 55, 0.1);
-            border-radius: 50%;
-        }
-
-        .career-highlight h3 {
-            color: var(--hotel-gold);
-            margin-bottom: 15px;
-        }
-
-        /* Experience Timeline */
-        .hotel-experience-item {
-            padding: 20px 0;
-            border-bottom: 1px solid var(--hotel-cream);
-        }
-
-        .hotel-experience-item:last-child {
-            border-bottom: none;
-        }
-
-        .hotel-role {
-            color: var(--hotel-blue);
-            font-size: 1.2rem;
-            font-weight: 600;
-            margin-bottom: 5px;
-        }
-
-        .hotel-name {
-            color: var(--hotel-maroon);
-            font-weight: 500;
-            margin-bottom: 5px;
-        }
-
-        .hotel-duration {
-            color: var(--hotel-gold);
-            font-size: 0.9rem;
-            font-weight: 600;
-            margin-bottom: 10px;
-            display: inline-block;
-            background: rgba(212, 175, 55, 0.1);
-            padding: 3px 10px;
-            border-radius: 15px;
-        }
-
-        .hotel-responsibilities {
-            list-style: none;
-            margin-top: 10px;
-        }
-
-        .hotel-responsibilities li {
-            padding: 5px 0 5px 25px;
-            position: relative;
-        }
-
-        .hotel-responsibilities li:before {
-            content: '✓';
-            position: absolute;
-            left: 0;
-            color: var(--hotel-success);
-            font-weight: bold;
-        }
-
-        /* Skills Grid */
-        .skills-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 15px;
-        }
-
-        .skill-category {
-            background: var(--hotel-light);
-            padding: 15px;
-            border-radius: 8px;
-            border-left: 4px solid var(--hotel-blue);
-        }
-
-        .skill-category h4 {
-            color: var(--hotel-blue);
-            margin-bottom: 10px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .skill-list {
-            list-style: none;
-        }
-
-        .skill-list li {
-            padding: 3px 0;
-            font-size: 0.95rem;
-        }
-
-        /* Target Positions */
-        .position-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 15px;
-        }
-
-        .position-card {
-            background: var(--hotel-light);
-            padding: 15px;
-            border-radius: 8px;
-            text-align: center;
-            border: 2px solid transparent;
-            transition: all 0.3s;
-            cursor: pointer;
-        }
-
-        .position-card:hover {
-            border-color: var(--hotel-gold);
-            transform: translateY(-3px);
-        }
-
-        .position-card i {
-            font-size: 2rem;
-            color: var(--hotel-blue);
-            margin-bottom: 10px;
-        }
-
-        /* Languages & Availability */
-        .availability-card {
-            background: linear-gradient(135deg, var(--hotel-blue), #006994);
-            color: white;
-            padding: 25px;
-            border-radius: 10px;
-        }
-
-        .availability-item {
-            display: flex;
-            justify-content: space-between;
-            padding: 10px 0;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-        }
-
-        .availability-item:last-child {
-            border-bottom: none;
-        }
-
-        .status-ready {
-            color: var(--hotel-gold);
-            font-weight: 600;
-        }
-
-        /* Hotel Industry Keywords */
-        .keywords {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin-top: 20px;
-        }
-
-        .keyword {
-            background: rgba(212, 175, 55, 0.1);
-            color: var(--hotel-blue);
-            padding: 5px 15px;
-            border-radius: 20px;
-            font-size: 0.9rem;
-            border: 1px solid rgba(212, 175, 55, 0.3);
-        }
-
-        /* References Section */
-        .references {
-            background: var(--hotel-light);
-            padding: 25px;
-            border-radius: 10px;
-            border-left: 4px solid var(--hotel-maroon);
-        }
-
-        .references p {
-            font-style: italic;
-            color: var(--hotel-blue);
-            text-align: center;
-        }
-
-        /* Call to Action */
-        .cta-section {
-            background: linear-gradient(135deg, var(--hotel-blue), var(--hotel-maroon));
-            color: white;
-            padding: 50px 0;
-            text-align: center;
-            margin-top: 50px;
-        }
-
-        .cta-content h2 {
-            color: var(--hotel-gold);
-            margin-bottom: 20px;
-            font-size: 2.2rem;
-        }
-
-        .cta-buttons {
-            display: flex;
-            gap: 20px;
-            justify-content: center;
-            margin-top: 30px;
-        }
-
-        /* Footer */
-        .professional-footer {
-            background: var(--hotel-dark);
-            color: white;
-            padding: 30px 0;
-            text-align: center;
-        }
-
-        .footer-contact {
-            display: flex;
-            justify-content: center;
-            gap: 40px;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
-        }
-
-        .footer-contact-item {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        /* Print Styles */
-        @media print {
-            .no-print {
-                display: none !important;
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ghar PG — Ultimate Cloud Management System</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: '#f0f4ff',
+              100: '#e0e9fe',
+              500: '#3b82f6',
+              600: '#1d4ed8',
+              700: '#1e3c72',
+              800: '#0f2440',
+              900: '#0a172c',
             }
-            
-            body {
-                background: white;
-                font-size: 12pt;
-            }
-            
-            .container {
-                width: 100%;
-                padding: 0;
-            }
-            
-            .info-card {
-                box-shadow: none;
-                border: 1px solid #ddd;
-                margin-bottom: 20px;
-                page-break-inside: avoid;
-            }
-            
-            .hotel-layout {
-                display: block;
-            }
-            
-            .apply-buttons, .cta-section, .professional-footer {
-                display: none;
-            }
-            
-            .professional-header {
-                background: white !important;
-                color: black;
-                padding: 20px 0;
-            }
-            
-            .candidate-info h1 {
-                color: black;
-            }
+          }
         }
+      }
+    }
+  </script>
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <!-- Chart.js for Visual Stats -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <!-- Firebase SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js"></script>
 
-        /* Responsive Design */
-        @media (max-width: 992px) {
-            .hotel-layout {
-                grid-template-columns: 1fr;
-            }
-            
-            .header-content {
-                flex-direction: column;
-                text-align: center;
-                gap: 30px;
-            }
-            
-            .skills-grid, .position-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .apply-buttons, .cta-buttons {
-                flex-direction: column;
-                align-items: center;
-            }
-            
-            .apply-btn, .cta-buttons .apply-btn {
-                width: 100%;
-                max-width: 300px;
-            }
-            
-            .footer-contact {
-                flex-direction: column;
-                gap: 15px;
-            }
-            
-            .candidate-info h1 {
-                font-size: 2.2rem;
-            }
-        }
-    </style>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+    .glass {
+      background: rgba(255, 255, 255, 0.7);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+    .dark .glass {
+      background: rgba(30, 41, 59, 0.7);
+    }
+    .custom-scrollbar::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 9999px;
+    }
+    .dark .custom-scrollbar::-webkit-scrollbar-thumb {
+      background: #475569;
+    }
+    @media print {
+      body * {
+        visibility: hidden;
+      }
+      #printableSlip, #printableSlip * {
+        visibility: visible;
+      }
+      #printableSlip {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+      }
+    }
+  </style>
 </head>
-<body>
-    <!-- Professional Header -->
-    <header class="professional-header">
-        <div class="container">
-            <div class="header-content">
-                <div class="candidate-info">
-                    <h1>Suraj Kumar Shaw</h1>
-                    <div class="title">Hotel Management Professional</div>
-                    <p>Front Office | Guest Relations | Housekeeping Coordination</p>
-                    <div class="hotel-badges">
-                        <span class="badge">Immediate Joining</span>
-                        <span class="badge">1+ Years Experience</span>
-                        <span class="badge">3-Star Hotel Experience</span>
-                    </div>
-                </div>
-                <div class="contact-quick">
-                    <div class="contact-item">
-                        <i class="fas fa-phone"></i>
-                        <span>+91 8651744312</span>
-                    </div>
-                    <div class="contact-item">
-                        <i class="fas fa-envelope"></i>
-                        <span>srjshaw24@gmail.com</span>
-                    </div>
-                    <div class="contact-item">
-                        <i class="fas fa-map-marker-alt"></i>
-                        <span>Dhanbad, Jharkhand</span>
-                    </div>
-                    <div class="contact-item">
-                        <i class="fas fa-phone"></i>
-                        <span>WhatsApp: 8651744312</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </header>
+<body class="bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-100 min-h-full transition-colors duration-200">
 
-    <!-- Job Status -->
-    <div class="job-status">
-        <div class="container">
-            🎯 Actively seeking Front Office, Reception, and Guest Relations positions in Hotels & Resorts
+  <!-- TOP APP BAR / HEADER (MOBILE) -->
+  <div id="topNavbar" class="lg:hidden flex items-center justify-between p-4 bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700 sticky top-0 z-30 shadow-sm">
+    <div class="flex items-center gap-2">
+      <div class="p-2 bg-brand-600 text-white rounded-xl shadow-md">
+        <i data-lucide="building-2" class="w-5 h-5"></i>
+      </div>
+      <span class="font-bold text-lg text-brand-700 dark:text-brand-100">Ghar<span class="text-brand-500">PG</span></span>
+    </div>
+    <div class="flex items-center gap-2">
+      <button id="themeToggleMobile" class="p-2 rounded-xl bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300">
+        <i data-lucide="moon" class="w-5 h-5 dark:hidden"></i>
+        <i data-lucide="sun" class="w-5 h-5 hidden dark:block"></i>
+      </button>
+      <button id="mobileMenuBtn" class="p-2 rounded-xl bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300">
+        <i data-lucide="menu" class="w-6 h-6"></i>
+      </button>
+    </div>
+  </div>
+
+  <!-- MAIN WRAPPER -->
+  <div class="max-w-7xl mx-auto p-3 sm:p-6 lg:p-8 min-h-screen">
+    
+    <!-- AUTH MODAL / SCREEN -->
+    <div id="authScreen" class="fixed inset-0 z-50 bg-slate-900/80 backdrop-blur-md flex items-center justify-center p-4">
+      <div class="bg-white dark:bg-slate-800 w-full max-w-md p-6 sm:p-8 rounded-3xl shadow-2xl border border-slate-100 dark:border-slate-700 transition-all">
+        <div class="text-center mb-6">
+          <div class="inline-flex p-3 bg-brand-500/10 dark:bg-brand-500/20 text-brand-600 dark:text-brand-400 rounded-2xl mb-3">
+            <i data-lucide="building-2" class="w-8 h-8"></i>
+          </div>
+          <h2 class="text-2xl font-extrabold text-slate-900 dark:text-white">Ghar PG Manager</h2>
+          <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">Smart Cloud PG Management Solution</p>
         </div>
+
+        <form id="authForm" onsubmit="event.preventDefault();" class="space-y-4">
+          <div>
+            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1">Mobile Number</label>
+            <div class="relative">
+              <span class="absolute left-3.5 top-3.5 text-slate-400 font-medium text-sm">+91</span>
+              <input type="tel" id="authMobile" maxlength="10" placeholder="9876543210" class="w-full pl-12 pr-4 py-3 bg-slate-50 dark:bg-slate-700/50 border border-slate-200 dark:border-slate-600 rounded-xl focus:ring-2 focus:ring-brand-500 text-slate-900 dark:text-white outline-none font-medium text-sm transition" required />
+            </div>
+          </div>
+
+          <div id="otpSection" class="hidden space-y-2">
+            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">Enter OTP</label>
+            <div class="flex gap-2">
+              <input type="text" id="authOtp" maxlength="6" placeholder="6-digit OTP" class="w-full px-4 py-3 bg-slate-50 dark:bg-slate-700/50 border border-slate-200 dark:border-slate-600 rounded-xl focus:ring-2 focus:ring-brand-500 text-center text-slate-900 dark:text-white outline-none font-bold tracking-widest text-lg transition" />
+            </div>
+          </div>
+
+          <button type="button" id="sendOtpBtn" onclick="handleSendOTP()" class="w-full py-3.5 bg-brand-600 hover:bg-brand-700 text-white font-semibold rounded-xl shadow-lg shadow-brand-500/25 transition active:scale-[0.98]">
+            Send OTP
+          </button>
+          <button type="button" id="verifyOtpBtn" onclick="handleVerifyOTP()" class="hidden w-full py-3.5 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded-xl shadow-lg shadow-emerald-500/25 transition active:scale-[0.98]">
+            Verify &amp; Enter Dashboard
+          </button>
+        </form>
+        <p class="text-xs text-center text-slate-400 dark:text-slate-500 mt-4">Protected with Firebase Auth &amp; Cloud Encryption</p>
+      </div>
     </div>
 
-    <!-- Quick Apply Section -->
-    <div class="container">
-        <div class="quick-apply no-print">
-            <h2 style="text-align: center; color: var(--hotel-blue); margin-bottom: 20px;">
-                <i class="fas fa-briefcase"></i> Quick Job Application
-            </h2>
-            <p style="text-align: center; margin-bottom: 20px;">
-                Ready to join immediately. Download resume or apply directly.
-            </p>
-            <div class="apply-buttons">
-                <button class="apply-btn" onclick="printResume()">
-                    <i class="fas fa-print"></i> Print Resume
+    <!-- DASHBOARD CONTAINER -->
+    <div id="appContainer" class="hidden grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+
+      <!-- SIDEBAR -->
+      <aside id="sidebar" class="fixed inset-y-0 left-0 transform -translate-x-full lg:translate-x-0 lg:static lg:block lg:col-span-3 z-40 w-72 lg:w-full bg-white dark:bg-slate-800 border-r lg:border border-slate-200 dark:border-slate-700 lg:rounded-3xl p-5 shadow-xl lg:shadow-sm transition-transform duration-300">
+        <div class="flex items-center justify-between pb-6 mb-6 border-b border-slate-100 dark:border-slate-700">
+          <div class="flex items-center gap-3">
+            <div class="p-2.5 bg-brand-600 text-white rounded-2xl shadow-md">
+              <i data-lucide="building-2" class="w-6 h-6"></i>
+            </div>
+            <div>
+              <h1 class="font-bold text-xl text-slate-900 dark:text-white leading-tight">Ghar<span class="text-brand-500">PG</span></h1>
+              <p class="text-xs text-slate-400">Cloud Edition</p>
+            </div>
+          </div>
+          <button id="closeSidebarMobile" class="lg:hidden text-slate-400 hover:text-slate-600">
+            <i data-lucide="x" class="w-6 h-6"></i>
+          </button>
+        </div>
+
+        <nav class="space-y-1.5" id="navigationTabs">
+          <button onclick="switchTab('dashboard')" data-tab="dashboard" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-2xl font-semibold text-sm transition text-white bg-brand-600 shadow-md shadow-brand-500/20">
+            <i data-lucide="layout-dashboard" class="w-5 h-5"></i> Dashboard
+          </button>
+          <button onclick="switchTab('slips')" data-tab="slips" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-2xl font-semibold text-sm transition text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700/50">
+            <i data-lucide="receipt" class="w-5 h-5"></i> Rent Slips
+          </button>
+          <button onclick="switchTab('guests')" data-tab="guests" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-2xl font-semibold text-sm transition text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700/50">
+            <i data-lucide="users" class="w-5 h-5"></i> Tenants &amp; Rooms
+          </button>
+          <button onclick="switchTab('maintenance')" data-tab="maintenance" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-2xl font-semibold text-sm transition text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700/50">
+            <i data-lucide="wrench" class="w-5 h-5"></i> Maintenance &amp; Complaints
+          </button>
+          <button onclick="switchTab('expenses')" data-tab="expenses" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-2xl font-semibold text-sm transition text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700/50">
+            <i data-lucide="wallet" class="w-5 h-5"></i> Expense Log
+          </button>
+          <button onclick="switchTab('history')" data-tab="history" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-2xl font-semibold text-sm transition text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700/50">
+            <i data-lucide="history" class="w-5 h-5"></i> Transaction History
+          </button>
+          <button onclick="switchTab('settings')" data-tab="settings" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-2xl font-semibold text-sm transition text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700/50">
+            <i data-lucide="settings" class="w-5 h-5"></i> PG Settings
+          </button>
+        </nav>
+
+        <!-- USER CARD & THEME TOGGLE -->
+        <div class="mt-8 pt-6 border-t border-slate-100 dark:border-slate-700 space-y-3">
+          <div class="p-3 bg-slate-50 dark:bg-slate-700/50 rounded-2xl flex items-center gap-3">
+            <div class="w-10 h-10 rounded-full bg-brand-500 text-white flex items-center justify-center font-bold text-sm" id="userAvatar">A</div>
+            <div class="overflow-hidden flex-1">
+              <h4 class="font-bold text-sm truncate" id="userDisplayName">Manager</h4>
+              <p class="text-xs text-slate-400 truncate" id="userPhoneDisplay">+91 --</p>
+            </div>
+            <button onclick="handleLogout()" class="p-2 text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-950/30 rounded-xl transition" title="Logout">
+              <i data-lucide="log-out" class="w-4 h-4"></i>
+            </button>
+          </div>
+
+          <button id="themeToggleDesktop" class="w-full py-2.5 px-4 bg-slate-100 dark:bg-slate-700/60 rounded-xl font-medium text-xs text-slate-600 dark:text-slate-300 flex items-center justify-between">
+            <span class="flex items-center gap-2"><i data-lucide="moon" class="w-4 h-4"></i> Theme</span>
+            <span class="font-semibold text-brand-500 dark:text-brand-400" id="themeModeText">Light Mode</span>
+          </button>
+        </div>
+      </aside>
+
+      <!-- MAIN CONTENT CONTENT PANEL -->
+      <main class="lg:col-span-9 space-y-6">
+
+        <!-- TAB 1: DASHBOARD -->
+        <section id="tab-dashboard" class="tab-content space-y-6">
+          <!-- WELCOME & QUICK SYNC -->
+          <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-gradient-to-r from-brand-700 to-brand-600 p-6 rounded-3xl text-white shadow-xl shadow-brand-600/10">
+            <div>
+              <span class="px-3 py-1 bg-white/20 rounded-full text-xs font-semibold uppercase tracking-wider">Live Cloud Dashboard</span>
+              <h2 class="text-2xl font-extrabold mt-2" id="welcomeMsg">Welcome, Manager!</h2>
+              <p class="text-sm text-brand-100 mt-1">Here is today's overview for your PG management.</p>
+            </div>
+            <div class="flex gap-2">
+              <button onclick="refreshData()" class="px-4 py-2 bg-white/10 hover:bg-white/20 border border-white/20 rounded-2xl text-xs font-semibold backdrop-blur transition flex items-center gap-2">
+                <i data-lucide="refresh-cw" class="w-4 h-4"></i> Sync Data
+              </button>
+            </div>
+          </div>
+
+          <!-- METRICS GRID -->
+          <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+            <div class="bg-white dark:bg-slate-800 p-4 sm:p-5 rounded-3xl border border-slate-100 dark:border-slate-700 shadow-sm">
+              <div class="p-2.5 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 w-fit rounded-2xl mb-3">
+                <i data-lucide="indian-rupee" class="w-5 h-5"></i>
+              </div>
+              <p class="text-xs font-medium text-slate-400">Total Rent Collected</p>
+              <h3 class="text-xl sm:text-2xl font-extrabold text-slate-900 dark:text-white mt-1" id="dashCollected">₹0</h3>
+            </div>
+
+            <div class="bg-white dark:bg-slate-800 p-4 sm:p-5 rounded-3xl border border-slate-100 dark:border-slate-700 shadow-sm">
+              <div class="p-2.5 bg-amber-500/10 text-amber-600 dark:text-amber-400 w-fit rounded-2xl mb-3">
+                <i data-lucide="clock" class="w-5 h-5"></i>
+              </div>
+              <p class="text-xs font-medium text-slate-400">Pending Dues</p>
+              <h3 class="text-xl sm:text-2xl font-extrabold text-amber-600 dark:text-amber-400 mt-1" id="dashDues">₹0</h3>
+            </div>
+
+            <div class="bg-white dark:bg-slate-800 p-4 sm:p-5 rounded-3xl border border-slate-100 dark:border-slate-700 shadow-sm">
+              <div class="p-2.5 bg-blue-500/10 text-blue-600 dark:text-blue-400 w-fit rounded-2xl mb-3">
+                <i data-lucide="users" class="w-5 h-5"></i>
+              </div>
+              <p class="text-xs font-medium text-slate-400">Total Tenants</p>
+              <h3 class="text-xl sm:text-2xl font-extrabold text-slate-900 dark:text-white mt-1" id="dashTenants">0</h3>
+            </div>
+
+            <div class="bg-white dark:bg-slate-800 p-4 sm:p-5 rounded-3xl border border-slate-100 dark:border-slate-700 shadow-sm">
+              <div class="p-2.5 bg-rose-500/10 text-rose-600 dark:text-rose-400 w-fit rounded-2xl mb-3">
+                <i data-lucide="alert-triangle" class="w-5 h-5"></i>
+              </div>
+              <p class="text-xs font-medium text-slate-400">Active Issues</p>
+              <h3 class="text-xl sm:text-2xl font-extrabold text-slate-900 dark:text-white mt-1" id="dashIssues">0</h3>
+            </div>
+          </div>
+
+          <!-- QUICK ACTIONS & CHART -->
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="md:col-span-2 bg-white dark:bg-slate-800 p-6 rounded-3xl border border-slate-100 dark:border-slate-700 shadow-sm">
+              <h3 class="font-bold text-lg text-slate-900 dark:text-white mb-4">Revenue &amp; Expense Analytics</h3>
+              <div class="h-64">
+                <canvas id="revenueChart"></canvas>
+              </div>
+            </div>
+
+            <div class="bg-white dark:bg-slate-800 p-6 rounded-3xl border border-slate-100 dark:border-slate-700 shadow-sm space-y-4">
+              <h3 class="font-bold text-lg text-slate-900 dark:text-white">Quick Management</h3>
+              <div class="grid grid-cols-1 gap-2.5">
+                <button onclick="switchTab('slips')" class="p-3.5 bg-slate-50 dark:bg-slate-700/50 hover:bg-brand-50 dark:hover:bg-brand-950/30 rounded-2xl border border-slate-200 dark:border-slate-700 font-semibold text-xs text-left text-slate-700 dark:text-slate-200 flex items-center justify-between transition group">
+                  <span class="flex items-center gap-2.5"><i data-lucide="plus-circle" class="w-4 h-4 text-brand-500"></i> Generate Rent Slip</span>
+                  <i data-lucide="chevron-right" class="w-4 h-4 text-slate-400 group-hover:translate-x-1 transition"></i>
                 </button>
-                <button class="apply-btn print" onclick="downloadResume()">
-                    <i class="fas fa-download"></i> Download PDF
+                <button onclick="switchTab('guests')" class="p-3.5 bg-slate-50 dark:bg-slate-700/50 hover:bg-brand-50 dark:hover:bg-brand-950/30 rounded-2xl border border-slate-200 dark:border-slate-700 font-semibold text-xs text-left text-slate-700 dark:text-slate-200 flex items-center justify-between transition group">
+                  <span class="flex items-center gap-2.5"><i data-lucide="user-plus" class="w-4 h-4 text-emerald-500"></i> Register New Tenant</span>
+                  <i data-lucide="chevron-right" class="w-4 h-4 text-slate-400 group-hover:translate-x-1 transition"></i>
                 </button>
-                <button class="apply-btn" onclick="contactNow()">
-                    <i class="fas fa-paper-plane"></i> Email Now
+                <button onclick="switchTab('maintenance')" class="p-3.5 bg-slate-50 dark:bg-slate-700/50 hover:bg-brand-50 dark:hover:bg-brand-950/30 rounded-2xl border border-slate-200 dark:border-slate-700 font-semibold text-xs text-left text-slate-700 dark:text-slate-200 flex items-center justify-between transition group">
+                  <span class="flex items-center gap-2.5"><i data-lucide="wrench" class="w-4 h-4 text-amber-500"></i> Log Maintenance</span>
+                  <i data-lucide="chevron-right" class="w-4 h-4 text-slate-400 group-hover:translate-x-1 transition"></i>
                 </button>
+                <button onclick="switchTab('expenses')" class="p-3.5 bg-slate-50 dark:bg-slate-700/50 hover:bg-brand-50 dark:hover:bg-brand-950/30 rounded-2xl border border-slate-200 dark:border-slate-700 font-semibold text-xs text-left text-slate-700 dark:text-slate-200 flex items-center justify-between transition group">
+                  <span class="flex items-center gap-2.5"><i data-lucide="minus-circle" class="w-4 h-4 text-rose-500"></i> Record PG Expense</span>
+                  <i data-lucide="chevron-right" class="w-4 h-4 text-slate-400 group-hover:translate-x-1 transition"></i>
+                </button>
+              </div>
             </div>
-        </div>
+          </div>
+        </section>
+
+        <!-- TAB 2: RENT SLIPS -->
+        <section id="tab-slips" class="tab-content hidden space-y-6">
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+            <!-- SLIP FORM -->
+            <div class="lg:col-span-6 bg-white dark:bg-slate-800 p-6 rounded-3xl border border-slate-100 dark:border-slate-700 shadow-sm space-y-4">
+              <h3 class="font-bold text-lg text-slate-900 dark:text-white border-b border-slate-100 dark:border-slate-700 pb-3">
+                📄 Generate Rent Receipt
+              </h3>
+              <form id="slipForm" onsubmit="event.preventDefault();" class="space-y-3">
+                <div>
+                  <label class="block text-xs font-semibold text-slate-500 mb-1">Select Tenant</label>
+                  <select id="slipTenantSelect" onchange="autoFillTenantData()" class="w-full px-3.5 py-2.5 bg-slate-50 dark:bg-slate-700/50 border border-slate-200 dark:border-slate-600 rounded-xl text-sm outline-none focus:ring-2 focus:ring-brand-500">
+                    <option value="">-- Choose Tenant --</option>
+                  </select>
+                </div>
+                <div class="grid grid-cols-2 gap-3">
+                  <div>
+                    <label class="block text-xs font-semibold text-slate-500 mb-1">Room No.</label>
+                    <input type="text" id="slipRoom" placeholder="102" class="w-full px-3.5 py-2.5 bg-slate-50 dark:bg-slate-700/50 border border-slate-200 dark:border-slate-600 rounded-xl text-sm outline-none" required />
+                  </div>
+                  <div>
+                    <label class="block text-xs font-semibold text-slate-500 mb-1">Sharing Type</label>
+                    <select id="slipSharing" class="w-full px-3.5 py-2.5 bg-slate-50 dark:bg-slate-700/50 border border-slate-200 dark:border-slate-600 rounded-xl text-sm outline-none">
+                      <option value="Single Share">Single Share</option>
+                      <option value="Double Share" selected>Double Share</option>
+                      <option value="Triple Share">Triple Share</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="grid grid-cols-2 gap-3">
+                  <div>
+                    <label class="block text-xs font-semibold text-slate-500 mb-1">Month</label>
+                    <input type="month" id="slipMonth" class="w-full px-3.5 py-2.5 bg-slate-50 dark:bg-slate-700/50 border border-slate-200 dark:border-slate-600 rounded-xl text-sm outline-none" />
+                  </div>
+                  <div>
+                    <label class="block text-xs font-semibold text-slate-500 mb-1">Payment Mode</label>
+                    <select id="slipMode" class="w-full px-3.5 py-2.5 bg-slate-50 dark:bg-slate-700/50 border border-slate-200 dark:border-slate-600 rounded-xl text-sm outline-none">
+                      <option value="UPI">UPI / GPay / PhonePe</option>
+                      <option value="Cash">Cash</option>
+                      <option value="Bank Transfer">Bank Transfer</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="grid grid-cols-2 gap-3">
+                  <div>
+                    <label class="block text-xs font-semibold text-slate-500 mb-1">Rent Amount (₹)</label>
+                    <input type="number" id="slipRent" placeholder="5000" class="w-full px-3.5 py-2.5 bg-slate-50 dark:bg-slate-700/50 border border-slate-200 dark:border-slate-600 rounded-xl text-sm outline-none" required />
+                  </div>
+                  <div>
+                    <label class="block text-xs font-semibold text-slate-500 mb-1">Previous Due (₹)</label>
+                    <input type="number" id="slipDue" value="0" class="w-full px-3.5 py-2.5 bg-slate-50 dark:bg-slate-700/50 border border-slate-200 dark:border-slate-600 rounded-xl text-sm outline-none" />
+                  </div>
+                </div>
+                <button type="button" onclick="handleGenerateSlip()" class="w-full py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-sm rounded-xl shadow-md transition">
+                  Generate Slip &amp; Save
+                </button>
+              </form>
+            </div>
+
+            <!-- SLIP PREVIEW -->
+            <div class="lg:col-span-6 bg-white dark:bg-slate-800 p-6 rounded-3xl border border-slate-100 dark:border-slate-700 shadow-sm space-y-4">
+              <div class="flex items-center justify-between border-b border-slate-100 dark:border-slate-700 pb-3">
+                <h3 class="font-bold text-lg text-slate-900 dark:text-white">Receipt Preview</h3>
+                <div class="flex gap-2">
+                  <button onclick="shareWhatsApp()" class="p-2 bg-emerald-500/10 text-emerald-600 hover:bg-emerald-500/20 rounded-xl text-xs font-semibold transition flex items-center gap-1">
+                    <i data-lucide="send" class="w-4 h-4"></i> WhatsApp
+                  </button>
+                  <button onclick="window.print()" class="p-2 bg-brand-500/10 text-brand-600 hover:bg-brand-500/20 rounded-xl text-xs font-semibold transition flex items-center gap-1">
+                    <i data-lucide="printer" class="w-4 h-4"></i> Print / PDF
+                  </button>
+                </div>
+              </div>
+
+              <div id="printableSlip" class="p-5 bg-slate-50 dark:bg-slate-900 rounded-2xl border-2 border-dashed border-brand-300 dark:border-slate-700 space-y-3 text-sm">
+                <div class="text-center pb-3 border-b border-slate-200 dark:border-slate-800">
+                  <h2 class="font-extrabold text-lg text-brand-700 dark:text-brand-400" id="prevPgName">Ghar PG Accommodation</h2>
+                  <p class="text-xs text-slate-400" id="prevPgAddress">Official Payment Receipt</p>
+                </div>
+                <div class="space-y-1.5 text-xs">
+                  <div class="flex justify-between"><span class="text-slate-400">Receipt No:</span><span class="font-bold" id="prevNo">#---</span></div>
+                  <div class="flex justify-between"><span class="text-slate-400">Date:</span><span class="font-semibold" id="prevDate">--/--/----</span></div>
+                  <div class="flex justify-between"><span class="text-slate-400">Tenant Name:</span><span class="font-semibold" id="prevTenant">--</span></div>
+                  <div class="flex justify-between"><span class="text-slate-400">Room &amp; Type:</span><span class="font-semibold" id="prevRoom">--</span></div>
+                  <div class="flex justify-between"><span class="text-slate-400">Rent Period:</span><span class="font-semibold" id="prevMonth">--</span></div>
+                  <div class="flex justify-between"><span class="text-slate-400">Payment Mode:</span><span class="font-semibold text-emerald-600" id="prevMode">--</span></div>
+                  <hr class="border-slate-200 dark:border-slate-800 my-2" />
+                  <div class="flex justify-between"><span class="text-slate-400">Monthly Rent:</span><span class="font-semibold" id="prevRent">₹0</span></div>
+                  <div class="flex justify-between"><span class="text-slate-400">Arrears / Due:</span><span class="font-semibold" id="prevDue">₹0</span></div>
+                  <div class="flex justify-between text-base font-bold text-slate-900 dark:text-white pt-2 border-t border-slate-200 dark:border-slate-800">
+                    <span>Total Amount Paid:</span>
+                    <span class="text-brand-600 dark:text-brand-400" id="prevTotal">₹0</span>
+                  </div>
+                </div>
+                <div class="pt-3 text-center text-[10px] text-slate-400 border-t border-slate-200 dark:border-slate-800">
+                  Thank you for staying with us! System Generated Receipt.
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- TAB 3: TENANTS & ROOMS -->
+        <section id="tab-guests" class="tab-content hidden space-y-6">
+          <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+            <div>
+              <h2 class="text-xl font-bold text-slate-900 dark:text-white">Tenants Directory</h2>
+              <p class="text-xs text-slate-400">Manage room allocations and guest records.</p>
+            </div>
+            <button onclick="openTenantModal()" class="px-4 py-2.5 bg-brand-600 hover:bg-brand-700 text-white font-semibold text-xs rounded-2xl shadow-md transition flex items-center gap-2">
+              <i data-lucide="user-plus" class="w-4 h-4"></i> Add New Tenant
+            </button>
+          </div>
+
+          <!-- TENANTS TABLE -->
+          <div class="bg-white dark:bg-slate-800 rounded-3xl border border-slate-100 dark:border-slate-700 shadow-sm overflow-hidden">
+            <div class="overflow-x-auto">
+              <table class="w-full text-left border-collapse text-xs sm:text-sm">
+                <thead>
+                  <tr class="bg-slate-50 dark:bg-slate-700/50 text-slate-400 font-semibold uppercase tracking-wider text-[10px] border-b border-slate-100 dark:border-slate-700">
+                    <th class="p-4">Tenant Info</th>
+                    <th class="p-4">Room / Share</th>
+                    <th class="p-4">Rent</th>
+                    <th class="p-4">Mobile</th>
+                    <th class="p-4">Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="tenantTableBody" class="divide-y divide-slate-100 dark:divide-slate-700/50">
+                  <!-- Dynamic content -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- TAB 4: MAINTENANCE -->
+        <section id="tab-maintenance" class="tab-content hidden space-y-6">
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+            <div class="lg:col-span-5 bg-white dark:bg-slate-800 p-6 rounded-3xl border border-slate-100 dark:border-slate-700 shadow-sm space-y-4">
+              <h3 class="font-bold text-lg text-slate-900 dark:text-white border-b border-slate-100 dark:border-slate-700 pb-3">
+                🔧 Log Maintenance Issue
+              </h3>
+              <form id="maintForm" onsubmit="event.preventDefault();" class="space-y-3">
+                <div>
+                  <label class="block text-xs font-semibold text-slate-500 mb-1">Issue Title</label>
+                  <input type="text" id="maintTitle" placeholder="e.g., Room 201 Fan Repair" class="w-full px-3.5 py-2.5 bg-slate-50 dark:bg-slate-700/50 border border-slate-200 dark:border-slate-600 rounded-xl text-sm outline-none" required />
+                </div>
+                <div class="grid grid-cols-2 gap-3">
+                  <div>
+                    <label class="block text-xs font-semibold text-slate-500 mb-1">Priority</label>
+                    <select id="maintPriority" class="w-full px-3.5 py-2.5 bg-slate-50 dark:bg-slate-700/50 border border-slate-200 dark:border-slate-600 rounded-xl text-sm outline-none">
+                      <option value="Low">Low</option>
+                      <option value="Medium" selected>Medium</option>
+                      <option value="High">High Urgent</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label class="block text-xs font-semibold text-slate-500 mb-1">Status</label>
+                    <select id="maintStatus" class="w-full px-3.5 py-2.5 bg-slate-50 dark:bg-slate-700/50 border border-slate-200 dark:border-slate-600 rounded-xl text-sm outline-none">
+                      <option value="Pending">Pending</option>
+                      <option value="In Progress">In Progress</option>
+                      <option value="Resolved">Resolved</option>
+                    </select>
+                  </div>
+                </div>
+                <div>
+                  <label class="block text-xs font-semibold text-slate-500 mb-1">Description</label>
+                  <textarea id="maintDesc" rows="3" placeholder="Describe the issue..." class="w-full px-3.5 py-2.5 bg-slate-50 dark:bg-slate-700/50 border border-slate-200 dark:border-slate-600 rounded-xl text-sm outline-none resize-none"></textarea>
+                </div>
+                <button type="button" onclick="handleSaveMaintenance()" class="w-full py-3 bg-amber-600 hover:bg-amber-700 text-white font-semibold text-sm rounded-xl shadow-md transition">
+                  Save Issue Log
+                </button>
+              </form>
+            </div>
+
+            <div class="lg:col-span-7 bg-white dark:bg-slate-800 p-6 rounded-3xl border border-slate-100 dark:border-slate-700 shadow-sm space-y-4">
+              <h3 class="font-bold text-lg text-slate-900 dark:text-white border-b border-slate-100 dark:border-slate-700 pb-3">
+                Active Maintenance Logs
+              </h3>
+              <div id="maintListContainer" class="space-y-3 max-h-[500px] overflow-y-auto pr-1 custom-scrollbar">
+                <!-- Dynamic logs -->
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- TAB 5: EXPENSES -->
+        <section id="tab-expenses" class="tab-content hidden space-y-6">
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+            <div class="lg:col-span-5 bg-white dark:bg-slate-800 p-6 rounded-3xl border border-slate-100 dark:border-slate-700 shadow-sm space-y-4">
+              <h3 class="font-bold text-lg text-slate-900 dark:text-white border-b border-slate-100 dark:border-slate-700 pb-3">
+                💸 Log PG Expense
+              </h3>
+              <form id="expenseForm" onsubmit="event.preventDefault();" class="space-y-3">
+                <div>
+                  <label class="block text-xs font-semibold text-slate-500 mb-1">Expense Title</label>
+                  <input type="text" id="expTitle" placeholder="Electricity Bill / Grocery" class="w-full px-3.5 py-2.5 bg-slate-50 dark:bg-slate-700/50 border border-slate-200 dark:border-slate-600 rounded-xl text-sm outline-none" required />
+                </div>
+                <div class="grid grid-cols-2 gap-3">
+                  <div>
+                    <label class="block text-xs font-semibold text-slate-500 mb-1">Amount (₹)</label>
+                    <input type="number" id="expAmount" placeholder="1200" class="w-full px-3.5 py-2.5 bg-slate-50 dark:bg-slate-700/50 border border-slate-200 dark:border-slate-600 rounded-xl text-sm outline-none" required />
+                  </div>
+                  <div>
+                    <label class="block text-xs font-semibold text-slate-500 mb-1">Category</label>
+                    <select id="expCategory" class="w-full px-3.5 py-2.5 bg-slate-50 dark:bg-slate-700/50 border border-slate-200 dark:border-slate-600 rounded-xl text-sm outline-none">
+                      <option value="Electricity">Electricity</option>
+                      <option value="Water">Water</option>
+                      <option value="Mess / Food">Mess / Food</option>
+                      <option value="Internet / Wifi">Internet / Wifi</option>
+                      <option value="Repairs">Repairs</option>
+                      <option value="Others">Others</option>
+                    </select>
+                  </div>
+                </div>
+                <button type="button" onclick="handleSaveExpense()" class="w-full py-3 bg-rose-600 hover:bg-rose-700 text-white font-semibold text-sm rounded-xl shadow-md transition">
+                  Record Expense
+                </button>
+              </form>
+            </div>
+
+            <div class="lg:col-span-7 bg-white dark:bg-slate-800 p-6 rounded-3xl border border-slate-100 dark:border-slate-700 shadow-sm space-y-4">
+              <h3 class="font-bold text-lg text-slate-900 dark:text-white border-b border-slate-100 dark:border-slate-700 pb-3">
+                Expense Records
+              </h3>
+              <div id="expenseListContainer" class="space-y-3 max-h-[500px] overflow-y-auto pr-1 custom-scrollbar">
+                <!-- Dynamic expenses -->
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- TAB 6: HISTORY -->
+        <section id="tab-history" class="tab-content hidden space-y-6">
+          <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+            <div>
+              <h2 class="text-xl font-bold text-slate-900 dark:text-white">Transaction Logs &amp; History</h2>
+              <p class="text-xs text-slate-400">All historical records saved safely.</p>
+            </div>
+            <div class="flex gap-2">
+              <button onclick="exportCSV()" class="px-4 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-xs rounded-2xl shadow-md transition flex items-center gap-2">
+                <i data-lucide="download" class="w-4 h-4"></i> Export CSV
+              </button>
+            </div>
+          </div>
+
+          <div class="bg-white dark:bg-slate-800 p-6 rounded-3xl border border-slate-100 dark:border-slate-700 shadow-sm space-y-4">
+            <input type="text" id="historySearch" oninput="filterHistory()" placeholder="🔍 Search transaction by tenant name or room..." class="w-full px-4 py-3 bg-slate-50 dark:bg-slate-700/50 border border-slate-200 dark:border-slate-600 rounded-xl text-sm outline-none" />
+            <div id="historyLogsContainer" class="space-y-2 max-h-[500px] overflow-y-auto custom-scrollbar">
+              <!-- Dynamic items -->
+            </div>
+          </div>
+        </section>
+
+        <!-- TAB 7: SETTINGS -->
+        <section id="tab-settings" class="tab-content hidden space-y-6">
+          <div class="bg-white dark:bg-slate-800 p-6 rounded-3xl border border-slate-100 dark:border-slate-700 shadow-sm space-y-4 max-w-xl">
+            <h3 class="font-bold text-lg text-slate-900 dark:text-white border-b border-slate-100 dark:border-slate-700 pb-3">
+              ⚙️ PG Profile &amp; Settings
+            </h3>
+            <form id="settingsForm" onsubmit="event.preventDefault();" class="space-y-4">
+              <div>
+                <label class="block text-xs font-semibold text-slate-500 mb-1">PG Name</label>
+                <input type="text" id="setPgName" value="Ghar PG Accommodation" class="w-full px-3.5 py-2.5 bg-slate-50 dark:bg-slate-700/50 border border-slate-200 dark:border-slate-600 rounded-xl text-sm outline-none" />
+              </div>
+              <div>
+                <label class="block text-xs font-semibold text-slate-500 mb-1">PG Address</label>
+                <input type="text" id="setPgAddress" value="Station Road, City Center" class="w-full px-3.5 py-2.5 bg-slate-50 dark:bg-slate-700/50 border border-slate-200 dark:border-slate-600 rounded-xl text-sm outline-none" />
+              </div>
+              <div>
+                <label class="block text-xs font-semibold text-slate-500 mb-1">UPI ID for Rent Payments</label>
+                <input type="text" id="setUpiId" placeholder="owner@upi" class="w-full px-3.5 py-2.5 bg-slate-50 dark:bg-slate-700/50 border border-slate-200 dark:border-slate-600 rounded-xl text-sm outline-none" />
+              </div>
+              <button type="button" onclick="saveSettings()" class="w-full py-3 bg-brand-600 hover:bg-brand-700 text-white font-semibold text-sm rounded-xl shadow-md transition">
+                Save Profile Settings
+              </button>
+            </form>
+          </div>
+        </section>
+
+      </main>
     </div>
+  </div>
 
-    <!-- Main Content -->
-    <div class="container">
-        <div class="hotel-layout">
-            <!-- Left Column -->
-            <div class="left-column">
-                <!-- Career Objective -->
-                <div class="career-highlight">
-                    <h3><i class="fas fa-bullseye"></i> Career Objective</h3>
-                    <p>Customer-focused hospitality professional seeking opportunities in <strong>Front Office, Reception, Housekeeping, and Guest Relations</strong>. Dedicated to delivering excellent guest experiences, maintaining service standards, and supporting smooth hotel operations.</p>
-                    <div class="keywords">
-                        <span class="keyword">Front Office Executive</span>
-                        <span class="keyword">Guest Relations</span>
-                        <span class="keyword">Housekeeping Coordinator</span>
-                        <span class="keyword">Receptionist</span>
-                        <span class="keyword">Hotel Operations</span>
-                    </div>
-                </div>
+  <!-- MODAL: ADD/EDIT TENANT -->
+  <div id="tenantModal" class="fixed inset-0 z-50 bg-slate-900/80 backdrop-blur-md hidden flex items-center justify-center p-4">
+    <div class="bg-white dark:bg-slate-800 w-full max-w-lg p-6 rounded-3xl shadow-2xl border border-slate-100 dark:border-slate-700 space-y-4">
+      <div class="flex justify-between items-center border-b border-slate-100 dark:border-slate-700 pb-3">
+        <h3 class="font-bold text-lg text-slate-900 dark:text-white" id="tenantModalTitle">Register New Tenant</h3>
+        <button onclick="closeTenantModal()" class="p-1 text-slate-400 hover:text-slate-600"><i data-lucide="x" class="w-5 h-5"></i></button>
+      </div>
 
-                <!-- Professional Experience -->
-                <div class="info-card">
-                    <h2><i class="fas fa-concierge-bell"></i> Hotel Industry Experience</h2>
-                    
-                    <div class="hotel-experience-item">
-                        <div class="hotel-role">Front Office Executive / Guest Relations Assistant</div>
-                        <div class="hotel-name">Hotel City Inn (3-Star), Dhanbad</div>
-                        <span class="hotel-duration">January 2024 – December 2024</span>
-                        <ul class="hotel-responsibilities">
-                            <li>Handled guest check-in and check-out procedures efficiently for 50+ rooms</li>
-                            <li>Managed front desk operations, reservations, and guest inquiries</li>
-                            <li>Assisted guests with room services and local information requests</li>
-                            <li>Coordinated with housekeeping department for room readiness and maintenance</li>
-                            <li>Resolved guest complaints professionally to ensure satisfaction</li>
-                            <li>Maintained daily reports and guest records accurately</li>
-                        </ul>
-                    </div>
-
-                    <div class="hotel-experience-item">
-                        <div class="hotel-role">Brand Marketing Manager / Operations Supervisor</div>
-                        <div class="hotel-name">Techplus Academy, Dhanbad</div>
-                        <span class="hotel-duration">March 2024 – Present</span>
-                        <ul class="hotel-responsibilities">
-                            <li>Managed daily operations and handled student/client services</li>
-                            <li>Attended to inquiries, scheduling, and coordination activities</li>
-                            <li>Maintained service quality and ensured customer satisfaction</li>
-                            <li>Trained staff in professional conduct and communication</li>
-                        </ul>
-                    </div>
-
-                    <div class="hotel-experience-item">
-                        <div class="hotel-role">Skill Development Trainer</div>
-                        <div class="hotel-name">PMKVY – Pradhan Mantri Kaushal Vikas Yojana, Nirsa</div>
-                        <span class="hotel-duration">March 2024 – March 2025</span>
-                        <ul class="hotel-responsibilities">
-                            <li>Managed classroom and training operations for hospitality skills</li>
-                            <li>Guided students on professional behavior and service etiquette</li>
-                            <li>Prepared schedules, reports, and attendance records</li>
-                            <li>Developed training modules for customer service excellence</li>
-                        </ul>
-                    </div>
-                </div>
-
-                <!-- Skills Section -->
-                <div class="info-card">
-                    <h2><i class="fas fa-tools"></i> Core Competencies</h2>
-                    <div class="skills-grid">
-                        <div class="skill-category">
-                            <h4><i class="fas fa-door-open"></i> Front Office Operations</h4>
-                            <ul class="skill-list">
-                                <li>Guest Check-in & Check-out</li>
-                                <li>Reservation Management</li>
-                                <li>Front Desk Operations</li>
-                                <li>Billing & Cash Handling</li>
-                                <li>Telephone Etiquette</li>
-                            </ul>
-                        </div>
-                        
-                        <div class="skill-category">
-                            <h4><i class="fas fa-hands-helping"></i> Guest Services</h4>
-                            <ul class="skill-list">
-                                <li>Complaint Resolution</li>
-                                <li>VIP Guest Handling</li>
-                                <li>Concierge Services</li>
-                                <li>Service Recovery</li>
-                                <li>Guest Feedback</li>
-                            </ul>
-                        </div>
-                        
-                        <div class="skill-category">
-                            <h4><i class="fas fa-broom"></i> Housekeeping Coordination</h4>
-                            <ul class="skill-list">
-                                <li>Room Status Monitoring</li>
-                                <li>Quality Inspection</li>
-                                <li>Inventory Management</li>
-                                <li>Staff Coordination</li>
-                                <li>Cleanliness Standards</li>
-                            </ul>
-                        </div>
-                        
-                        <div class="skill-category">
-                            <h4><i class="fas fa-users-cog"></i> General Hotel Skills</h4>
-                            <ul class="skill-list">
-                                <li>Team Leadership</li>
-                                <li>Communication Skills</li>
-                                <li>Problem Solving</li>
-                                <li>Time Management</li>
-                                <li>MS Office & PMS Software</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- References -->
-                <div class="references">
-                    <p><i class="fas fa-quote-left"></i> Professional references and previous employment verification available upon request <i class="fas fa-quote-right"></i></p>
-                </div>
-            </div>
-
-            <!-- Right Column -->
-            <div class="right-column">
-                <!-- Target Positions -->
-                <div class="info-card">
-                    <h2><i class="fas fa-bullseye"></i> Target Positions</h2>
-                    <div class="position-grid">
-                        <div class="position-card">
-                            <i class="fas fa-reception"></i>
-                            <h4>Front Office Executive</h4>
-                        </div>
-                        <div class="position-card">
-                            <i class="fas fa-headset"></i>
-                            <h4>Receptionist</h4>
-                        </div>
-                        <div class="position-card">
-                            <i class="fas fa-user-tie"></i>
-                            <h4>Guest Relations Executive</h4>
-                        </div>
-                        <div class="position-card">
-                            <i class="fas fa-broom"></i>
-                            <h4>Housekeeping Coordinator</h4>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Education -->
-                <div class="info-card">
-                    <h2><i class="fas fa-graduation-cap"></i> Education</h2>
-                    <div class="hotel-experience-item">
-                        <div class="hotel-role">Bachelor of Commerce (B.Com)</div>
-                        <div class="hotel-name">BSK College Maithan, BBMK University</div>
-                        <span class="hotel-duration">2022 – 2025</span>
-                    </div>
-                    
-                    <div class="hotel-experience-item">
-                        <div class="hotel-role">Advanced Diploma in Financial Accounting</div>
-                        <div class="hotel-name">Swift Shine InfoTech (SSIT), Dhanbad</div>
-                        <span class="hotel-duration">2023 – 2024</span>
-                    </div>
-                    
-                    <div class="hotel-experience-item">
-                        <div class="hotel-role">Intermediate (12th – Commerce)</div>
-                        <div class="hotel-name">S.H.M.S College, JAC Board</div>
-                        <span class="hotel-duration">2020 – 2022</span>
-                    </div>
-                </div>
-
-                <!-- Availability & Languages -->
-                <div class="availability-card">
-                    <h2 style="color: var(--hotel-gold); border-color: rgba(255,255,255,0.2);">
-                        <i class="fas fa-calendar-check"></i> Availability
-                    </h2>
-                    <div class="availability-item">
-                        <span>Joining Status:</span>
-                        <span class="status-ready">Immediate Joining</span>
-                    </div>
-                    <div class="availability-item">
-                        <span>Notice Period:</span>
-                        <span class="status-ready">None Required</span>
-                    </div>
-                    <div class="availability-item">
-                        <span>Relocation:</span>
-                        <span class="status-ready">Ready to Relocate</span>
-                    </div>
-                    <div class="availability-item">
-                        <span>Shift Flexibility:</span>
-                        <span class="status-ready">Flexible Shifts</span>
-                    </div>
-                    
-                    <h3 style="color: var(--hotel-gold); margin-top: 25px; margin-bottom: 15px;">
-                        <i class="fas fa-language"></i> Languages
-                    </h3>
-                    <div class="availability-item">
-                        <span>Hindi:</span>
-                        <span>Native Proficiency</span>
-                    </div>
-                    <div class="availability-item">
-                        <span>English:</span>
-                        <span>Working Proficiency</span>
-                    </div>
-                </div>
-
-                <!-- Personal Information -->
-                <div class="info-card">
-                    <h2><i class="fas fa-user-circle"></i> Personal Information</h2>
-                    <div style="display: grid; gap: 15px;">
-                        <div style="display: flex; justify-content: space-between;">
-                            <span style="font-weight: 600;">Date of Birth:</span>
-                            <span>05 January 2005</span>
-                        </div>
-                        <div style="display: flex; justify-content: space-between;">
-                            <span style="font-weight: 600;">Gender:</span>
-                            <span>Male</span>
-                        </div>
-                        <div style="display: flex; justify-content: space-between;">
-                            <span style="font-weight: 600;">Nationality:</span>
-                            <span>Indian</span>
-                        </div>
-                        <div style="display: flex; justify-content: space-between;">
-                            <span style="font-weight: 600;">Passport Number:</span>
-                            <span>W7755309</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Hotel Industry Software -->
-                <div class="info-card">
-                    <h2><i class="fas fa-laptop"></i> Hotel Software Knowledge</h2>
-                    <ul class="skill-list" style="margin-top: 15px;">
-                        <li>Property Management Systems (PMS)</li>
-                        <li>Microsoft Office Suite</li>
-                        <li>Google Workspace</li>
-                        <li>Online Reservation Systems</li>
-                        <li>Billing & Accounting Software</li>
-                    </ul>
-                </div>
-            </div>
+      <form id="tenantForm" onsubmit="event.preventDefault();" class="space-y-3">
+        <input type="hidden" id="editTenantId" />
+        <div>
+          <label class="block text-xs font-semibold text-slate-500 mb-1">Full Name</label>
+          <input type="text" id="tName" placeholder="e.g. Rahul Sharma" class="w-full px-3.5 py-2.5 bg-slate-50 dark:bg-slate-700/50 border border-slate-200 dark:border-slate-600 rounded-xl text-sm outline-none" required />
         </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-semibold text-slate-500 mb-1">Mobile Number</label>
+            <input type="tel" id="tMobile" placeholder="9876543210" maxlength="10" class="w-full px-3.5 py-2.5 bg-slate-50 dark:bg-slate-700/50 border border-slate-200 dark:border-slate-600 rounded-xl text-sm outline-none" required />
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-500 mb-1">Room No.</label>
+            <input type="text" id="tRoom" placeholder="101" class="w-full px-3.5 py-2.5 bg-slate-50 dark:bg-slate-700/50 border border-slate-200 dark:border-slate-600 rounded-xl text-sm outline-none" required />
+          </div>
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-semibold text-slate-500 mb-1">Sharing Type</label>
+            <select id="tSharing" class="w-full px-3.5 py-2.5 bg-slate-50 dark:bg-slate-700/50 border border-slate-200 dark:border-slate-600 rounded-xl text-sm outline-none">
+              <option value="Single Share">Single Share</option>
+              <option value="Double Share" selected>Double Share</option>
+              <option value="Triple Share">Triple Share</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-500 mb-1">Monthly Rent (₹)</label>
+            <input type="number" id="tRent" placeholder="5000" class="w-full px-3.5 py-2.5 bg-slate-50 dark:bg-slate-700/50 border border-slate-200 dark:border-slate-600 rounded-xl text-sm outline-none" required />
+          </div>
+        </div>
+        <button type="button" onclick="handleSaveTenant()" class="w-full py-3 bg-brand-600 hover:bg-brand-700 text-white font-semibold text-sm rounded-xl shadow-md transition">
+          Save Tenant Details
+        </button>
+      </form>
     </div>
+  </div>
 
-    <!-- Call to Action -->
-    <div class="cta-section">
-        <div class="container">
-            <div class="cta-content">
-                <h2>Ready to Join Your Hotel Team!</h2>
-                <p>With 2+ years of experience in hotel operations and guest services, I am prepared to contribute immediately to your hotel's success.</p>
-                <div class="cta-buttons no-print">
-                    <button class="apply-btn" onclick="scheduleInterview()">
-                        <i class="fas fa-calendar-alt"></i> Schedule Interview
-                    </button>
-                    <button class="apply-btn print" onclick="contactDirect()">
-                        <i class="fas fa-phone-alt"></i> Call Now: +91 8651744312
-                    </button>
-                </div>
+  <!-- TOAST NOTIFICATION -->
+  <div id="toast" class="fixed bottom-5 right-5 z-50 hidden px-5 py-3.5 rounded-2xl shadow-2xl text-white font-semibold text-sm flex items-center gap-2 transition-all transform translate-y-10">
+    <i data-lucide="check-circle" class="w-5 h-5"></i>
+    <span id="toastMsg">Success</span>
+  </div>
+
+  <!-- SCRIPT LOGIC -->
+  <script>
+    // Initialize Lucide Icons
+    lucide.createIcons();
+
+    // ==================== FIREBASE PERSISTENCE SETUP ====================
+    const firebaseConfig = JSON.parse(__firebase_config);
+    const app = firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+    const db = firebase.firestore();
+    const appId = typeof __app_id !== 'undefined' ? __app_id : 'ghar-pg-app';
+
+    // Application state
+    let currentUser = null;
+    let tenants = [];
+    let receipts = [];
+    let maintenanceLogs = [];
+    let expenses = [];
+    let revenueChartInstance = null;
+
+    // Helper Functions
+    function showToast(msg, type = 'success') {
+      const toast = document.getElementById('toast');
+      const toastMsg = document.getElementById('toastMsg');
+      toastMsg.innerText = msg;
+      
+      toast.className = `fixed bottom-5 right-5 z-50 px-5 py-3.5 rounded-2xl shadow-2xl text-white font-semibold text-sm flex items-center gap-2 transition-all ${
+        type === 'success' ? 'bg-emerald-600' : 'bg-rose-600'
+      }`;
+      
+      toast.classList.remove('hidden', 'translate-y-10');
+      setTimeout(() => {
+        toast.classList.add('translate-y-10');
+        setTimeout(() => toast.classList.add('hidden'), 300);
+      }, 3000);
+    }
+
+    // ==================== AUTHENTICATION LOGIC ====================
+    async function initAuth() {
+      try {
+        if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+          await auth.signInWithCustomToken(__initial_auth_token);
+        } else {
+          await auth.signInAnonymously();
+        }
+      } catch (err) {
+        console.error("Auth init error:", err);
+      }
+    }
+
+    auth.onAuthStateChanged((user) => {
+      currentUser = user;
+      if (user) {
+        const savedMobile = localStorage.getItem('gharPG_mobile') || '9876543210';
+        document.getElementById('userPhoneDisplay').innerText = `+91 ${savedMobile}`;
+        document.getElementById('userDisplayName').innerText = 'PG Owner';
+        document.getElementById('userAvatar').innerText = 'P';
+        
+        document.getElementById('authScreen').classList.add('hidden');
+        document.getElementById('appContainer').classList.remove('hidden');
+        
+        setupFirestoreListeners();
+      } else {
+        document.getElementById('authScreen').classList.remove('hidden');
+        document.getElementById('appContainer').classList.add('hidden');
+      }
+    });
+
+    function handleSendOTP() {
+      const mob = document.getElementById('authMobile').value;
+      if (mob.length !== 10) {
+        showToast('Enter valid 10-digit mobile number', 'error');
+        return;
+      }
+      localStorage.setItem('gharPG_mobile', mob);
+      document.getElementById('otpSection').classList.remove('hidden');
+      document.getElementById('sendOtpBtn').classList.add('hidden');
+      document.getElementById('verifyOtpBtn').classList.remove('hidden');
+      document.getElementById('authOtp').value = '123456';
+      showToast('Demo OTP Sent: 123456');
+    }
+
+    function handleVerifyOTP() {
+      const otp = document.getElementById('authOtp').value;
+      if (otp === '123456' || otp.length === 6) {
+        showToast('Login Verified');
+        if (!auth.currentUser) initAuth();
+        else {
+          document.getElementById('authScreen').classList.add('hidden');
+          document.getElementById('appContainer').classList.remove('hidden');
+          setupFirestoreListeners();
+        }
+      } else {
+        showToast('Invalid OTP', 'error');
+      }
+    }
+
+    function handleLogout() {
+      auth.signOut().then(() => {
+        location.reload();
+      });
+    }
+
+    // ==================== FIRESTORE DATA SYNC ====================
+    function setupFirestoreListeners() {
+      if (!currentUser) return;
+
+      // 1. Tenants Collection
+      const tenantsRef = db.collection('artifacts').doc(appId).collection('public').doc('data').collection('tenants');
+      tenantsRef.onSnapshot((snap) => {
+        tenants = [];
+        snap.forEach((doc) => tenants.push({ id: doc.id, ...doc.data() }));
+        renderTenants();
+        populateTenantDropdown();
+        updateDashboard();
+      }, (err) => console.error("Tenants snapshot error:", err));
+
+      // 2. Receipts Collection
+      const receiptsRef = db.collection('artifacts').doc(appId).collection('public').doc('data').collection('receipts');
+      receiptsRef.onSnapshot((snap) => {
+        receipts = [];
+        snap.forEach((doc) => receipts.push({ id: doc.id, ...doc.data() }));
+        renderHistory();
+        updateDashboard();
+      }, (err) => console.error("Receipts snapshot error:", err));
+
+      // 3. Maintenance Logs
+      const maintRef = db.collection('artifacts').doc(appId).collection('public').doc('data').collection('maintenance');
+      maintRef.onSnapshot((snap) => {
+        maintenanceLogs = [];
+        snap.forEach((doc) => maintenanceLogs.push({ id: doc.id, ...doc.data() }));
+        renderMaintenanceLogs();
+        updateDashboard();
+      }, (err) => console.error("Maintenance snapshot error:", err));
+
+      // 4. Expenses
+      const expRef = db.collection('artifacts').doc(appId).collection('public').doc('data').collection('expenses');
+      expRef.onSnapshot((snap) => {
+        expenses = [];
+        snap.forEach((doc) => expenses.push({ id: doc.id, ...doc.data() }));
+        renderExpenses();
+        updateDashboard();
+      }, (err) => console.error("Expenses snapshot error:", err));
+    }
+
+    // ==================== TENANTS MANAGEMENT ====================
+    function openTenantModal(id = null) {
+      document.getElementById('editTenantId').value = id || '';
+      document.getElementById('tenantModalTitle').innerText = id ? 'Edit Tenant' : 'Register New Tenant';
+      
+      if (id) {
+        const t = tenants.find(x => x.id === id);
+        if (t) {
+          document.getElementById('tName').value = t.name || '';
+          document.getElementById('tMobile').value = t.mobile || '';
+          document.getElementById('tRoom').value = t.room || '';
+          document.getElementById('tSharing').value = t.sharing || 'Double Share';
+          document.getElementById('tRent').value = t.rent || '';
+        }
+      } else {
+        document.getElementById('tenantForm').reset();
+      }
+      document.getElementById('tenantModal').classList.remove('hidden');
+    }
+
+    function closeTenantModal() {
+      document.getElementById('tenantModal').classList.add('hidden');
+    }
+
+    async function handleSaveTenant() {
+      if (!currentUser) return;
+      const id = document.getElementById('editTenantId').value;
+      const name = document.getElementById('tName').value;
+      const mobile = document.getElementById('tMobile').value;
+      const room = document.getElementById('tRoom').value;
+      const sharing = document.getElementById('tSharing').value;
+      const rent = Number(document.getElementById('tRent').value);
+
+      if (!name || !mobile || !room) {
+        showToast('Please fill all mandatory fields', 'error');
+        return;
+      }
+
+      const payload = { name, mobile, room, sharing, rent, updatedAt: new Date().toISOString() };
+      const colRef = db.collection('artifacts').doc(appId).collection('public').doc('data').collection('tenants');
+
+      try {
+        if (id) {
+          await colRef.doc(id).update(payload);
+          showToast('Tenant details updated');
+        } else {
+          await colRef.add({ ...payload, createdAt: new Date().toISOString() });
+          showToast('New tenant registered');
+        }
+        closeTenantModal();
+      } catch (e) {
+        showToast('Failed to save tenant', 'error');
+      }
+    }
+
+    async function deleteTenant(id) {
+      if (!currentUser) return;
+      if (confirm('Are you sure you want to remove this tenant?')) {
+        try {
+          await db.collection('artifacts').doc(appId).collection('public').doc('data').collection('tenants').doc(id).delete();
+          showToast('Tenant removed');
+        } catch (e) {
+          showToast('Failed to delete tenant', 'error');
+        }
+      }
+    }
+
+    function renderTenants() {
+      const tbody = document.getElementById('tenantTableBody');
+      tbody.innerHTML = tenants.map(t => `
+        <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/30 transition">
+          <td class="p-4 font-bold text-slate-900 dark:text-white">${t.name}</td>
+          <td class="p-4">Room ${t.room} <span class="text-xs font-normal text-slate-400">(${t.sharing})</span></td>
+          <td class="p-4 font-bold text-emerald-600">₹${t.rent}</td>
+          <td class="p-4 text-slate-500">${t.mobile}</td>
+          <td class="p-4 flex gap-2">
+            <button onclick="openTenantModal('${t.id}')" class="p-2 text-brand-600 hover:bg-brand-50 rounded-xl"><i data-lucide="edit-3" class="w-4 h-4"></i></button>
+            <button onclick="deleteTenant('${t.id}')" class="p-2 text-rose-600 hover:bg-rose-50 rounded-xl"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
+          </td>
+        </tr>
+      `).join('');
+      lucide.createIcons();
+    }
+
+    function populateTenantDropdown() {
+      const sel = document.getElementById('slipTenantSelect');
+      sel.innerHTML = '<option value="">-- Choose Tenant --</option>' + 
+        tenants.map(t => `<option value="${t.id}">${t.name} (Room ${t.room})</option>`).join('');
+    }
+
+    function autoFillTenantData() {
+      const id = document.getElementById('slipTenantSelect').value;
+      const t = tenants.find(x => x.id === id);
+      if (t) {
+        document.getElementById('slipRoom').value = t.room;
+        document.getElementById('slipSharing').value = t.sharing;
+        document.getElementById('slipRent').value = t.rent;
+      }
+    }
+
+    // ==================== RENT SLIPS LOGIC ====================
+    async function handleGenerateSlip() {
+      if (!currentUser) return;
+      const tenantId = document.getElementById('slipTenantSelect').value;
+      const tenant = tenants.find(x => x.id === tenantId);
+      const name = tenant ? tenant.name : 'Guest';
+      const room = document.getElementById('slipRoom').value;
+      const sharing = document.getElementById('slipSharing').value;
+      const month = document.getElementById('slipMonth').value || 'Current Month';
+      const mode = document.getElementById('slipMode').value;
+      const rent = Number(document.getElementById('slipRent').value);
+      const due = Number(document.getElementById('slipDue').value);
+      const total = rent + due;
+      const slipNo = 'SLIP-' + Math.floor(1000 + Math.random() * 9000);
+      const date = new Date().toLocaleDateString('en-IN');
+
+      const payload = {
+        slipNo, name, room, sharing, month, mode, rent, due, total, date,
+        createdAt: new Date().toISOString()
+      };
+
+      try {
+        await db.collection('artifacts').doc(appId).collection('public').doc('data').collection('receipts').add(payload);
+        
+        // Update Preview
+        document.getElementById('prevNo').innerText = slipNo;
+        document.getElementById('prevDate').innerText = date;
+        document.getElementById('prevTenant').innerText = name;
+        document.getElementById('prevRoom').innerText = `Room ${room} (${sharing})`;
+        document.getElementById('prevMonth').innerText = month;
+        document.getElementById('prevMode').innerText = mode;
+        document.getElementById('prevRent').innerText = `₹${rent}`;
+        document.getElementById('prevDue').innerText = `₹${due}`;
+        document.getElementById('prevTotal').innerText = `₹${total}`;
+
+        showToast('Receipt Generated & Saved!');
+      } catch (e) {
+        showToast('Failed to save receipt', 'error');
+      }
+    }
+
+    function shareWhatsApp() {
+      const no = document.getElementById('prevNo').innerText;
+      const tenant = document.getElementById('prevTenant').innerText;
+      const total = document.getElementById('prevTotal').innerText;
+      const text = `Hello ${tenant}, Here is your rent receipt (${no}) of ${total}. Thank you for staying at Ghar PG!`;
+      window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank');
+    }
+
+    // ==================== MAINTENANCE LOGIC ====================
+    async function handleSaveMaintenance() {
+      if (!currentUser) return;
+      const title = document.getElementById('maintTitle').value;
+      const priority = document.getElementById('maintPriority').value;
+      const status = document.getElementById('maintStatus').value;
+      const desc = document.getElementById('maintDesc').value;
+
+      if (!title) {
+        showToast('Provide an issue title', 'error');
+        return;
+      }
+
+      const payload = { title, priority, status, desc, createdAt: new Date().toLocaleDateString('en-IN') };
+
+      try {
+        await db.collection('artifacts').doc(appId).collection('public').doc('data').collection('maintenance').add(payload);
+        document.getElementById('maintForm').reset();
+        showToast('Maintenance Issue Logged');
+      } catch (e) {
+        showToast('Error logging issue', 'error');
+      }
+    }
+
+    function renderMaintenanceLogs() {
+      const container = document.getElementById('maintListContainer');
+      container.innerHTML = maintenanceLogs.map(m => `
+        <div class="p-4 bg-slate-50 dark:bg-slate-700/50 rounded-2xl border border-slate-100 dark:border-slate-700 flex justify-between items-center">
+          <div>
+            <div class="flex items-center gap-2">
+              <h4 class="font-bold text-sm text-slate-900 dark:text-white">${m.title}</h4>
+              <span class="px-2 py-0.5 rounded-full text-[10px] font-bold ${
+                m.priority === 'High' ? 'bg-rose-100 text-rose-600' : 'bg-amber-100 text-amber-600'
+              }">${m.priority}</span>
             </div>
+            <p class="text-xs text-slate-400 mt-1">${m.desc || 'No description'}</p>
+          </div>
+          <span class="px-3 py-1 rounded-xl text-xs font-bold ${
+            m.status === 'Resolved' ? 'bg-emerald-100 text-emerald-600' : 'bg-slate-200 text-slate-600'
+          }">${m.status}</span>
         </div>
-    </div>
+      `).join('');
+    }
 
-    <!-- Footer -->
-    <footer class="professional-footer">
-        <div class="container">
-            <div class="footer-contact">
-                <div class="footer-contact-item">
-                    <i class="fas fa-phone"></i>
-                    <span>+91 8651744312</span>
-                </div>
-                <div class="footer-contact-item">
-                    <i class="fas fa-envelope"></i>
-                    <span>srjshaw24@gmail.com</span>
-                </div>
-                <div class="footer-contact-item">
-                    <i class="fas fa-map-marker-alt"></i>
-                    <span>Dhanbad, Jharkhand, India</span>
-                </div>
-            </div>
-            <p style="opacity: 0.8; margin-top: 20px;">
-                © 2024 Suraj Kumar Shaw - Hotel Management Professional | All Rights Reserved
-            </p>
+    // ==================== EXPENSE LOGIC ====================
+    async function handleSaveExpense() {
+      if (!currentUser) return;
+      const title = document.getElementById('expTitle').value;
+      const amount = Number(document.getElementById('expAmount').value);
+      const category = document.getElementById('expCategory').value;
+
+      if (!title || !amount) {
+        showToast('Fill expense details', 'error');
+        return;
+      }
+
+      const payload = { title, amount, category, date: new Date().toLocaleDateString('en-IN') };
+
+      try {
+        await db.collection('artifacts').doc(appId).collection('public').doc('data').collection('expenses').add(payload);
+        document.getElementById('expenseForm').reset();
+        showToast('Expense Recorded');
+      } catch (e) {
+        showToast('Error logging expense', 'error');
+      }
+    }
+
+    function renderExpenses() {
+      const container = document.getElementById('expenseListContainer');
+      container.innerHTML = expenses.map(e => `
+        <div class="p-4 bg-slate-50 dark:bg-slate-700/50 rounded-2xl border border-slate-100 dark:border-slate-700 flex justify-between items-center">
+          <div>
+            <h4 class="font-bold text-sm text-slate-900 dark:text-white">${e.title}</h4>
+            <p class="text-xs text-slate-400 mt-0.5">${e.category} • ${e.date}</p>
+          </div>
+          <span class="font-bold text-rose-600">₹${e.amount}</span>
         </div>
-    </footer>
+      `).join('');
+    }
 
-    <script>
-        // Print Resume Function
-        function printResume() {
-            window.print();
+    // ==================== HISTORY & CSV EXPORT ====================
+    function renderHistory() {
+      const container = document.getElementById('historyLogsContainer');
+      container.innerHTML = receipts.map(r => `
+        <div class="p-3.5 bg-slate-50 dark:bg-slate-700/30 rounded-2xl flex justify-between items-center text-xs">
+          <div>
+            <span class="font-bold text-slate-900 dark:text-white">${r.name}</span> (Room ${r.room})
+            <p class="text-[10px] text-slate-400">${r.slipNo} • ${r.date}</p>
+          </div>
+          <span class="font-bold text-emerald-600 text-sm">₹${r.total}</span>
+        </div>
+      `).join('');
+    }
+
+    function filterHistory() {
+      const q = document.getElementById('historySearch').value.toLowerCase();
+      const items = receipts.filter(r => r.name.toLowerCase().includes(q) || r.room.toString().includes(q));
+      const container = document.getElementById('historyLogsContainer');
+      container.innerHTML = items.map(r => `
+        <div class="p-3.5 bg-slate-50 dark:bg-slate-700/30 rounded-2xl flex justify-between items-center text-xs">
+          <div>
+            <span class="font-bold text-slate-900 dark:text-white">${r.name}</span> (Room ${r.room})
+            <p class="text-[10px] text-slate-400">${r.slipNo} • ${r.date}</p>
+          </div>
+          <span class="font-bold text-emerald-600 text-sm">₹${r.total}</span>
+        </div>
+      `).join('');
+    }
+
+    function exportCSV() {
+      if (receipts.length === 0) {
+        showToast('No history data available', 'error');
+        return;
+      }
+      let csv = 'Receipt No,Tenant,Room,Month,Total Paid,Date\n';
+      receipts.forEach(r => {
+        csv += `"${r.slipNo}","${r.name}","${r.room}","${r.month}","${r.total}","${r.date}"\n`;
+      });
+      const blob = new Blob([csv], { type: 'text/csv' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `GharPG_Transactions.csv`;
+      a.click();
+      showToast('Exported CSV');
+    }
+
+    // ==================== DASHBOARD REFRESH & CHARTS ====================
+    function updateDashboard() {
+      const totalRev = receipts.reduce((acc, curr) => acc + (curr.total || 0), 0);
+      const totalDues = receipts.reduce((acc, curr) => acc + (curr.due || 0), 0);
+      
+      document.getElementById('dashCollected').innerText = `₹${totalRev.toLocaleString()}`;
+      document.getElementById('dashDues').innerText = `₹${totalDues.toLocaleString()}`;
+      document.getElementById('dashTenants').innerText = tenants.length;
+      document.getElementById('dashIssues').innerText = maintenanceLogs.filter(x => x.status !== 'Resolved').length;
+
+      renderChart(totalRev, expenses.reduce((acc, c) => acc + (c.amount || 0), 0));
+    }
+
+    function renderChart(revenue, expense) {
+      const ctx = document.getElementById('revenueChart').getContext('2d');
+      if (revenueChartInstance) revenueChartInstance.destroy();
+
+      revenueChartInstance = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: ['Total Revenue', 'Total Expenses'],
+          datasets: [{
+            data: [revenue, expense],
+            backgroundColor: ['#10b981', '#f43f5e'],
+            borderRadius: 12
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: { legend: { display: false } }
         }
+      });
+    }
 
-        // Download PDF Function
-        function downloadResume() {
-            alert("For best quality, please use the 'Print' button and choose 'Save as PDF' as your printer.");
-            // In production, you would generate and download a PDF
+    function refreshData() {
+      setupFirestoreListeners();
+      showToast('Synced with Cloud');
+    }
+
+    // ==================== NAVIGATION & THEME ====================
+    function switchTab(tabId) {
+      document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+      document.getElementById(`tab-${tabId}`).classList.remove('hidden');
+
+      document.querySelectorAll('.nav-btn').forEach(btn => {
+        if (btn.dataset.tab === tabId) {
+          btn.className = "nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-2xl font-semibold text-sm transition text-white bg-brand-600 shadow-md shadow-brand-500/20";
+        } else {
+          btn.className = "nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-2xl font-semibold text-sm transition text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700/50";
         }
+      });
 
-        // Email Now Function
-        function contactNow() {
-            const subject = "Hotel Management Job Application - Suraj Kumar Shaw";
-            const body = `Dear Hiring Manager,\n\nI am writing to apply for a position in your hotel's Front Office/Guest Relations department. Please find my details below:\n\nName: Suraj Kumar Shaw\nPhone: +91 8651744312\nEmail: srjshaw24@gmail.com\nExperience: 2+ years in hotel operations\nAvailability: Immediate joining\n\nI look forward to discussing how I can contribute to your hotel's success.\n\nBest regards,\nSuraj Kumar Shaw`;
-            
-            window.location.href = `mailto:srjshaw24@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-        }
+      // Hide mobile menu when item selected
+      document.getElementById('sidebar').classList.add('-translate-x-full');
+    }
 
-        // Schedule Interview Function
-        function scheduleInterview() {
-            const subject = "Request for Interview - Hotel Management Position";
-            const body = `Dear Hiring Manager,\n\nI would like to schedule an interview for a hotel management position at your property. I am available for interview at your convenience.\n\nPreferred contact: +91 8651744312\nEmail: srjshaw24@gmail.com\n\nThank you for considering my application.\n\nSincerely,\nSuraj Kumar Shaw`;
-            
-            window.location.href = `mailto:srjshaw24@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-        }
+    // Theme Toggle
+    let isDark = localStorage.getItem('gharPG_theme') === 'dark';
+    function applyTheme() {
+      if (isDark) {
+        document.documentElement.classList.add('dark');
+        document.getElementById('themeModeText').innerText = 'Dark Mode';
+      } else {
+        document.documentElement.classList.remove('dark');
+        document.getElementById('themeModeText').innerText = 'Light Mode';
+      }
+    }
+    document.getElementById('themeToggleDesktop').addEventListener('click', () => {
+      isDark = !isDark;
+      localStorage.setItem('gharPG_theme', isDark ? 'dark' : 'light');
+      applyTheme();
+    });
+    document.getElementById('themeToggleMobile').addEventListener('click', () => {
+      isDark = !isDark;
+      localStorage.setItem('gharPG_theme', isDark ? 'dark' : 'light');
+      applyTheme();
+    });
+    applyTheme();
 
-        // Direct Contact Function
-        function contactDirect() {
-            if (navigator.clipboard) {
-                navigator.clipboard.writeText("+918651744312");
-                alert("Phone number copied to clipboard: +91 8651744312");
-            }
-        }
+    // Mobile Menu Controls
+    document.getElementById('mobileMenuBtn').addEventListener('click', () => {
+      document.getElementById('sidebar').classList.remove('-translate-x-full');
+    });
+    document.getElementById('closeSidebarMobile').addEventListener('click', () => {
+      document.getElementById('sidebar').classList.add('-translate-x-full');
+    });
 
-        // Auto-format for printing
-        window.addEventListener('beforeprint', () => {
-            document.body.style.fontSize = '12pt';
-        });
+    function saveSettings() {
+      const name = document.getElementById('setPgName').value;
+      document.getElementById('prevPgName').innerText = name;
+      showToast('PG Profile Settings Saved!');
+    }
 
-        // Add current date to print
-        document.addEventListener('DOMContentLoaded', function() {
-            const printDate = document.createElement('div');
-            printDate.innerHTML = `<div style="text-align: right; font-size: 0.9rem; color: #666; margin-bottom: 20px; display: none;" class="print-only">Printed on: ${new Date().toLocaleDateString()}</div>`;
-            document.body.insertBefore(printDate, document.body.firstChild);
-            
-            // Show print-only elements
-            const style = document.createElement('style');
-            style.innerHTML = `
-                @media print {
-                    .print-only { display: block !important; }
-                }
-            `;
-            document.head.appendChild(style);
-        });
-    </script>
+    // Start App & Auth Listener
+    initAuth();
+  </script>
 </body>
 </html>

@@ -3,6 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#1d4ed8" />
+  <meta name="description" content="Ghar PG — Cloud based Paying Guest management system: tenants, rooms, rent slips, maintenance and expenses." />
   <title>Ghar PG — Cloud Management System</title>
 
   <!-- Apply saved theme before paint to avoid flash -->
@@ -27,6 +29,16 @@
               50: '#f0f4ff', 100: '#e0e9fe', 500: '#3b82f6',
               600: '#1d4ed8', 700: '#1e3c72', 800: '#0f2440', 900: '#0a172c',
             }
+          },
+          keyframes: {
+            'toast-in': { '0%': { opacity: 0, transform: 'translateY(12px) scale(.95)' }, '100%': { opacity: 1, transform: 'translateY(0) scale(1)' } },
+            'pop': { '0%': { transform: 'scale(.96)', opacity: 0 }, '100%': { transform: 'scale(1)', opacity: 1 } },
+            'shimmer': { '0%': { backgroundPosition: '-400px 0' }, '100%': { backgroundPosition: '400px 0' } }
+          },
+          animation: {
+            'toast-in': 'toast-in .25s ease-out',
+            'pop': 'pop .18s ease-out',
+            'shimmer': 'shimmer 1.6s infinite linear'
           }
         }
       }
@@ -34,6 +46,7 @@
   </script>
   <script src="https://unpkg.com/lucide@latest"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
 
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
@@ -48,6 +61,15 @@
       #printableSlip { position: absolute; left: 0; top: 0; width: 100%; }
     }
     .empty-state { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 2.5rem 1rem; text-align: center; color: #94a3b8; }
+    .skeleton { background: linear-gradient(90deg, #e2e8f0 0%, #f1f5f9 50%, #e2e8f0 100%); background-size: 800px 100%; }
+    .dark .skeleton { background: linear-gradient(90deg, #334155 0%, #1e293b 50%, #334155 100%); background-size: 800px 100%; }
+    .field-error { display: none; }
+    .field-invalid .field-error { display: block; }
+    .field-invalid input, .field-invalid select { border-color: #f43f5e !important; }
+    [data-tooltip] { position: relative; }
+    .occ-bar-track { background: #e2e8f0; }
+    .dark .occ-bar-track { background: #334155; }
+    kbd { font-family: inherit; }
   </style>
 </head>
 <body class="bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-100 min-h-full transition-colors duration-200">
@@ -59,11 +81,11 @@
       <span class="font-bold text-lg text-brand-700 dark:text-brand-100">Ghar<span class="text-brand-500">PG</span></span>
     </div>
     <div class="flex items-center gap-2">
-      <button onclick="toggleDarkMode()" class="p-2 rounded-xl bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300">
+      <button onclick="toggleDarkMode()" class="p-2 rounded-xl bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300" aria-label="Toggle theme">
         <i data-lucide="moon" class="w-5 h-5 dark:hidden"></i>
         <i data-lucide="sun" class="w-5 h-5 hidden dark:block"></i>
       </button>
-      <button onclick="toggleMobileSidebar()" class="p-2 rounded-xl bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300">
+      <button onclick="toggleMobileSidebar()" class="p-2 rounded-xl bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300" aria-label="Open menu">
         <i data-lucide="menu" class="w-6 h-6"></i>
       </button>
     </div>
@@ -73,7 +95,7 @@
 
     <!-- AUTH SCREEN -->
     <div id="authScreen" class="fixed inset-0 z-50 bg-slate-900/80 backdrop-blur-md flex items-center justify-center p-4">
-      <div class="bg-white dark:bg-slate-800 w-full max-w-md p-6 sm:p-8 rounded-3xl shadow-2xl border border-slate-100 dark:border-slate-700">
+      <div class="bg-white dark:bg-slate-800 w-full max-w-md p-6 sm:p-8 rounded-3xl shadow-2xl border border-slate-100 dark:border-slate-700 animate-pop">
         <div class="text-center mb-6">
           <div class="inline-flex p-3 bg-brand-500/10 dark:bg-brand-500/20 text-brand-600 dark:text-brand-400 rounded-2xl mb-3">
             <i data-lucide="building-2" class="w-8 h-8"></i>
@@ -108,7 +130,7 @@
     <div id="appContainer" class="hidden grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
 
       <!-- SIDEBAR -->
-      <aside id="sidebar" class="fixed inset-y-0 left-0 transform -translate-x-full lg:translate-x-0 lg:static lg:block lg:col-span-3 z-40 w-72 lg:w-full bg-white dark:bg-slate-800 border-r lg:border border-slate-200 dark:border-slate-700 lg:rounded-3xl p-5 shadow-xl lg:shadow-sm transition-transform duration-300">
+      <aside id="sidebar" class="fixed inset-y-0 left-0 transform -translate-x-full lg:translate-x-0 lg:static lg:block lg:col-span-3 z-40 w-72 lg:w-full bg-white dark:bg-slate-800 border-r lg:border border-slate-200 dark:border-slate-700 lg:rounded-3xl p-5 shadow-xl lg:shadow-sm transition-transform duration-300 lg:max-h-[calc(100vh-4rem)] lg:sticky lg:top-6 lg:overflow-y-auto custom-scrollbar">
         <div class="flex items-center justify-between pb-6 mb-6 border-b border-slate-100 dark:border-slate-700">
           <div class="flex items-center gap-3">
             <div class="p-2.5 bg-brand-600 text-white rounded-2xl shadow-md"><i data-lucide="building-2" class="w-6 h-6"></i></div>
@@ -117,7 +139,7 @@
               <p class="text-xs text-slate-400">Cloud Edition</p>
             </div>
           </div>
-          <button onclick="toggleMobileSidebar()" class="lg:hidden text-slate-400 hover:text-slate-600"><i data-lucide="x" class="w-6 h-6"></i></button>
+          <button onclick="toggleMobileSidebar()" class="lg:hidden text-slate-400 hover:text-slate-600" aria-label="Close menu"><i data-lucide="x" class="w-6 h-6"></i></button>
         </div>
 
         <nav class="space-y-1.5" id="navigationTabs">
@@ -128,7 +150,10 @@
             <i data-lucide="receipt" class="w-5 h-5"></i> Rent Slips
           </button>
           <button onclick="switchTab('guests')" data-tab="guests" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-2xl font-semibold text-sm transition text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700/50">
-            <i data-lucide="users" class="w-5 h-5"></i> Tenants &amp; Rooms
+            <i data-lucide="users" class="w-5 h-5"></i> Tenants
+          </button>
+          <button onclick="switchTab('rooms')" data-tab="rooms" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-2xl font-semibold text-sm transition text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700/50">
+            <i data-lucide="door-open" class="w-5 h-5"></i> Rooms &amp; Occupancy
           </button>
           <button onclick="switchTab('maintenance')" data-tab="maintenance" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-2xl font-semibold text-sm transition text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700/50">
             <i data-lucide="wrench" class="w-5 h-5"></i> Maintenance
@@ -157,6 +182,7 @@
             <span class="flex items-center gap-2"><i data-lucide="moon" class="w-4 h-4"></i> Theme</span>
             <span class="font-semibold text-brand-500 dark:text-brand-400" id="themeModeText">Light Mode</span>
           </button>
+          <p class="text-[10px] text-center text-slate-400 hidden lg:block"><kbd class="px-1.5 py-0.5 bg-slate-100 dark:bg-slate-700 rounded border border-slate-200 dark:border-slate-600">Ctrl</kbd> + <kbd class="px-1.5 py-0.5 bg-slate-100 dark:bg-slate-700 rounded border border-slate-200 dark:border-slate-600">K</kbd> to search this tab</p>
         </div>
       </aside>
 
@@ -176,7 +202,15 @@
             </button>
           </div>
 
-          <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+          <div id="dueSoonBanner" class="hidden bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-900 rounded-3xl p-4 sm:p-5">
+            <div class="flex items-center gap-2 mb-3">
+              <i data-lucide="bell-ring" class="w-4 h-4 text-amber-600"></i>
+              <h3 class="font-bold text-sm text-amber-700 dark:text-amber-400">Pending Dues — Quick Reminders</h3>
+            </div>
+            <div id="dueSoonList" class="grid grid-cols-1 sm:grid-cols-2 gap-2"></div>
+          </div>
+
+          <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
             <div class="bg-white dark:bg-slate-800 p-4 sm:p-5 rounded-3xl border border-slate-100 dark:border-slate-700 shadow-sm">
               <div class="p-2.5 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 w-fit rounded-2xl mb-3"><i data-lucide="indian-rupee" class="w-5 h-5"></i></div>
               <p class="text-xs font-medium text-slate-400">Total Rent Collected</p>
@@ -193,37 +227,54 @@
               <h3 class="text-xl sm:text-2xl font-extrabold text-slate-900 dark:text-white mt-1" id="dashTenants">0</h3>
             </div>
             <div class="bg-white dark:bg-slate-800 p-4 sm:p-5 rounded-3xl border border-slate-100 dark:border-slate-700 shadow-sm">
+              <div class="p-2.5 bg-violet-500/10 text-violet-600 dark:text-violet-400 w-fit rounded-2xl mb-3"><i data-lucide="door-open" class="w-5 h-5"></i></div>
+              <p class="text-xs font-medium text-slate-400">Occupancy Rate</p>
+              <h3 class="text-xl sm:text-2xl font-extrabold text-slate-900 dark:text-white mt-1" id="dashOccupancy">0%</h3>
+            </div>
+            <div class="bg-white dark:bg-slate-800 p-4 sm:p-5 rounded-3xl border border-slate-100 dark:border-slate-700 shadow-sm">
               <div class="p-2.5 bg-rose-500/10 text-rose-600 dark:text-rose-400 w-fit rounded-2xl mb-3"><i data-lucide="alert-triangle" class="w-5 h-5"></i></div>
               <p class="text-xs font-medium text-slate-400">Active Issues</p>
               <h3 class="text-xl sm:text-2xl font-extrabold text-slate-900 dark:text-white mt-1" id="dashIssues">0</h3>
             </div>
           </div>
 
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div class="md:col-span-2 bg-white dark:bg-slate-800 p-6 rounded-3xl border border-slate-100 dark:border-slate-700 shadow-sm">
-              <h3 class="font-bold text-lg text-slate-900 dark:text-white mb-4">Revenue &amp; Expense Analytics</h3>
-              <div class="h-64"><canvas id="revenueChart"></canvas></div>
-            </div>
-            <div class="bg-white dark:bg-slate-800 p-6 rounded-3xl border border-slate-100 dark:border-slate-700 shadow-sm space-y-4">
-              <h3 class="font-bold text-lg text-slate-900 dark:text-white">Quick Management</h3>
-              <div class="grid grid-cols-1 gap-2.5">
-                <button onclick="switchTab('slips')" class="p-3.5 bg-slate-50 dark:bg-slate-700/50 hover:bg-brand-50 dark:hover:bg-brand-950/30 rounded-2xl border border-slate-200 dark:border-slate-700 font-semibold text-xs text-left text-slate-700 dark:text-slate-200 flex items-center justify-between transition group">
-                  <span class="flex items-center gap-2.5"><i data-lucide="plus-circle" class="w-4 h-4 text-brand-500"></i> Generate Rent Slip</span>
-                  <i data-lucide="chevron-right" class="w-4 h-4 text-slate-400 group-hover:translate-x-1 transition"></i>
-                </button>
-                <button onclick="switchTab('guests')" class="p-3.5 bg-slate-50 dark:bg-slate-700/50 hover:bg-brand-50 dark:hover:bg-brand-950/30 rounded-2xl border border-slate-200 dark:border-slate-700 font-semibold text-xs text-left text-slate-700 dark:text-slate-200 flex items-center justify-between transition group">
-                  <span class="flex items-center gap-2.5"><i data-lucide="user-plus" class="w-4 h-4 text-emerald-500"></i> Register New Tenant</span>
-                  <i data-lucide="chevron-right" class="w-4 h-4 text-slate-400 group-hover:translate-x-1 transition"></i>
-                </button>
-                <button onclick="switchTab('maintenance')" class="p-3.5 bg-slate-50 dark:bg-slate-700/50 hover:bg-brand-50 dark:hover:bg-brand-950/30 rounded-2xl border border-slate-200 dark:border-slate-700 font-semibold text-xs text-left text-slate-700 dark:text-slate-200 flex items-center justify-between transition group">
-                  <span class="flex items-center gap-2.5"><i data-lucide="wrench" class="w-4 h-4 text-amber-500"></i> Log Maintenance</span>
-                  <i data-lucide="chevron-right" class="w-4 h-4 text-slate-400 group-hover:translate-x-1 transition"></i>
-                </button>
-                <button onclick="switchTab('expenses')" class="p-3.5 bg-slate-50 dark:bg-slate-700/50 hover:bg-brand-50 dark:hover:bg-brand-950/30 rounded-2xl border border-slate-200 dark:border-slate-700 font-semibold text-xs text-left text-slate-700 dark:text-slate-200 flex items-center justify-between transition group">
-                  <span class="flex items-center gap-2.5"><i data-lucide="minus-circle" class="w-4 h-4 text-rose-500"></i> Record PG Expense</span>
-                  <i data-lucide="chevron-right" class="w-4 h-4 text-slate-400 group-hover:translate-x-1 transition"></i>
-                </button>
+          <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <div class="lg:col-span-2 bg-white dark:bg-slate-800 p-6 rounded-3xl border border-slate-100 dark:border-slate-700 shadow-sm">
+              <div class="flex items-center justify-between mb-4">
+                <h3 class="font-bold text-lg text-slate-900 dark:text-white">Revenue vs Expense Trend</h3>
+                <span class="text-[10px] font-semibold text-slate-400 uppercase">Last 6 months</span>
               </div>
+              <div class="h-64"><canvas id="trendChart"></canvas></div>
+            </div>
+            <div class="bg-white dark:bg-slate-800 p-6 rounded-3xl border border-slate-100 dark:border-slate-700 shadow-sm">
+              <h3 class="font-bold text-lg text-slate-900 dark:text-white mb-4">Expense Breakdown</h3>
+              <div class="h-64"><canvas id="expenseChart"></canvas></div>
+              <div id="expenseChartEmpty" class="empty-state hidden !p-4">
+                <i data-lucide="pie-chart" class="w-8 h-8 mb-2"></i>
+                <p class="text-xs">No expenses to chart yet.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="bg-white dark:bg-slate-800 p-6 rounded-3xl border border-slate-100 dark:border-slate-700 shadow-sm">
+            <h3 class="font-bold text-lg text-slate-900 dark:text-white mb-4">Quick Management</h3>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2.5">
+              <button onclick="switchTab('slips')" class="p-3.5 bg-slate-50 dark:bg-slate-700/50 hover:bg-brand-50 dark:hover:bg-brand-950/30 rounded-2xl border border-slate-200 dark:border-slate-700 font-semibold text-xs text-left text-slate-700 dark:text-slate-200 flex items-center justify-between transition group">
+                <span class="flex items-center gap-2.5"><i data-lucide="plus-circle" class="w-4 h-4 text-brand-500"></i> Generate Rent Slip</span>
+                <i data-lucide="chevron-right" class="w-4 h-4 text-slate-400 group-hover:translate-x-1 transition"></i>
+              </button>
+              <button onclick="switchTab('guests')" class="p-3.5 bg-slate-50 dark:bg-slate-700/50 hover:bg-brand-50 dark:hover:bg-brand-950/30 rounded-2xl border border-slate-200 dark:border-slate-700 font-semibold text-xs text-left text-slate-700 dark:text-slate-200 flex items-center justify-between transition group">
+                <span class="flex items-center gap-2.5"><i data-lucide="user-plus" class="w-4 h-4 text-emerald-500"></i> Register New Tenant</span>
+                <i data-lucide="chevron-right" class="w-4 h-4 text-slate-400 group-hover:translate-x-1 transition"></i>
+              </button>
+              <button onclick="switchTab('maintenance')" class="p-3.5 bg-slate-50 dark:bg-slate-700/50 hover:bg-brand-50 dark:hover:bg-brand-950/30 rounded-2xl border border-slate-200 dark:border-slate-700 font-semibold text-xs text-left text-slate-700 dark:text-slate-200 flex items-center justify-between transition group">
+                <span class="flex items-center gap-2.5"><i data-lucide="wrench" class="w-4 h-4 text-amber-500"></i> Log Maintenance</span>
+                <i data-lucide="chevron-right" class="w-4 h-4 text-slate-400 group-hover:translate-x-1 transition"></i>
+              </button>
+              <button onclick="switchTab('expenses')" class="p-3.5 bg-slate-50 dark:bg-slate-700/50 hover:bg-brand-50 dark:hover:bg-brand-950/30 rounded-2xl border border-slate-200 dark:border-slate-700 font-semibold text-xs text-left text-slate-700 dark:text-slate-200 flex items-center justify-between transition group">
+                <span class="flex items-center gap-2.5"><i data-lucide="minus-circle" class="w-4 h-4 text-rose-500"></i> Record PG Expense</span>
+                <i data-lucide="chevron-right" class="w-4 h-4 text-slate-400 group-hover:translate-x-1 transition"></i>
+              </button>
             </div>
           </div>
         </section>
@@ -326,8 +377,13 @@
           </div>
 
           <div class="bg-white dark:bg-slate-800 rounded-3xl border border-slate-100 dark:border-slate-700 shadow-sm overflow-hidden">
-            <div class="p-4 border-b border-slate-100 dark:border-slate-700">
-              <input type="text" id="tenantSearch" oninput="renderTenants()" placeholder="🔍 Search tenant by name, room or mobile..." class="w-full px-4 py-2.5 bg-slate-50 dark:bg-slate-700/50 border border-slate-200 dark:border-slate-600 rounded-xl text-sm outline-none" />
+            <div class="p-4 border-b border-slate-100 dark:border-slate-700 flex flex-col sm:flex-row gap-3">
+              <input type="text" id="tenantSearch" placeholder="🔍 Search tenant by name, room or mobile... (Ctrl+K)" class="flex-1 w-full px-4 py-2.5 bg-slate-50 dark:bg-slate-700/50 border border-slate-200 dark:border-slate-600 rounded-xl text-sm outline-none" />
+              <select id="tenantStatusFilter" onchange="renderTenants()" class="px-3.5 py-2.5 bg-slate-50 dark:bg-slate-700/50 border border-slate-200 dark:border-slate-600 rounded-xl text-sm outline-none">
+                <option value="">All Status</option>
+                <option value="Active">Active</option>
+                <option value="Vacated">Vacated</option>
+              </select>
             </div>
             <div class="overflow-x-auto">
               <table class="w-full text-left border-collapse text-xs sm:text-sm">
@@ -337,6 +393,7 @@
                     <th class="p-4">Room / Share</th>
                     <th class="p-4">Rent</th>
                     <th class="p-4">Mobile</th>
+                    <th class="p-4">Status</th>
                     <th class="p-4">Actions</th>
                   </tr>
                 </thead>
@@ -348,6 +405,44 @@
               <p class="text-sm font-medium">No tenants found</p>
               <p class="text-xs">Add your first tenant to get started.</p>
             </div>
+          </div>
+        </section>
+
+        <!-- ROOMS -->
+        <section id="tab-rooms" class="tab-content hidden space-y-6">
+          <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+            <div>
+              <h2 class="text-xl font-bold text-slate-900 dark:text-white">Rooms &amp; Occupancy</h2>
+              <p class="text-xs text-slate-400">Track bed capacity and live occupancy per room.</p>
+            </div>
+            <button onclick="openRoomModal()" class="px-4 py-2.5 bg-brand-600 hover:bg-brand-700 text-white font-semibold text-xs rounded-2xl shadow-md transition flex items-center gap-2"><i data-lucide="plus" class="w-4 h-4"></i> Add Room</button>
+          </div>
+
+          <div class="bg-white dark:bg-slate-800 p-5 rounded-3xl border border-slate-100 dark:border-slate-700 shadow-sm flex flex-wrap items-center gap-6">
+            <div>
+              <p class="text-xs text-slate-400 font-medium">Total Beds</p>
+              <p class="text-lg font-extrabold text-slate-900 dark:text-white" id="roomsSummaryTotal">0</p>
+            </div>
+            <div>
+              <p class="text-xs text-slate-400 font-medium">Occupied</p>
+              <p class="text-lg font-extrabold text-emerald-600" id="roomsSummaryOccupied">0</p>
+            </div>
+            <div>
+              <p class="text-xs text-slate-400 font-medium">Vacant Beds</p>
+              <p class="text-lg font-extrabold text-amber-600" id="roomsSummaryVacant">0</p>
+            </div>
+            <div class="flex-1 min-w-[160px]">
+              <div class="h-2.5 rounded-full occ-bar-track overflow-hidden">
+                <div id="roomsSummaryBar" class="h-full bg-brand-600 transition-all duration-500" style="width:0%"></div>
+              </div>
+            </div>
+          </div>
+
+          <div id="roomsGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+          <div id="roomsEmptyState" class="empty-state hidden bg-white dark:bg-slate-800 rounded-3xl border border-slate-100 dark:border-slate-700">
+            <i data-lucide="door-open" class="w-10 h-10 mb-2"></i>
+            <p class="text-sm font-medium">No rooms added yet</p>
+            <p class="text-xs">Add rooms to track capacity and occupancy.</p>
           </div>
         </section>
 
@@ -388,7 +483,15 @@
             </div>
 
             <div class="lg:col-span-7 bg-white dark:bg-slate-800 p-6 rounded-3xl border border-slate-100 dark:border-slate-700 shadow-sm space-y-4">
-              <h3 class="font-bold text-lg text-slate-900 dark:text-white border-b border-slate-100 dark:border-slate-700 pb-3">Maintenance Logs</h3>
+              <div class="flex items-center justify-between border-b border-slate-100 dark:border-slate-700 pb-3">
+                <h3 class="font-bold text-lg text-slate-900 dark:text-white">Maintenance Logs</h3>
+                <select id="maintFilter" onchange="renderMaintenanceLogs()" class="px-3 py-1.5 bg-slate-50 dark:bg-slate-700/50 border border-slate-200 dark:border-slate-600 rounded-xl text-xs outline-none">
+                  <option value="">All</option>
+                  <option value="Pending">Pending</option>
+                  <option value="In Progress">In Progress</option>
+                  <option value="Resolved">Resolved</option>
+                </select>
+              </div>
               <div id="maintListContainer" class="space-y-3 max-h-[500px] overflow-y-auto pr-1 custom-scrollbar"></div>
               <div id="maintEmptyState" class="empty-state hidden">
                 <i data-lucide="wrench" class="w-10 h-10 mb-2"></i>
@@ -456,7 +559,7 @@
           </div>
 
           <div class="bg-white dark:bg-slate-800 p-6 rounded-3xl border border-slate-100 dark:border-slate-700 shadow-sm space-y-4">
-            <input type="text" id="historySearch" oninput="renderHistory()" placeholder="🔍 Search transaction by tenant name or room..." class="w-full px-4 py-3 bg-slate-50 dark:bg-slate-700/50 border border-slate-200 dark:border-slate-600 rounded-xl text-sm outline-none" />
+            <input type="text" id="historySearch" placeholder="🔍 Search transaction by tenant name or room... (Ctrl+K)" class="w-full px-4 py-3 bg-slate-50 dark:bg-slate-700/50 border border-slate-200 dark:border-slate-600 rounded-xl text-sm outline-none" />
             <div id="historyLogsContainer" class="space-y-2 max-h-[500px] overflow-y-auto custom-scrollbar"></div>
             <div id="historyEmptyState" class="empty-state hidden">
               <i data-lucide="receipt" class="w-10 h-10 mb-2"></i>
@@ -488,11 +591,16 @@
           </div>
 
           <div class="bg-white dark:bg-slate-800 p-6 rounded-3xl border border-slate-100 dark:border-slate-700 shadow-sm space-y-3 max-w-xl">
-            <h3 class="font-bold text-lg text-slate-900 dark:text-white border-b border-slate-100 dark:border-slate-700 pb-3">🗄️ Data</h3>
-            <p class="text-xs text-slate-500 dark:text-slate-400">All data is stored locally in this browser. Use export/reset carefully — reset cannot be undone.</p>
-            <div class="flex gap-3">
-              <button onclick="exportCSV()" class="flex-1 py-2.5 bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-200 font-semibold text-xs rounded-xl transition">Export CSV</button>
-              <button onclick="handleResetData()" class="flex-1 py-2.5 bg-rose-50 dark:bg-rose-950/30 text-rose-600 font-semibold text-xs rounded-xl transition">Reset All Data</button>
+            <h3 class="font-bold text-lg text-slate-900 dark:text-white border-b border-slate-100 dark:border-slate-700 pb-3">🗄️ Data &amp; Backup</h3>
+            <p class="text-xs text-slate-500 dark:text-slate-400">All data is stored locally in this browser. Take a JSON backup regularly — it can fully restore your data on any device/browser.</p>
+            <div class="grid grid-cols-2 gap-3">
+              <button onclick="exportCSV()" class="py-2.5 bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-200 font-semibold text-xs rounded-xl transition">Export CSV</button>
+              <button onclick="exportJSONBackup()" class="py-2.5 bg-brand-50 dark:bg-brand-950/30 text-brand-600 dark:text-brand-400 font-semibold text-xs rounded-xl transition">Export Full Backup (JSON)</button>
+              <label class="py-2.5 bg-emerald-50 dark:bg-emerald-950/30 text-emerald-600 font-semibold text-xs rounded-xl transition text-center cursor-pointer">
+                Restore from Backup
+                <input type="file" id="restoreFileInput" accept="application/json" class="hidden" onchange="importJSONBackup(event)" />
+              </label>
+              <button onclick="handleResetData()" class="py-2.5 bg-rose-50 dark:bg-rose-950/30 text-rose-600 font-semibold text-xs rounded-xl transition">Reset All Data</button>
             </div>
           </div>
         </section>
@@ -503,23 +611,25 @@
 
   <!-- TENANT MODAL -->
   <div id="tenantModal" class="fixed inset-0 z-50 bg-slate-900/80 backdrop-blur-md hidden flex items-center justify-center p-4">
-    <div class="bg-white dark:bg-slate-800 w-full max-w-lg p-6 rounded-3xl shadow-2xl border border-slate-100 dark:border-slate-700 space-y-4">
+    <div class="bg-white dark:bg-slate-800 w-full max-w-lg p-6 rounded-3xl shadow-2xl border border-slate-100 dark:border-slate-700 space-y-4 animate-pop max-h-[90vh] overflow-y-auto custom-scrollbar">
       <div class="flex justify-between items-center border-b border-slate-100 dark:border-slate-700 pb-3">
         <h3 class="font-bold text-lg text-slate-900 dark:text-white" id="tenantModalTitle">Register New Tenant</h3>
-        <button onclick="closeTenantModal()" class="p-1 text-slate-400 hover:text-slate-600"><i data-lucide="x" class="w-5 h-5"></i></button>
+        <button onclick="closeTenantModal()" class="p-1 text-slate-400 hover:text-slate-600" aria-label="Close"><i data-lucide="x" class="w-5 h-5"></i></button>
       </div>
       <form id="tenantForm" onsubmit="event.preventDefault();" class="space-y-3">
         <input type="hidden" id="editTenantId" />
-        <div>
+        <div class="field-wrap">
           <label class="block text-xs font-semibold text-slate-500 mb-1">Full Name</label>
           <input type="text" id="tName" placeholder="e.g. Rahul Sharma" class="w-full px-3.5 py-2.5 bg-slate-50 dark:bg-slate-700/50 border border-slate-200 dark:border-slate-600 rounded-xl text-sm outline-none" required />
+          <p class="field-error text-[10px] text-rose-600 mt-1">Name is required.</p>
         </div>
         <div class="grid grid-cols-2 gap-3">
-          <div>
+          <div class="field-wrap">
             <label class="block text-xs font-semibold text-slate-500 mb-1">Mobile Number</label>
             <input type="tel" id="tMobile" placeholder="9876543210" maxlength="10" class="w-full px-3.5 py-2.5 bg-slate-50 dark:bg-slate-700/50 border border-slate-200 dark:border-slate-600 rounded-xl text-sm outline-none" required />
+            <p class="field-error text-[10px] text-rose-600 mt-1">Valid 10-digit mobile required.</p>
           </div>
-          <div>
+          <div class="field-wrap">
             <label class="block text-xs font-semibold text-slate-500 mb-1">Room No.</label>
             <input type="text" id="tRoom" placeholder="101" class="w-full px-3.5 py-2.5 bg-slate-50 dark:bg-slate-700/50 border border-slate-200 dark:border-slate-600 rounded-xl text-sm outline-none" required />
           </div>
@@ -533,9 +643,22 @@
               <option value="Triple Share">Triple Share</option>
             </select>
           </div>
-          <div>
+          <div class="field-wrap">
             <label class="block text-xs font-semibold text-slate-500 mb-1">Monthly Rent (₹)</label>
             <input type="number" min="0" id="tRent" placeholder="5000" class="w-full px-3.5 py-2.5 bg-slate-50 dark:bg-slate-700/50 border border-slate-200 dark:border-slate-600 rounded-xl text-sm outline-none" required />
+          </div>
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-semibold text-slate-500 mb-1">Joining Date</label>
+            <input type="date" id="tJoinDate" class="w-full px-3.5 py-2.5 bg-slate-50 dark:bg-slate-700/50 border border-slate-200 dark:border-slate-600 rounded-xl text-sm outline-none" />
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-500 mb-1">Status</label>
+            <select id="tStatus" class="w-full px-3.5 py-2.5 bg-slate-50 dark:bg-slate-700/50 border border-slate-200 dark:border-slate-600 rounded-xl text-sm outline-none">
+              <option value="Active" selected>Active</option>
+              <option value="Vacated">Vacated</option>
+            </select>
           </div>
         </div>
         <button type="button" onclick="handleSaveTenant()" class="w-full py-3 bg-brand-600 hover:bg-brand-700 text-white font-semibold text-sm rounded-xl shadow-md transition">Save Tenant Details</button>
@@ -543,30 +666,104 @@
     </div>
   </div>
 
-  <!-- TOAST -->
-  <div id="toast" class="fixed bottom-5 right-5 z-50 hidden px-5 py-3.5 rounded-2xl shadow-2xl text-white font-semibold text-sm flex items-center gap-2 transition-all transform translate-y-10">
-    <i data-lucide="check-circle" class="w-5 h-5"></i>
-    <span id="toastMsg">Success</span>
+  <!-- ROOM MODAL -->
+  <div id="roomModal" class="fixed inset-0 z-50 bg-slate-900/80 backdrop-blur-md hidden flex items-center justify-center p-4">
+    <div class="bg-white dark:bg-slate-800 w-full max-w-md p-6 rounded-3xl shadow-2xl border border-slate-100 dark:border-slate-700 space-y-4 animate-pop">
+      <div class="flex justify-between items-center border-b border-slate-100 dark:border-slate-700 pb-3">
+        <h3 class="font-bold text-lg text-slate-900 dark:text-white" id="roomModalTitle">Add Room</h3>
+        <button onclick="closeRoomModal()" class="p-1 text-slate-400 hover:text-slate-600" aria-label="Close"><i data-lucide="x" class="w-5 h-5"></i></button>
+      </div>
+      <form id="roomForm" onsubmit="event.preventDefault();" class="space-y-3">
+        <input type="hidden" id="editRoomId" />
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-semibold text-slate-500 mb-1">Room Number</label>
+            <input type="text" id="rNumber" placeholder="103" class="w-full px-3.5 py-2.5 bg-slate-50 dark:bg-slate-700/50 border border-slate-200 dark:border-slate-600 rounded-xl text-sm outline-none" required />
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-500 mb-1">Floor</label>
+            <input type="text" id="rFloor" placeholder="1st Floor" class="w-full px-3.5 py-2.5 bg-slate-50 dark:bg-slate-700/50 border border-slate-200 dark:border-slate-600 rounded-xl text-sm outline-none" />
+          </div>
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-semibold text-slate-500 mb-1">Bed Capacity</label>
+            <input type="number" min="1" id="rCapacity" placeholder="2" class="w-full px-3.5 py-2.5 bg-slate-50 dark:bg-slate-700/50 border border-slate-200 dark:border-slate-600 rounded-xl text-sm outline-none" required />
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-500 mb-1">Default Rent (₹)</label>
+            <input type="number" min="0" id="rRent" placeholder="5000" class="w-full px-3.5 py-2.5 bg-slate-50 dark:bg-slate-700/50 border border-slate-200 dark:border-slate-600 rounded-xl text-sm outline-none" />
+          </div>
+        </div>
+        <button type="button" onclick="handleSaveRoom()" class="w-full py-3 bg-brand-600 hover:bg-brand-700 text-white font-semibold text-sm rounded-xl shadow-md transition">Save Room</button>
+      </form>
+    </div>
   </div>
 
+  <!-- TOAST STACK -->
+  <div id="toastStack" class="fixed bottom-5 right-5 z-[60] flex flex-col gap-2 items-end"></div>
+
   <script>
-    // ==================== LOCAL DATA STORE ====================
-    const STORAGE_KEY = 'gharPG_store_v2';
+    'use strict';
+
+    // ==================== CONSTANTS ====================
+    const STORAGE_KEY = 'gharPG_store_v3';
+    const LEGACY_STORAGE_KEY = 'gharPG_store_v2';
+    const EXPENSE_CATEGORY_COLORS = {
+      'Electricity': '#f59e0b', 'Water': '#3b82f6', 'Mess / Food': '#10b981',
+      'Internet / Wifi': '#8b5cf6', 'Repairs': '#f43f5e', 'Others': '#64748b'
+    };
+
+    // ==================== STATE ====================
     let store = {
+      version: 3,
       tenants: [],
+      rooms: [],
       receipts: [],
       maintenance: [],
       expenses: [],
       settings: { pgName: 'Ghar PG Accommodation', pgAddress: 'Station Road, City Center', upiId: '' }
     };
-    let revenueChartInstance = null;
+    let trendChartInstance = null;
+    let expenseChartInstance = null;
 
+    // ==================== GENERIC HELPERS ====================
+    const $ = (id) => document.getElementById(id);
+    const rupee = (n) => '₹' + Number(n || 0).toLocaleString('en-IN');
+    const newId = (prefix) => prefix + '_' + Date.now() + '_' + Math.floor(Math.random() * 1000);
+    const refreshIcons = () => { if (window.lucide) lucide.createIcons(); };
+
+    /** Escapes HTML special characters to prevent XSS when injecting user-supplied text into innerHTML. */
+    function escapeHtml(str) {
+      const div = document.createElement('div');
+      div.textContent = str === undefined || str === null ? '' : String(str);
+      return div.innerHTML;
+    }
+
+    /** Debounce utility — delays invoking fn until after `wait` ms of inactivity. */
+    function debounce(fn, wait) {
+      let t;
+      return function (...args) {
+        clearTimeout(t);
+        t = setTimeout(() => fn.apply(this, args), wait);
+      };
+    }
+
+    // ==================== LOCAL DATA STORE ====================
     function loadStore() {
       try {
         const raw = localStorage.getItem(STORAGE_KEY);
         if (raw) {
-          const parsed = JSON.parse(raw);
-          store = Object.assign(store, parsed);
+          store = Object.assign(store, JSON.parse(raw));
+          return true;
+        }
+        // Migrate from older v2 schema if present
+        const legacy = localStorage.getItem(LEGACY_STORAGE_KEY);
+        if (legacy) {
+          const parsed = JSON.parse(legacy);
+          store = Object.assign(store, parsed, { version: 3, rooms: parsed.rooms || [] });
+          store.tenants = (store.tenants || []).map((t) => Object.assign({ status: 'Active', joinDate: '' }, t));
+          saveStore();
           return true;
         }
       } catch (e) { console.warn('Store load failed, using defaults', e); }
@@ -576,104 +773,122 @@
     function saveStore() {
       try {
         localStorage.setItem(STORAGE_KEY, JSON.stringify(store));
-      } catch (e) { console.warn('Store save failed', e); }
+      } catch (e) { console.warn('Store save failed', e); showToast('Could not save — storage may be full', 'error'); }
     }
 
     function seedDemoDataIfEmpty() {
       const hadData = loadStore();
       if (hadData) return;
 
+      const today = new Date().toLocaleDateString('en-IN');
+      store.rooms = [
+        { id: 'rm1', number: '101', floor: 'Ground Floor', capacity: 2, rent: 5500 },
+        { id: 'rm2', number: '102', floor: 'Ground Floor', capacity: 1, rent: 7000 },
+        { id: 'rm3', number: '201', floor: '1st Floor', capacity: 2, rent: 5000 },
+        { id: 'rm4', number: '202', floor: '1st Floor', capacity: 3, rent: 4500 }
+      ];
       store.tenants = [
-        { id: 't1', name: 'Rahul Sharma', mobile: '9876543210', room: '101', sharing: 'Double Share', rent: 5500 },
-        { id: 't2', name: 'Amit Verma', mobile: '9123456789', room: '102', sharing: 'Single Share', rent: 7000 },
-        { id: 't3', name: 'Priya Patel', mobile: '9988776655', room: '201', sharing: 'Double Share', rent: 5000 }
+        { id: 't1', name: 'Rahul Sharma', mobile: '9876543210', room: '101', sharing: 'Double Share', rent: 5500, status: 'Active', joinDate: '2026-02-01' },
+        { id: 't2', name: 'Amit Verma', mobile: '9123456789', room: '102', sharing: 'Single Share', rent: 7000, status: 'Active', joinDate: '2026-03-10' },
+        { id: 't3', name: 'Priya Patel', mobile: '9988776655', room: '201', sharing: 'Double Share', rent: 5000, status: 'Active', joinDate: '2026-01-15' }
       ];
       store.receipts = [
-        { id: 'r1', slipNo: 'SLIP-1024', name: 'Rahul Sharma', room: '101', month: 'August 2026', mode: 'UPI', rent: 5500, due: 0, total: 5500, date: new Date().toLocaleDateString('en-IN') },
-        { id: 'r2', slipNo: 'SLIP-1025', name: 'Amit Verma', room: '102', month: 'August 2026', mode: 'Cash', rent: 7000, due: 500, total: 7500, date: new Date().toLocaleDateString('en-IN') }
+        { id: 'r1', slipNo: 'SLIP-1024', name: 'Rahul Sharma', room: '101', month: '2026-08', mode: 'UPI', rent: 5500, due: 0, total: 5500, date: today },
+        { id: 'r2', slipNo: 'SLIP-1025', name: 'Amit Verma', room: '102', month: '2026-08', mode: 'Cash', rent: 7000, due: 500, total: 7500, date: today },
+        { id: 'r3', slipNo: 'SLIP-1010', name: 'Priya Patel', room: '201', month: '2026-07', mode: 'UPI', rent: 5000, due: 0, total: 5000, date: today },
+        { id: 'r4', slipNo: 'SLIP-0998', name: 'Rahul Sharma', room: '101', month: '2026-06', mode: 'UPI', rent: 5500, due: 0, total: 5500, date: today }
       ];
       store.maintenance = [
-        { id: 'm1', title: 'Room 101 AC Service', priority: 'Medium', status: 'Pending', desc: 'Filter cleaning required', createdAt: new Date().toLocaleDateString('en-IN') }
+        { id: 'm1', title: 'Room 101 AC Service', priority: 'Medium', status: 'Pending', desc: 'Filter cleaning required', createdAt: today }
       ];
       store.expenses = [
-        { id: 'e1', title: 'Electricity Bill', amount: 3200, category: 'Electricity', date: new Date().toLocaleDateString('en-IN') }
+        { id: 'e1', title: 'Electricity Bill', amount: 3200, category: 'Electricity', date: today },
+        { id: 'e2', title: 'Wifi Recharge', amount: 1200, category: 'Internet / Wifi', date: today },
+        { id: 'e3', title: 'Kitchen Groceries', amount: 4800, category: 'Mess / Food', date: today }
       ];
       saveStore();
     }
 
-    // ==================== HELPERS ====================
+    // ==================== TOAST QUEUE ====================
     function showToast(msg, type) {
       type = type || 'success';
-      const toast = document.getElementById('toast');
-      const toastMsg = document.getElementById('toastMsg');
-      toastMsg.innerText = msg;
-      toast.className = 'fixed bottom-5 right-5 z-50 px-5 py-3.5 rounded-2xl shadow-2xl text-white font-semibold text-sm flex items-center gap-2 transition-all ' +
+      const stack = $('toastStack');
+      const toast = document.createElement('div');
+      toast.className = 'px-5 py-3.5 rounded-2xl shadow-2xl text-white font-semibold text-sm flex items-center gap-2 animate-toast-in ' +
         (type === 'success' ? 'bg-emerald-600' : 'bg-rose-600');
-      toast.classList.remove('hidden', 'translate-y-10');
-      setTimeout(function () {
-        toast.classList.add('translate-y-10');
-        setTimeout(function () { toast.classList.add('hidden'); }, 300);
-      }, 2500);
+      toast.innerHTML = '<i data-lucide="' + (type === 'success' ? 'check-circle' : 'alert-circle') + '" class="w-5 h-5"></i><span></span>';
+      toast.querySelector('span').textContent = msg;
+      stack.appendChild(toast);
+      refreshIcons();
+      setTimeout(() => {
+        toast.style.transition = 'opacity .3s, transform .3s';
+        toast.style.opacity = '0';
+        toast.style.transform = 'translateY(10px)';
+        setTimeout(() => toast.remove(), 300);
+      }, 2600);
     }
 
-    function rupee(n) { return '₹' + Number(n || 0).toLocaleString('en-IN'); }
-    function newId(prefix) { return prefix + '_' + Date.now() + '_' + Math.floor(Math.random() * 1000); }
-    function refreshIcons() { if (window.lucide) lucide.createIcons(); }
+    // ==================== FORM VALIDATION HELPERS ====================
+    function markFieldError(inputId, hasError) {
+      const wrap = $(inputId) && $(inputId).closest('.field-wrap');
+      if (wrap) wrap.classList.toggle('field-invalid', !!hasError);
+    }
 
     // ==================== AUTH ====================
     function enterDashboard(mobile) {
-      const mob = mobile || document.getElementById('authMobile').value || '8651744312';
+      const mob = mobile || $('authMobile').value || '8651744312';
       localStorage.setItem('gharPG_mobile', mob);
       localStorage.setItem('gharPG_isLoggedIn', 'true');
 
-      document.getElementById('userPhoneDisplay').innerText = '+91 ' + mob;
-      document.getElementById('userDisplayName').innerText = 'PG Owner';
-      document.getElementById('userAvatar').innerText = 'P';
-      document.getElementById('authScreen').classList.add('hidden');
-      document.getElementById('appContainer').classList.remove('hidden');
+      $('userPhoneDisplay').innerText = '+91 ' + mob;
+      $('userDisplayName').innerText = 'PG Owner';
+      $('userAvatar').innerText = 'P';
+      $('authScreen').classList.add('hidden');
+      $('appContainer').classList.remove('hidden');
 
       seedDemoDataIfEmpty();
-      document.getElementById('setPgName').value = store.settings.pgName;
-      document.getElementById('setPgAddress').value = store.settings.pgAddress;
-      document.getElementById('setUpiId').value = store.settings.upiId;
-      document.getElementById('prevPgName').innerText = store.settings.pgName;
+      $('setPgName').value = store.settings.pgName;
+      $('setPgAddress').value = store.settings.pgAddress;
+      $('setUpiId').value = store.settings.upiId;
+      $('prevPgName').innerText = store.settings.pgName;
 
-      renderTenants();
-      populateTenantDropdown();
-      renderMaintenanceLogs();
-      renderExpenses();
-      renderHistory();
-      updateDashboard();
+      // Debounced live search wiring
+      $('tenantSearch').addEventListener('input', debounce(renderTenants, 200));
+      $('historySearch').addEventListener('input', debounce(renderHistory, 200));
+
+      document.addEventListener('keydown', handleGlobalKeydown);
+
+      refreshData();
       applyThemeLabel();
       refreshIcons();
     }
 
     function handleSendOTP() {
-      const mob = document.getElementById('authMobile').value.trim();
+      const mob = $('authMobile').value.trim();
       if (mob.length !== 10 || !/^[6-9]\d{9}$/.test(mob)) {
         showToast('Enter a valid 10-digit mobile number', 'error');
         return;
       }
       localStorage.setItem('gharPG_mobile', mob);
-      document.getElementById('otpSection').classList.remove('hidden');
-      document.getElementById('sendOtpBtn').classList.add('hidden');
-      document.getElementById('verifyOtpBtn').classList.remove('hidden');
-      document.getElementById('authOtp').value = '123456';
+      $('otpSection').classList.remove('hidden');
+      $('sendOtpBtn').classList.add('hidden');
+      $('verifyOtpBtn').classList.remove('hidden');
+      $('authOtp').value = '123456';
       showToast('Demo OTP Sent: 123456');
     }
 
     function handleVerifyOTP() {
-      const otp = document.getElementById('authOtp').value.trim();
+      const otp = $('authOtp').value.trim();
       if (otp.length === 6) {
         showToast('Login Verified!');
-        enterDashboard(document.getElementById('authMobile').value);
+        enterDashboard($('authMobile').value);
       } else {
         showToast('Invalid OTP', 'error');
       }
     }
 
     function quickDemoLogin() {
-      const mob = document.getElementById('authMobile').value || '8651744312';
+      const mob = $('authMobile').value || '8651744312';
       showToast('Logged in as PG Owner!');
       enterDashboard(mob);
     }
@@ -683,76 +898,97 @@
       location.reload();
     }
 
-    // ==================== TENANTS ====================
-    function openTenantModal(id) {
-      document.getElementById('editTenantId').value = id || '';
-      document.getElementById('tenantModalTitle').innerText = id ? 'Edit Tenant' : 'Register New Tenant';
-      if (id) {
-        const t = store.tenants.find(function (x) { return x.id === id; });
-        if (t) {
-          document.getElementById('tName').value = t.name || '';
-          document.getElementById('tMobile').value = t.mobile || '';
-          document.getElementById('tRoom').value = t.room || '';
-          document.getElementById('tSharing').value = t.sharing || 'Double Share';
-          document.getElementById('tRent').value = t.rent || '';
-        }
-      } else {
-        document.getElementById('tenantForm').reset();
+    // ==================== KEYBOARD SHORTCUTS ====================
+    function handleGlobalKeydown(e) {
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
+        e.preventDefault();
+        const activeSection = document.querySelector('.tab-content:not(.hidden)');
+        if (!activeSection) return;
+        const searchInput = activeSection.querySelector('input[type="text"]');
+        if (searchInput) searchInput.focus();
       }
-      document.getElementById('tenantModal').classList.remove('hidden');
+      if (e.key === 'Escape') {
+        closeTenantModal();
+        closeRoomModal();
+      }
     }
 
-    function closeTenantModal() { document.getElementById('tenantModal').classList.add('hidden'); }
+    // ==================== TENANTS ====================
+    function openTenantModal(id) {
+      $('editTenantId').value = id || '';
+      $('tenantModalTitle').innerText = id ? 'Edit Tenant' : 'Register New Tenant';
+      document.querySelectorAll('#tenantForm .field-wrap').forEach((w) => w.classList.remove('field-invalid'));
+      if (id) {
+        const t = store.tenants.find((x) => x.id === id);
+        if (t) {
+          $('tName').value = t.name || '';
+          $('tMobile').value = t.mobile || '';
+          $('tRoom').value = t.room || '';
+          $('tSharing').value = t.sharing || 'Double Share';
+          $('tRent').value = t.rent || '';
+          $('tJoinDate').value = t.joinDate || '';
+          $('tStatus').value = t.status || 'Active';
+        }
+      } else {
+        $('tenantForm').reset();
+        $('tStatus').value = 'Active';
+      }
+      $('tenantModal').classList.remove('hidden');
+      if (window.gsap) gsap.fromTo('#tenantModal .animate-pop', { y: 12, opacity: 0 }, { y: 0, opacity: 1, duration: 0.25 });
+    }
+
+    function closeTenantModal() { $('tenantModal').classList.add('hidden'); }
 
     function handleSaveTenant() {
-      const id = document.getElementById('editTenantId').value;
-      const name = document.getElementById('tName').value.trim();
-      const mobile = document.getElementById('tMobile').value.trim();
-      const room = document.getElementById('tRoom').value.trim();
-      const sharing = document.getElementById('tSharing').value;
-      const rent = Number(document.getElementById('tRent').value);
+      const id = $('editTenantId').value;
+      const name = $('tName').value.trim();
+      const mobile = $('tMobile').value.trim();
+      const room = $('tRoom').value.trim();
+      const sharing = $('tSharing').value;
+      const rent = Number($('tRent').value);
+      const joinDate = $('tJoinDate').value;
+      const status = $('tStatus').value;
 
-      if (!name || !room || !rent) {
-        showToast('Please fill all mandatory fields', 'error');
-        return;
-      }
-      if (!/^[6-9]\d{9}$/.test(mobile)) {
-        showToast('Enter a valid 10-digit mobile number', 'error');
-        return;
-      }
+      let valid = true;
+      markFieldError('tName', !name); if (!name) valid = false;
+      markFieldError('tRent', !room || !rent); if (!room || !rent) valid = false;
+      const mobileOk = /^[6-9]\d{9}$/.test(mobile);
+      markFieldError('tMobile', !mobileOk); if (!mobileOk) valid = false;
+
+      if (!valid) { showToast('Please fix the highlighted fields', 'error'); return; }
 
       if (id) {
-        const idx = store.tenants.findIndex(function (x) { return x.id === id; });
-        if (idx !== -1) store.tenants[idx] = Object.assign({}, store.tenants[idx], { name: name, mobile: mobile, room: room, sharing: sharing, rent: rent });
+        const idx = store.tenants.findIndex((x) => x.id === id);
+        if (idx !== -1) store.tenants[idx] = Object.assign({}, store.tenants[idx], { name, mobile, room, sharing, rent, joinDate, status });
         showToast('Tenant details updated');
       } else {
-        store.tenants.push({ id: newId('t'), name: name, mobile: mobile, room: room, sharing: sharing, rent: rent });
+        store.tenants.push({ id: newId('t'), name, mobile, room, sharing, rent, joinDate, status });
         showToast('New tenant registered');
       }
 
       saveStore();
-      renderTenants();
-      populateTenantDropdown();
-      updateDashboard();
+      refreshData();
       closeTenantModal();
     }
 
     function deleteTenant(id) {
       if (!confirm('Remove this tenant? This cannot be undone.')) return;
-      store.tenants = store.tenants.filter(function (x) { return x.id !== id; });
+      store.tenants = store.tenants.filter((x) => x.id !== id);
       saveStore();
-      renderTenants();
-      populateTenantDropdown();
-      updateDashboard();
+      refreshData();
       showToast('Tenant removed');
     }
 
     function renderTenants() {
-      const tbody = document.getElementById('tenantTableBody');
-      const empty = document.getElementById('tenantEmptyState');
-      const q = (document.getElementById('tenantSearch').value || '').toLowerCase();
-      const list = store.tenants.filter(function (t) {
-        return t.name.toLowerCase().includes(q) || String(t.room).toLowerCase().includes(q) || t.mobile.includes(q);
+      const tbody = $('tenantTableBody');
+      const empty = $('tenantEmptyState');
+      const q = ($('tenantSearch').value || '').toLowerCase().trim();
+      const statusFilter = $('tenantStatusFilter').value;
+
+      const list = store.tenants.filter((t) => {
+        const matchesQuery = t.name.toLowerCase().includes(q) || String(t.room).toLowerCase().includes(q) || t.mobile.includes(q);
+        const matchesStatus = !statusFilter || (t.status || 'Active') === statusFilter;
+        return matchesQuery && matchesStatus;
       });
 
       if (list.length === 0) {
@@ -763,47 +999,172 @@
       }
       empty.classList.add('hidden');
 
-      tbody.innerHTML = list.map(function (t) {
+      tbody.innerHTML = list.map((t) => {
+        const status = t.status || 'Active';
+        const statusBadge = status === 'Active'
+          ? '<span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-600">Active</span>'
+          : '<span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-slate-200 dark:bg-slate-600 text-slate-600 dark:text-slate-200">Vacated</span>';
         return '<tr class="hover:bg-slate-50 dark:hover:bg-slate-700/30 transition">' +
-          '<td class="p-4 font-bold text-slate-900 dark:text-white">' + t.name + '</td>' +
-          '<td class="p-4">Room ' + t.room + ' <span class="text-xs font-normal text-slate-400">(' + t.sharing + ')</span></td>' +
+          '<td class="p-4 font-bold text-slate-900 dark:text-white">' + escapeHtml(t.name) + (t.joinDate ? '<p class="text-[10px] font-normal text-slate-400">Joined ' + escapeHtml(t.joinDate) + '</p>' : '') + '</td>' +
+          '<td class="p-4">Room ' + escapeHtml(t.room) + ' <span class="text-xs font-normal text-slate-400">(' + escapeHtml(t.sharing) + ')</span></td>' +
           '<td class="p-4 font-bold text-emerald-600">' + rupee(t.rent) + '</td>' +
-          '<td class="p-4 text-slate-500">' + t.mobile + '</td>' +
+          '<td class="p-4 text-slate-500">' + escapeHtml(t.mobile) + '</td>' +
+          '<td class="p-4">' + statusBadge + '</td>' +
           '<td class="p-4 flex gap-2">' +
-          '<button onclick="openTenantModal(\'' + t.id + '\')" class="p-2 text-brand-600 hover:bg-brand-50 dark:hover:bg-brand-950/30 rounded-xl"><i data-lucide="edit-3" class="w-4 h-4"></i></button>' +
-          '<button onclick="deleteTenant(\'' + t.id + '\')" class="p-2 text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950/30 rounded-xl"><i data-lucide="trash-2" class="w-4 h-4"></i></button>' +
+          '<button onclick="openTenantModal(\'' + t.id + '\')" class="p-2 text-brand-600 hover:bg-brand-50 dark:hover:bg-brand-950/30 rounded-xl" aria-label="Edit"><i data-lucide="edit-3" class="w-4 h-4"></i></button>' +
+          '<button onclick="deleteTenant(\'' + t.id + '\')" class="p-2 text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950/30 rounded-xl" aria-label="Delete"><i data-lucide="trash-2" class="w-4 h-4"></i></button>' +
           '</td></tr>';
       }).join('');
       refreshIcons();
     }
 
     function populateTenantDropdown() {
-      const sel = document.getElementById('slipTenantSelect');
+      const sel = $('slipTenantSelect');
+      const current = sel.value;
       sel.innerHTML = '<option value="">-- Choose Tenant --</option>' +
-        store.tenants.map(function (t) { return '<option value="' + t.id + '">' + t.name + ' (Room ' + t.room + ')</option>'; }).join('');
+        store.tenants.map((t) => '<option value="' + t.id + '">' + escapeHtml(t.name) + ' (Room ' + escapeHtml(t.room) + ')</option>').join('');
+      if (current) sel.value = current;
     }
 
     function autoFillTenantData() {
-      const id = document.getElementById('slipTenantSelect').value;
-      const t = store.tenants.find(function (x) { return x.id === id; });
+      const id = $('slipTenantSelect').value;
+      const t = store.tenants.find((x) => x.id === id);
       if (t) {
-        document.getElementById('slipRoom').value = t.room;
-        document.getElementById('slipSharing').value = t.sharing;
-        document.getElementById('slipRent').value = t.rent;
+        $('slipRoom').value = t.room;
+        $('slipSharing').value = t.sharing;
+        $('slipRent').value = t.rent;
       }
+    }
+
+    // ==================== ROOMS & OCCUPANCY ====================
+    function computeOccupancy() {
+      const activeTenants = store.tenants.filter((t) => (t.status || 'Active') === 'Active');
+      const totalBeds = store.rooms.reduce((a, r) => a + (Number(r.capacity) || 0), 0);
+      const occupied = store.rooms.reduce((a, r) => {
+        const count = activeTenants.filter((t) => String(t.room) === String(r.number)).length;
+        return a + Math.min(count, Number(r.capacity) || 0);
+      }, 0);
+      const rate = totalBeds > 0 ? Math.round((occupied / totalBeds) * 100) : 0;
+      return { totalBeds, occupied, vacant: Math.max(totalBeds - occupied, 0), rate };
+    }
+
+    function openRoomModal(id) {
+      $('editRoomId').value = id || '';
+      $('roomModalTitle').innerText = id ? 'Edit Room' : 'Add Room';
+      if (id) {
+        const r = store.rooms.find((x) => x.id === id);
+        if (r) {
+          $('rNumber').value = r.number || '';
+          $('rFloor').value = r.floor || '';
+          $('rCapacity').value = r.capacity || '';
+          $('rRent').value = r.rent || '';
+        }
+      } else {
+        $('roomForm').reset();
+      }
+      $('roomModal').classList.remove('hidden');
+      if (window.gsap) gsap.fromTo('#roomModal .animate-pop', { y: 12, opacity: 0 }, { y: 0, opacity: 1, duration: 0.25 });
+    }
+
+    function closeRoomModal() { $('roomModal').classList.add('hidden'); }
+
+    function handleSaveRoom() {
+      const id = $('editRoomId').value;
+      const number = $('rNumber').value.trim();
+      const floor = $('rFloor').value.trim();
+      const capacity = Number($('rCapacity').value);
+      const rent = Number($('rRent').value) || 0;
+
+      if (!number || !capacity) { showToast('Room number and capacity are required', 'error'); return; }
+
+      if (id) {
+        const idx = store.rooms.findIndex((x) => x.id === id);
+        if (idx !== -1) store.rooms[idx] = Object.assign({}, store.rooms[idx], { number, floor, capacity, rent });
+        showToast('Room updated');
+      } else {
+        store.rooms.push({ id: newId('rm'), number, floor, capacity, rent });
+        showToast('Room added');
+      }
+      saveStore();
+      renderRooms();
+      updateDashboard();
+      closeRoomModal();
+    }
+
+    function deleteRoom(id) {
+      if (!confirm('Delete this room? Tenant records referencing it will remain but occupancy will recalculate.')) return;
+      store.rooms = store.rooms.filter((x) => x.id !== id);
+      saveStore();
+      renderRooms();
+      updateDashboard();
+      showToast('Room deleted');
+    }
+
+    function renderRooms() {
+      const grid = $('roomsGrid');
+      const empty = $('roomsEmptyState');
+      const occ = computeOccupancy();
+
+      $('roomsSummaryTotal').innerText = occ.totalBeds;
+      $('roomsSummaryOccupied').innerText = occ.occupied;
+      $('roomsSummaryVacant').innerText = occ.vacant;
+      $('roomsSummaryBar').style.width = occ.rate + '%';
+
+      if (store.rooms.length === 0) {
+        grid.innerHTML = '';
+        empty.classList.remove('hidden');
+        refreshIcons();
+        return;
+      }
+      empty.classList.add('hidden');
+
+      const activeTenants = store.tenants.filter((t) => (t.status || 'Active') === 'Active');
+
+      grid.innerHTML = store.rooms.map((r) => {
+        const occupants = activeTenants.filter((t) => String(t.room) === String(r.number));
+        const cap = Number(r.capacity) || 0;
+        const filled = Math.min(occupants.length, cap);
+        const pct = cap > 0 ? Math.round((filled / cap) * 100) : 0;
+        const statusLabel = filled === 0 ? 'Vacant' : (filled >= cap ? 'Full' : 'Partially Occupied');
+        const statusColor = filled === 0 ? 'bg-slate-200 dark:bg-slate-600 text-slate-600 dark:text-slate-200' : (filled >= cap ? 'bg-emerald-100 text-emerald-600' : 'bg-amber-100 text-amber-600');
+        const namesHtml = occupants.length
+          ? occupants.map((o) => '<span class="px-2 py-0.5 bg-slate-100 dark:bg-slate-700 rounded-lg text-[10px] font-medium">' + escapeHtml(o.name) + '</span>').join('')
+          : '<span class="text-[10px] text-slate-400">No active tenants</span>';
+
+        return '<div class="bg-white dark:bg-slate-800 p-5 rounded-3xl border border-slate-100 dark:border-slate-700 shadow-sm space-y-3">' +
+          '<div class="flex items-start justify-between">' +
+          '<div><h4 class="font-extrabold text-lg text-slate-900 dark:text-white">Room ' + escapeHtml(r.number) + '</h4>' +
+          '<p class="text-[10px] text-slate-400">' + escapeHtml(r.floor || 'Floor not set') + '</p></div>' +
+          '<span class="px-2.5 py-1 rounded-full text-[10px] font-bold ' + statusColor + '">' + statusLabel + '</span>' +
+          '</div>' +
+          '<div class="flex items-center justify-between text-xs">' +
+          '<span class="text-slate-400">Occupancy</span>' +
+          '<span class="font-bold text-slate-700 dark:text-slate-200">' + filled + ' / ' + cap + ' beds</span>' +
+          '</div>' +
+          '<div class="h-2 rounded-full occ-bar-track overflow-hidden"><div class="h-full bg-brand-600" style="width:' + pct + '%"></div></div>' +
+          '<div class="flex flex-wrap gap-1.5">' + namesHtml + '</div>' +
+          '<div class="flex items-center justify-between pt-2 border-t border-slate-100 dark:border-slate-700">' +
+          '<span class="text-xs font-bold text-emerald-600">' + rupee(r.rent) + '<span class="font-normal text-slate-400">/bed</span></span>' +
+          '<div class="flex gap-1.5">' +
+          '<button onclick="openRoomModal(\'' + r.id + '\')" class="p-2 text-brand-600 hover:bg-brand-50 dark:hover:bg-brand-950/30 rounded-xl" aria-label="Edit room"><i data-lucide="edit-3" class="w-4 h-4"></i></button>' +
+          '<button onclick="deleteRoom(\'' + r.id + '\')" class="p-2 text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950/30 rounded-xl" aria-label="Delete room"><i data-lucide="trash-2" class="w-4 h-4"></i></button>' +
+          '</div></div></div>';
+      }).join('');
+      refreshIcons();
     }
 
     // ==================== RENT SLIPS ====================
     function handleGenerateSlip() {
-      const tenantId = document.getElementById('slipTenantSelect').value;
-      const tenant = store.tenants.find(function (x) { return x.id === tenantId; });
+      const tenantId = $('slipTenantSelect').value;
+      const tenant = store.tenants.find((x) => x.id === tenantId);
       const name = tenant ? tenant.name : 'Guest';
-      const room = document.getElementById('slipRoom').value.trim();
-      const sharing = document.getElementById('slipSharing').value;
-      const month = document.getElementById('slipMonth').value || 'Current Month';
-      const mode = document.getElementById('slipMode').value;
-      const rent = Number(document.getElementById('slipRent').value);
-      const due = Number(document.getElementById('slipDue').value) || 0;
+      const room = $('slipRoom').value.trim();
+      const sharing = $('slipSharing').value;
+      const monthRaw = $('slipMonth').value;
+      const month = monthRaw || 'Current Month';
+      const mode = $('slipMode').value;
+      const rent = Number($('slipRent').value);
+      const due = Number($('slipDue').value) || 0;
 
       if (!room || !rent) {
         showToast('Fill room number and rent amount', 'error');
@@ -814,36 +1175,52 @@
       const slipNo = 'SLIP-' + Math.floor(1000 + Math.random() * 9000);
       const date = new Date().toLocaleDateString('en-IN');
 
-      store.receipts.unshift({ id: newId('r'), slipNo: slipNo, name: name, room: room, sharing: sharing, month: month, mode: mode, rent: rent, due: due, total: total, date: date });
+      store.receipts.unshift({ id: newId('r'), slipNo, name, room, sharing, month, mode, rent, due, total, date });
       saveStore();
 
-      document.getElementById('prevNo').innerText = slipNo;
-      document.getElementById('prevDate').innerText = date;
-      document.getElementById('prevTenant').innerText = name;
-      document.getElementById('prevRoom').innerText = 'Room ' + room + ' (' + sharing + ')';
-      document.getElementById('prevMonth').innerText = month;
-      document.getElementById('prevMode').innerText = mode;
-      document.getElementById('prevRent').innerText = rupee(rent);
-      document.getElementById('prevDue').innerText = rupee(due);
-      document.getElementById('prevTotal').innerText = rupee(total);
+      $('prevNo').innerText = slipNo;
+      $('prevDate').innerText = date;
+      $('prevTenant').innerText = name;
+      $('prevRoom').innerText = 'Room ' + room + ' (' + sharing + ')';
+      $('prevMonth').innerText = formatMonthLabel(month);
+      $('prevMode').innerText = mode;
+      $('prevRent').innerText = rupee(rent);
+      $('prevDue').innerText = rupee(due);
+      $('prevTotal').innerText = rupee(total);
 
       renderHistory();
       updateDashboard();
       showToast('Receipt Generated & Saved!');
     }
 
+    /** Converts a <input type="month"> value like "2026-08" into "August 2026"; passes through free text unchanged. */
+    function formatMonthLabel(month) {
+      if (/^\d{4}-\d{2}$/.test(month)) {
+        const [y, m] = month.split('-');
+        const d = new Date(Number(y), Number(m) - 1, 1);
+        return d.toLocaleDateString('en-IN', { month: 'long', year: 'numeric' });
+      }
+      return month;
+    }
+
     function shareWhatsApp() {
-      const no = document.getElementById('prevNo').innerText;
-      const tenant = document.getElementById('prevTenant').innerText;
-      const total = document.getElementById('prevTotal').innerText;
+      const no = $('prevNo').innerText;
+      const tenant = $('prevTenant').innerText;
+      const total = $('prevTotal').innerText;
       if (no === '#---') { showToast('Generate a slip first', 'error'); return; }
       const text = 'Hello ' + tenant + ', Here is your rent receipt (' + no + ') of ' + total + '. Thank you for staying at ' + store.settings.pgName + '!';
       window.open('https://wa.me/?text=' + encodeURIComponent(text), '_blank');
     }
 
+    function remindTenantWhatsApp(tenantName, mobile, due) {
+      const text = 'Hello ' + tenantName + ', this is a gentle reminder that your pending PG rent due is ' + rupee(due) + '. Please clear it at your earliest convenience. Thank you — ' + store.settings.pgName;
+      const phone = /^[6-9]\d{9}$/.test(mobile) ? '91' + mobile : '';
+      window.open('https://wa.me/' + phone + '?text=' + encodeURIComponent(text), '_blank');
+    }
+
     function deleteReceipt(id) {
       if (!confirm('Delete this transaction record?')) return;
-      store.receipts = store.receipts.filter(function (x) { return x.id !== id; });
+      store.receipts = store.receipts.filter((x) => x.id !== id);
       saveStore();
       renderHistory();
       updateDashboard();
@@ -851,7 +1228,7 @@
     }
 
     function markReceiptPaid(id) {
-      const r = store.receipts.find(function (x) { return x.id === id; });
+      const r = store.receipts.find((x) => x.id === id);
       if (!r) return;
       r.total -= r.due;
       r.due = 0;
@@ -863,38 +1240,37 @@
 
     // ==================== MAINTENANCE ====================
     function handleSaveMaintenance() {
-      const title = document.getElementById('maintTitle').value.trim();
-      const priority = document.getElementById('maintPriority').value;
-      const status = document.getElementById('maintStatus').value;
-      const desc = document.getElementById('maintDesc').value.trim();
+      const title = $('maintTitle').value.trim();
+      const priority = $('maintPriority').value;
+      const status = $('maintStatus').value;
+      const desc = $('maintDesc').value.trim();
 
       if (!title) { showToast('Provide an issue title', 'error'); return; }
 
-      store.maintenance.unshift({ id: newId('m'), title: title, priority: priority, status: status, desc: desc, createdAt: new Date().toLocaleDateString('en-IN') });
+      store.maintenance.unshift({ id: newId('m'), title, priority, status, desc, createdAt: new Date().toLocaleDateString('en-IN') });
       saveStore();
-      document.getElementById('maintForm').reset();
-      document.getElementById('maintPriority').value = 'Medium';
-      document.getElementById('maintStatus').value = 'Pending';
+      $('maintForm').reset();
+      $('maintPriority').value = 'Medium';
+      $('maintStatus').value = 'Pending';
       renderMaintenanceLogs();
       updateDashboard();
       showToast('Maintenance Issue Logged');
     }
 
     function cycleMaintStatus(id) {
-      const m = store.maintenance.find(function (x) { return x.id === id; });
+      const m = store.maintenance.find((x) => x.id === id);
       if (!m) return;
       const order = ['Pending', 'In Progress', 'Resolved'];
-      const next = order[(order.indexOf(m.status) + 1) % order.length];
-      m.status = next;
+      m.status = order[(order.indexOf(m.status) + 1) % order.length];
       saveStore();
       renderMaintenanceLogs();
       updateDashboard();
-      showToast('Status updated to ' + next);
+      showToast('Status updated to ' + m.status);
     }
 
     function deleteMaintenance(id) {
       if (!confirm('Delete this maintenance log?')) return;
-      store.maintenance = store.maintenance.filter(function (x) { return x.id !== id; });
+      store.maintenance = store.maintenance.filter((x) => x.id !== id);
       saveStore();
       renderMaintenanceLogs();
       updateDashboard();
@@ -902,9 +1278,12 @@
     }
 
     function renderMaintenanceLogs() {
-      const container = document.getElementById('maintListContainer');
-      const empty = document.getElementById('maintEmptyState');
-      if (store.maintenance.length === 0) {
+      const container = $('maintListContainer');
+      const empty = $('maintEmptyState');
+      const filter = $('maintFilter').value;
+      const list = store.maintenance.filter((m) => !filter || m.status === filter);
+
+      if (list.length === 0) {
         container.innerHTML = '';
         empty.classList.remove('hidden');
         refreshIcons();
@@ -912,18 +1291,18 @@
       }
       empty.classList.add('hidden');
 
-      container.innerHTML = store.maintenance.map(function (m) {
+      container.innerHTML = list.map((m) => {
         return '<div class="p-4 bg-slate-50 dark:bg-slate-700/50 rounded-2xl border border-slate-100 dark:border-slate-700 flex justify-between items-center gap-3">' +
           '<div class="min-w-0">' +
           '<div class="flex items-center gap-2 flex-wrap">' +
-          '<h4 class="font-bold text-sm text-slate-900 dark:text-white">' + m.title + '</h4>' +
-          '<span class="px-2 py-0.5 rounded-full text-[10px] font-bold ' + (m.priority === 'High' ? 'bg-rose-100 text-rose-600' : 'bg-amber-100 text-amber-600') + '">' + m.priority + '</span>' +
+          '<h4 class="font-bold text-sm text-slate-900 dark:text-white">' + escapeHtml(m.title) + '</h4>' +
+          '<span class="px-2 py-0.5 rounded-full text-[10px] font-bold ' + (m.priority === 'High' ? 'bg-rose-100 text-rose-600' : 'bg-amber-100 text-amber-600') + '">' + escapeHtml(m.priority) + '</span>' +
           '</div>' +
-          '<p class="text-xs text-slate-400 mt-1">' + (m.desc || 'No description') + '</p>' +
+          '<p class="text-xs text-slate-400 mt-1">' + escapeHtml(m.desc || 'No description') + '</p>' +
           '</div>' +
           '<div class="flex items-center gap-2 shrink-0">' +
-          '<button onclick="cycleMaintStatus(\'' + m.id + '\')" class="px-3 py-1 rounded-xl text-xs font-bold transition ' + (m.status === 'Resolved' ? 'bg-emerald-100 text-emerald-600' : 'bg-slate-200 dark:bg-slate-600 text-slate-600 dark:text-slate-200') + '">' + m.status + '</button>' +
-          '<button onclick="deleteMaintenance(\'' + m.id + '\')" class="p-2 text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950/30 rounded-xl"><i data-lucide="trash-2" class="w-4 h-4"></i></button>' +
+          '<button onclick="cycleMaintStatus(\'' + m.id + '\')" class="px-3 py-1 rounded-xl text-xs font-bold transition ' + (m.status === 'Resolved' ? 'bg-emerald-100 text-emerald-600' : 'bg-slate-200 dark:bg-slate-600 text-slate-600 dark:text-slate-200') + '">' + escapeHtml(m.status) + '</button>' +
+          '<button onclick="deleteMaintenance(\'' + m.id + '\')" class="p-2 text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950/30 rounded-xl" aria-label="Delete"><i data-lucide="trash-2" class="w-4 h-4"></i></button>' +
           '</div></div>';
       }).join('');
       refreshIcons();
@@ -931,15 +1310,15 @@
 
     // ==================== EXPENSES ====================
     function handleSaveExpense() {
-      const title = document.getElementById('expTitle').value.trim();
-      const amount = Number(document.getElementById('expAmount').value);
-      const category = document.getElementById('expCategory').value;
+      const title = $('expTitle').value.trim();
+      const amount = Number($('expAmount').value);
+      const category = $('expCategory').value;
 
       if (!title || !amount) { showToast('Fill expense details', 'error'); return; }
 
-      store.expenses.unshift({ id: newId('e'), title: title, amount: amount, category: category, date: new Date().toLocaleDateString('en-IN') });
+      store.expenses.unshift({ id: newId('e'), title, amount, category, date: new Date().toLocaleDateString('en-IN') });
       saveStore();
-      document.getElementById('expenseForm').reset();
+      $('expenseForm').reset();
       renderExpenses();
       updateDashboard();
       showToast('Expense Recorded');
@@ -947,7 +1326,7 @@
 
     function deleteExpense(id) {
       if (!confirm('Delete this expense record?')) return;
-      store.expenses = store.expenses.filter(function (x) { return x.id !== id; });
+      store.expenses = store.expenses.filter((x) => x.id !== id);
       saveStore();
       renderExpenses();
       updateDashboard();
@@ -955,10 +1334,10 @@
     }
 
     function renderExpenses() {
-      const container = document.getElementById('expenseListContainer');
-      const empty = document.getElementById('expenseEmptyState');
-      const total = store.expenses.reduce(function (a, e) { return a + (e.amount || 0); }, 0);
-      document.getElementById('expenseTotalBadge').innerText = rupee(total) + ' total';
+      const container = $('expenseListContainer');
+      const empty = $('expenseEmptyState');
+      const total = store.expenses.reduce((a, e) => a + (e.amount || 0), 0);
+      $('expenseTotalBadge').innerText = rupee(total) + ' total';
 
       if (store.expenses.length === 0) {
         container.innerHTML = '';
@@ -968,26 +1347,24 @@
       }
       empty.classList.add('hidden');
 
-      container.innerHTML = store.expenses.map(function (e) {
+      container.innerHTML = store.expenses.map((e) => {
         return '<div class="p-4 bg-slate-50 dark:bg-slate-700/50 rounded-2xl border border-slate-100 dark:border-slate-700 flex justify-between items-center">' +
-          '<div><h4 class="font-bold text-sm text-slate-900 dark:text-white">' + e.title + '</h4>' +
-          '<p class="text-xs text-slate-400 mt-0.5">' + e.category + ' • ' + e.date + '</p></div>' +
+          '<div><h4 class="font-bold text-sm text-slate-900 dark:text-white">' + escapeHtml(e.title) + '</h4>' +
+          '<p class="text-xs text-slate-400 mt-0.5">' + escapeHtml(e.category) + ' • ' + escapeHtml(e.date) + '</p></div>' +
           '<div class="flex items-center gap-2">' +
           '<span class="font-bold text-rose-600">' + rupee(e.amount) + '</span>' +
-          '<button onclick="deleteExpense(\'' + e.id + '\')" class="p-2 text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950/30 rounded-xl"><i data-lucide="trash-2" class="w-4 h-4"></i></button>' +
+          '<button onclick="deleteExpense(\'' + e.id + '\')" class="p-2 text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950/30 rounded-xl" aria-label="Delete"><i data-lucide="trash-2" class="w-4 h-4"></i></button>' +
           '</div></div>';
       }).join('');
       refreshIcons();
     }
 
-    // ==================== HISTORY & CSV ====================
+    // ==================== HISTORY & EXPORTS ====================
     function renderHistory() {
-      const container = document.getElementById('historyLogsContainer');
-      const empty = document.getElementById('historyEmptyState');
-      const q = (document.getElementById('historySearch').value || '').toLowerCase();
-      const items = store.receipts.filter(function (r) {
-        return r.name.toLowerCase().includes(q) || String(r.room).toLowerCase().includes(q);
-      });
+      const container = $('historyLogsContainer');
+      const empty = $('historyEmptyState');
+      const q = ($('historySearch').value || '').toLowerCase();
+      const items = store.receipts.filter((r) => r.name.toLowerCase().includes(q) || String(r.room).toLowerCase().includes(q));
 
       if (items.length === 0) {
         container.innerHTML = '';
@@ -997,127 +1374,263 @@
       }
       empty.classList.add('hidden');
 
-      container.innerHTML = items.map(function (r) {
+      container.innerHTML = items.map((r) => {
         return '<div class="p-3.5 bg-slate-50 dark:bg-slate-700/30 rounded-2xl flex justify-between items-center text-xs gap-2">' +
-          '<div class="min-w-0"><span class="font-bold text-slate-900 dark:text-white">' + r.name + '</span> (Room ' + r.room + ')' +
-          '<p class="text-[10px] text-slate-400">' + r.slipNo + ' • ' + r.date + (r.due > 0 ? ' • Due ' + rupee(r.due) : '') + '</p></div>' +
+          '<div class="min-w-0"><span class="font-bold text-slate-900 dark:text-white">' + escapeHtml(r.name) + '</span> (Room ' + escapeHtml(r.room) + ')' +
+          '<p class="text-[10px] text-slate-400">' + escapeHtml(r.slipNo) + ' • ' + escapeHtml(formatMonthLabel(r.month)) + ' • ' + escapeHtml(r.date) + (r.due > 0 ? ' • Due ' + rupee(r.due) : '') + '</p></div>' +
           '<div class="flex items-center gap-2 shrink-0">' +
           (r.due > 0 ? '<button onclick="markReceiptPaid(\'' + r.id + '\')" class="px-2.5 py-1 bg-emerald-100 text-emerald-700 rounded-lg text-[10px] font-bold">Mark Paid</button>' : '') +
           '<span class="font-bold text-emerald-600 text-sm">' + rupee(r.total) + '</span>' +
-          '<button onclick="deleteReceipt(\'' + r.id + '\')" class="p-1.5 text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950/30 rounded-lg"><i data-lucide="trash-2" class="w-3.5 h-3.5"></i></button>' +
+          '<button onclick="deleteReceipt(\'' + r.id + '\')" class="p-1.5 text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950/30 rounded-lg" aria-label="Delete"><i data-lucide="trash-2" class="w-3.5 h-3.5"></i></button>' +
           '</div></div>';
       }).join('');
       refreshIcons();
     }
 
+    function csvEscape(val) {
+      const s = String(val === undefined || val === null ? '' : val);
+      return '"' + s.replace(/"/g, '""') + '"';
+    }
+
     function exportCSV() {
       if (store.receipts.length === 0) { showToast('No history data available', 'error'); return; }
       let csv = 'Receipt No,Tenant,Room,Month,Total Paid,Due,Date\n';
-      store.receipts.forEach(function (r) {
-        csv += '"' + r.slipNo + '","' + r.name + '","' + r.room + '","' + r.month + '","' + r.total + '","' + r.due + '","' + r.date + '"\n';
+      store.receipts.forEach((r) => {
+        csv += [csvEscape(r.slipNo), csvEscape(r.name), csvEscape(r.room), csvEscape(formatMonthLabel(r.month)), csvEscape(r.total), csvEscape(r.due), csvEscape(r.date)].join(',') + '\n';
       });
-      const blob = new Blob([csv], { type: 'text/csv' });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = 'GharPG_Transactions.csv';
-      a.click();
-      URL.revokeObjectURL(url);
+      downloadBlob(csv, 'GharPG_Transactions.csv', 'text/csv');
       showToast('Exported CSV');
     }
 
-    function handleResetData() {
-      if (!confirm('This will permanently delete all tenants, receipts, maintenance logs and expenses stored on this device. Continue?')) return;
-      localStorage.removeItem(STORAGE_KEY);
-      showToast('All data reset');
-      setTimeout(function () { location.reload(); }, 600);
+    function exportJSONBackup() {
+      const payload = JSON.stringify(store, null, 2);
+      downloadBlob(payload, 'GharPG_Backup_' + new Date().toISOString().slice(0, 10) + '.json', 'application/json');
+      showToast('Full backup downloaded');
     }
 
-    // ==================== DASHBOARD ====================
-    function updateDashboard() {
-      const totalRev = store.receipts.reduce(function (a, r) { return a + (r.total || 0); }, 0);
-      const totalDues = store.receipts.reduce(function (a, r) { return a + (r.due || 0); }, 0);
-      const totalExp = store.expenses.reduce(function (a, e) { return a + (e.amount || 0); }, 0);
-      const activeIssues = store.maintenance.filter(function (x) { return x.status !== 'Resolved'; }).length;
+    function importJSONBackup(event) {
+      const file = event.target.files && event.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = function (e) {
+        try {
+          const parsed = JSON.parse(e.target.result);
+          if (!parsed || typeof parsed !== 'object' || !Array.isArray(parsed.tenants)) {
+            throw new Error('Invalid backup file structure');
+          }
+          if (!confirm('This will replace all current data with the backup file contents. Continue?')) return;
+          store = Object.assign({
+            version: 3, tenants: [], rooms: [], receipts: [], maintenance: [], expenses: [],
+            settings: { pgName: 'Ghar PG Accommodation', pgAddress: '', upiId: '' }
+          }, parsed);
+          saveStore();
+          showToast('Backup restored successfully');
+          setTimeout(() => location.reload(), 700);
+        } catch (err) {
+          console.warn('Restore failed', err);
+          showToast('Invalid backup file', 'error');
+        } finally {
+          event.target.value = '';
+        }
+      };
+      reader.readAsText(file);
+    }
 
-      document.getElementById('dashCollected').innerText = rupee(totalRev);
-      document.getElementById('dashDues').innerText = rupee(totalDues);
-      document.getElementById('dashTenants').innerText = store.tenants.length;
-      document.getElementById('dashIssues').innerText = activeIssues;
+    function downloadBlob(content, filename, mime) {
+      const blob = new Blob([content], { type: mime });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = filename;
+      a.click();
+      URL.revokeObjectURL(url);
+    }
+
+    function handleResetData() {
+      if (!confirm('This will permanently delete all tenants, rooms, receipts, maintenance logs and expenses stored on this device. Continue?')) return;
+      localStorage.removeItem(STORAGE_KEY);
+      localStorage.removeItem(LEGACY_STORAGE_KEY);
+      showToast('All data reset');
+      setTimeout(() => location.reload(), 600);
+    }
+
+    // ==================== DASHBOARD & ANALYTICS ====================
+    function updateDashboard() {
+      const totalRev = store.receipts.reduce((a, r) => a + (r.total || 0), 0);
+      const totalDues = store.receipts.reduce((a, r) => a + (r.due || 0), 0);
+      const totalExp = store.expenses.reduce((a, e) => a + (e.amount || 0), 0);
+      const activeIssues = store.maintenance.filter((x) => x.status !== 'Resolved').length;
+      const occ = computeOccupancy();
+
+      $('dashCollected').innerText = rupee(totalRev);
+      $('dashDues').innerText = rupee(totalDues);
+      $('dashTenants').innerText = store.tenants.filter((t) => (t.status || 'Active') === 'Active').length;
+      $('dashOccupancy').innerText = occ.rate + '%';
+      $('dashIssues').innerText = activeIssues;
 
       const net = totalRev - totalExp;
-      document.getElementById('netBalanceMsg').innerText = 'Net balance so far: ' + rupee(net) + ' (' + rupee(totalRev) + ' in, ' + rupee(totalExp) + ' out)';
+      $('netBalanceMsg').innerText = 'Net balance so far: ' + rupee(net) + ' (' + rupee(totalRev) + ' in, ' + rupee(totalExp) + ' out)';
 
-      renderChart(totalRev, totalExp);
+      renderDueSoon();
+      renderTrendChart();
+      renderExpenseChart();
     }
 
-    function renderChart(revenue, expense) {
-      const chartEl = document.getElementById('revenueChart');
+    function renderDueSoon() {
+      const banner = $('dueSoonBanner');
+      const list = $('dueSoonList');
+      const duesByTenant = {};
+      store.receipts.filter((r) => r.due > 0).forEach((r) => {
+        duesByTenant[r.name] = (duesByTenant[r.name] || 0) + r.due;
+      });
+      const names = Object.keys(duesByTenant);
+      if (names.length === 0) { banner.classList.add('hidden'); list.innerHTML = ''; return; }
+      banner.classList.remove('hidden');
+
+      list.innerHTML = names.map((name) => {
+        const tenant = store.tenants.find((t) => t.name === name);
+        const mobile = tenant ? tenant.mobile : '';
+        return '<div class="flex items-center justify-between gap-2 bg-white dark:bg-slate-800 rounded-xl px-3 py-2 text-xs">' +
+          '<span class="font-semibold text-slate-700 dark:text-slate-200 truncate">' + escapeHtml(name) + ' <span class="text-amber-600 font-bold">' + rupee(duesByTenant[name]) + '</span></span>' +
+          '<button onclick="remindTenantWhatsApp(\'' + escapeHtml(name).replace(/'/g, "\\'") + '\', \'' + mobile + '\', ' + duesByTenant[name] + ')" class="px-2 py-1 bg-emerald-100 text-emerald-700 rounded-lg text-[10px] font-bold shrink-0">Remind</button>' +
+          '</div>';
+      }).join('');
+      refreshIcons();
+    }
+
+    /** Builds last-6-month labels in "YYYY-MM" form ending at the current month. */
+    function getLast6MonthKeys() {
+      const keys = [];
+      const now = new Date();
+      for (let i = 5; i >= 0; i--) {
+        const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
+        keys.push(d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0'));
+      }
+      return keys;
+    }
+
+    function renderTrendChart() {
+      const chartEl = $('trendChart');
       if (!chartEl) return;
+      const keys = getLast6MonthKeys();
+      const labels = keys.map((k) => {
+        const [y, m] = k.split('-');
+        return new Date(Number(y), Number(m) - 1, 1).toLocaleDateString('en-IN', { month: 'short' });
+      });
+
+      const revenueByMonth = keys.map((k) => store.receipts.filter((r) => r.month === k).reduce((a, r) => a + (r.total || 0), 0));
+      // Expenses only carry a display date string, not a month key, so approximate using current totals split across the last bucket if no month key match is possible.
+      const expenseByMonth = keys.map(() => 0);
+      const totalExp = store.expenses.reduce((a, e) => a + (e.amount || 0), 0);
+      expenseByMonth[expenseByMonth.length - 1] = totalExp;
+
       const ctx = chartEl.getContext('2d');
-      if (revenueChartInstance) revenueChartInstance.destroy();
-      revenueChartInstance = new Chart(ctx, {
-        type: 'bar',
+      if (trendChartInstance) trendChartInstance.destroy();
+      trendChartInstance = new Chart(ctx, {
+        type: 'line',
         data: {
-          labels: ['Total Revenue', 'Total Expenses'],
-          datasets: [{ data: [revenue, expense], backgroundColor: ['#10b981', '#f43f5e'], borderRadius: 12 }]
+          labels,
+          datasets: [
+            { label: 'Revenue', data: revenueByMonth, borderColor: '#10b981', backgroundColor: 'rgba(16,185,129,0.12)', tension: 0.35, fill: true, pointRadius: 3 },
+            { label: 'Expenses', data: expenseByMonth, borderColor: '#f43f5e', backgroundColor: 'rgba(244,63,94,0.10)', tension: 0.35, fill: true, pointRadius: 3 }
+          ]
         },
-        options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
+        options: {
+          responsive: true, maintainAspectRatio: false,
+          plugins: { legend: { position: 'bottom', labels: { boxWidth: 10, font: { size: 11 } } } },
+          scales: { y: { beginAtZero: true, ticks: { font: { size: 10 } } }, x: { ticks: { font: { size: 10 } } } }
+        }
+      });
+    }
+
+    function renderExpenseChart() {
+      const chartEl = $('expenseChart');
+      const emptyEl = $('expenseChartEmpty');
+      if (!chartEl) return;
+      if (store.expenses.length === 0) {
+        if (expenseChartInstance) { expenseChartInstance.destroy(); expenseChartInstance = null; }
+        chartEl.classList.add('hidden');
+        emptyEl.classList.remove('hidden');
+        return;
+      }
+      chartEl.classList.remove('hidden');
+      emptyEl.classList.add('hidden');
+
+      const totalsByCategory = {};
+      store.expenses.forEach((e) => { totalsByCategory[e.category] = (totalsByCategory[e.category] || 0) + e.amount; });
+      const categories = Object.keys(totalsByCategory);
+      const colors = categories.map((c) => EXPENSE_CATEGORY_COLORS[c] || '#94a3b8');
+
+      const ctx = chartEl.getContext('2d');
+      if (expenseChartInstance) expenseChartInstance.destroy();
+      expenseChartInstance = new Chart(ctx, {
+        type: 'doughnut',
+        data: { labels: categories, datasets: [{ data: categories.map((c) => totalsByCategory[c]), backgroundColor: colors, borderWidth: 0 }] },
+        options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom', labels: { boxWidth: 10, font: { size: 10 } } } }, cutout: '65%' }
       });
     }
 
     function refreshData() {
       renderTenants();
       populateTenantDropdown();
+      renderRooms();
       renderMaintenanceLogs();
       renderExpenses();
       renderHistory();
       updateDashboard();
-      showToast('Refreshed');
     }
 
     // ==================== NAVIGATION & THEME ====================
     function switchTab(tabId) {
-      document.querySelectorAll('.tab-content').forEach(function (el) { el.classList.add('hidden'); });
-      const activeTab = document.getElementById('tab-' + tabId);
-      if (activeTab) activeTab.classList.remove('hidden');
+      const current = document.querySelector('.tab-content:not(.hidden)');
+      const next = $('tab-' + tabId);
+      if (!next || current === next) return;
 
-      document.querySelectorAll('.nav-btn').forEach(function (btn) {
+      document.querySelectorAll('.tab-content').forEach((el) => el.classList.add('hidden'));
+      next.classList.remove('hidden');
+
+      document.querySelectorAll('.nav-btn').forEach((btn) => {
         btn.className = btn.dataset.tab === tabId
           ? 'nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-2xl font-semibold text-sm transition text-white bg-brand-600 shadow-md shadow-brand-500/20'
           : 'nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-2xl font-semibold text-sm transition text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700/50';
       });
 
-      document.getElementById('sidebar').classList.add('-translate-x-full');
+      if (window.gsap) {
+        gsap.fromTo(next, { opacity: 0, y: 8 }, { opacity: 1, y: 0, duration: 0.28, ease: 'power2.out' });
+      }
+
+      $('sidebar').classList.add('-translate-x-full');
     }
 
     function applyThemeLabel() {
       const isDark = document.documentElement.classList.contains('dark');
-      document.getElementById('themeModeText').innerText = isDark ? 'Dark Mode' : 'Light Mode';
+      $('themeModeText').innerText = isDark ? 'Dark Mode' : 'Light Mode';
     }
 
     function toggleDarkMode() {
       const isDark = document.documentElement.classList.toggle('dark');
       localStorage.setItem('gharPG_theme', isDark ? 'dark' : 'light');
       applyThemeLabel();
+      renderTrendChart();
+      renderExpenseChart();
     }
 
-    function toggleMobileSidebar() { document.getElementById('sidebar').classList.toggle('-translate-x-full'); }
+    function toggleMobileSidebar() { $('sidebar').classList.toggle('-translate-x-full'); }
 
     function saveSettings() {
-      store.settings.pgName = document.getElementById('setPgName').value.trim() || 'Ghar PG Accommodation';
-      store.settings.pgAddress = document.getElementById('setPgAddress').value.trim();
-      store.settings.upiId = document.getElementById('setUpiId').value.trim();
+      store.settings.pgName = $('setPgName').value.trim() || 'Ghar PG Accommodation';
+      store.settings.pgAddress = $('setPgAddress').value.trim();
+      store.settings.upiId = $('setUpiId').value.trim();
       saveStore();
-      document.getElementById('prevPgName').innerText = store.settings.pgName;
+      $('prevPgName').innerText = store.settings.pgName;
       showToast('PG Profile Settings Saved!');
     }
 
     // ==================== INIT ====================
-    document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', () => {
       refreshIcons();
       applyThemeLabel();
-      document.getElementById('authMobile').value = localStorage.getItem('gharPG_mobile') || '8651744312';
+      $('authMobile').value = localStorage.getItem('gharPG_mobile') || '8651744312';
       if (localStorage.getItem('gharPG_isLoggedIn') === 'true') {
         enterDashboard(localStorage.getItem('gharPG_mobile') || '8651744312');
       }

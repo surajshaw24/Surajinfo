@@ -872,10 +872,10 @@ tbody tr:hover{background:var(--surface2)}
     </div>
   </div>
 
-  <div class="login-panel">
+   <div class="login-panel">
     <div class="login-card">
-      <h2>Welcome Back</h2>
-      <p class="sub">Access your PG management dashboard</p>
+      <h2>Manager Login</h2>
+      <p class="sub">Apne PG ka control panel kholne ke liye login karein.</p>
 
       <div id="stepPhone">
         <label>Mobile Number</label>
@@ -883,29 +883,30 @@ tbody tr:hover{background:var(--surface2)}
           <span class="prefix">+91</span>
           <input id="phoneInput" type="tel" maxlength="10" placeholder="98765 43210" inputmode="numeric">
         </div>
-        <button class="btn btn-brand btn-block btn-lg" style="margin-top:20px" onclick="sendOtp()">
+        <button class="btn btn-brand btn-block" style="margin-top:16px" onclick="sendOtp()">
           Send OTP
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
         </button>
       </div>
 
       <div id="stepOtp" class="hide">
         <label>Enter OTP</label>
-        <input id="otpInput" type="tel" maxlength="6" placeholder="••••••" inputmode="numeric" style="letter-spacing:10px;text-align:center;font-weight:800;font-size:18px">
-        <div class="otp-hint">Demo OTP: <b id="otpHint" style="color:var(--brand)"></b> (offline demo)</div>
-        <button class="btn btn-brand btn-block btn-lg" style="margin-top:16px" onclick="verifyOtp()">Verify & Enter Dashboard</button>
-        <button class="btn btn-ghost btn-block btn-sm" style="margin-top:10px" onclick="backToPhone()">← Change Number</button>
+        <input id="otpInput" type="tel" maxlength="6" placeholder="••••••" inputmode="numeric" style="letter-spacing:8px;text-align:center;font-weight:800">
+        <div class="otp-hint">Demo OTP: <b id="otpHint" style="color:var(--brand)"></b> (offline demo — SMS nahi aayega)</div>
+        <button class="btn btn-brand btn-block" style="margin-top:14px" onclick="verifyOtp()">Verify &amp; Enter Dashboard</button>
+        <button class="btn btn-ghost btn-block btn-sm" style="margin-top:9px" onclick="backToPhone()">← Number badlein</button>
       </div>
 
-      <div class="divider">OR</div>
-      <button class="btn btn-accent btn-block btn-lg" onclick="quickLogin()">⚡ Quick Demo Login</button>
+      <div class="divider">YA</div>
+      <button class="btn btn-amber btn-block" onclick="quickLogin()">⚡ Quick Manager Login (1-Click)</button>
       <div class="login-secure">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 018 0v3"/></svg>
-        End-to-end encrypted · Data stored locally
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 018 0v3"/></svg>
+        Data is stored securely on this device.
       </div>
     </div>
   </div>
 </div>
+
 
 <!-- ================= APP ================= -->
 <div id="app" class="app hide">

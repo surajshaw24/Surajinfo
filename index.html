@@ -187,7 +187,7 @@
     <div class="modal" id="settingsModal">
         <div class="modal-content">
             <h3>Settings</h3>
-            <p style="color: var(--text-dim); font-size: 0.9rem;">Apna OpenAI API Key yahan dalein (Advanced AI chat ke liye). Local commands ke liye zaroori nahi hai.</p>
+            <p style="color: var(--text-dim); font-size: 0.9rem;">Apna OpenAI API Key yahan dalein (Advanced AI chat ke liye).</p>
             <input type="password" id="apiKeyInput" placeholder="sk-... (OpenAI API Key)">
             <button class="save-btn" onclick="saveSettings()">Save & Close</button>
         </div>
@@ -195,11 +195,13 @@
 
     <script>
         // --- CONFIGURATION ---
-        let API_KEY = localStorage.getItem('openai_api_key') || '';
+        // ⚠️ WARNING: API key hardcoded here is NOT secure for production!
+        let API_KEY = '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';
+        
         const synth = window.speechSynthesis;
         const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
         
-        recognition.lang = 'en-IN'; // Supports Hindi/English (Hinglish)
+        recognition.lang = 'en-IN';
         recognition.continuous = false;
         recognition.interimResults = false;
 
@@ -274,11 +276,7 @@
             }
             // 2. AI Fallback (If no local command matches)
             else {
-                if (!API_KEY) {
-                    respond("Mujhe OpenAI API key nahi mili. Settings (⚙️) mein jaakar key dalein advanced chat ke liye, ya mujhse time, date, ya youtube open karne ko kahein.");
-                } else {
-                    await askAI(text);
-                }
+                await askAI(text);
             }
         }
 
@@ -292,7 +290,7 @@
                         'Authorization': `Bearer ${API_KEY}`
                     },
                     body: JSON.stringify({
-                        model: "gpt-3.5-turbo", // You can change to gpt-4o-mini
+                        model: "gpt-3.5-turbo",
                         messages: [
                             { role: "system", content: "You are a helpful, friendly AI voice assistant. Keep answers concise and conversational as they will be spoken out loud." },
                             { role: "user", content: userText }
@@ -320,7 +318,6 @@
             utterance.rate = 1;
             utterance.pitch = 1;
             
-            // Try to find a good Indian English voice
             const voices = synth.getVoices();
             const indianVoice = voices.find(v => v.lang.includes('en-IN'));
             if (indianVoice) utterance.voice = indianVoice;
@@ -346,7 +343,7 @@
             if (isListening) {
                 recognition.stop();
             } else {
-                synth.cancel(); // Stop any ongoing speech
+                synth.cancel();
                 recognition.start();
             }
         }

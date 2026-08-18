@@ -3,101 +3,66 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>QRGen Pro Ultra - Advanced QR Generator</title>
-    
-    <!-- Tailwind CSS -->
+    <title>QRGen Pro - Advanced QR Generator</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <!-- Advanced QR Code Styling -->
-    <script src="https://unpkg.com/qr-code-styling@1.5.0/lib/qr-code-styling.js"></script>
-    <!-- Real QR Scanner -->
-    <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
-    <!-- SweetAlert2 -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
+    <script src="https://unpkg.com/qr-code-styling@1.5.0/lib/qr-code-styling.js"></script>
+    <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
+    
     <script>
         tailwind.config = {
             theme: {
                 extend: {
-                    colors: {
-                        dark: { 900: '#050507', 800: '#0a0a0f', 700: '#12121a' },
-                        brand: { 500: '#8B5CF6', 600: '#7C3AED', 700: '#6D28D9' }
-                    },
-                    fontFamily: { sans: ['Inter', 'sans-serif'] }
+                    colors: { dark: { 900: '#050507', 800: '#0a0a0f', 700: '#12121a' } }
                 }
             }
         }
     </script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
-        
-        body { background-color: #050507; color: white; }
+        body { font-family: 'Inter', sans-serif; background-color: #050507; color: white; }
         .glass { background: rgba(18, 18, 26, 0.7); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.06); }
         .glass-light { background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.04); }
-        .glow-border { box-shadow: 0 0 0 1px rgba(139, 92, 246, 0.3), 0 0 40px -10px rgba(139, 92, 246, 0.2); }
         .blob { position: fixed; border-radius: 50%; filter: blur(100px); opacity: 0.15; z-index: -1; pointer-events: none; }
-        
-        /* Custom Inputs */
-        input[type="color"] { -webkit-appearance: none; border: none; padding: 0; }
+        input[type="color"] { -webkit-appearance: none; border: none; padding: 0; cursor: pointer; }
         input[type="color"]::-webkit-color-swatch-wrapper { padding: 0; }
         input[type="color"]::-webkit-color-swatch { border: none; border-radius: 0.5rem; }
-        input[type="range"] { -webkit-appearance: none; background: transparent; }
-        input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; height: 16px; width: 16px; border-radius: 50%; background: #8B5CF6; cursor: pointer; margin-top: -6px; }
-        input[type="range"]::-webkit-slider-runnable-track { width: 100%; height: 4px; cursor: pointer; background: #334155; border-radius: 2px; }
-
-        /* Animations */
-        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
-        .animate-float { animation: float 6s ease-in-out infinite; }
-        @keyframes pulse-glow { 0%, 100% { box-shadow: 0 0 20px rgba(139, 92, 246, 0.2); } 50% { box-shadow: 0 0 40px rgba(139, 92, 246, 0.4); } }
-        .animate-pulse-glow { animation: pulse-glow 3s ease-in-out infinite; }
-        
         .tab-active { background: linear-gradient(135deg, #7C3AED, #8B5CF6); color: white; box-shadow: 0 10px 25px -5px rgba(124, 58, 237, 0.5); }
         .tab-inactive { color: #94A3B8; }
         .tab-inactive:hover { color: white; background: rgba(255,255,255,0.03); }
-        
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: #0a0a0f; }
         ::-webkit-scrollbar-thumb { background: #334155; border-radius: 3px; }
+        .input-field { width: 100%; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.08); border-radius: 0.75rem; padding: 0.75rem 1rem; color: white; outline: none; transition: all 0.2s; }
+        .input-field:focus { border-color: #8B5CF6; box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.2); }
+        .input-field::placeholder { color: #64748B; }
     </style>
 </head>
-<body class="min-h-screen overflow-x-hidden relative font-sans">
+<body class="min-h-screen relative">
 
-    <!-- Background Blobs -->
-    <div class="blob bg-violet-600 w-[500px] h-[500px] -top-40 -left-40"></div>
-    <div class="blob bg-fuchsia-600 w-[500px] h-[500px] bottom-0 -right-40"></div>
-    <div class="blob bg-blue-600 w-[400px] h-[400px] top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"></div>
+    <div class="blob bg-violet-600 w-96 h-96 -top-40 -left-40"></div>
+    <div class="blob bg-fuchsia-600 w-96 h-96 bottom-0 -right-40"></div>
 
     <!-- Navbar -->
     <nav class="sticky top-0 z-50 glass border-b border-white/5">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
             <div class="flex items-center gap-3">
-                <div class="w-10 h-10 bg-gradient-to-br from-violet-500 to-fuchsia-600 rounded-xl flex items-center justify-center shadow-lg shadow-violet-500/30 animate-pulse-glow">
+                <div class="w-10 h-10 bg-gradient-to-br from-violet-500 to-fuchsia-600 rounded-xl flex items-center justify-center shadow-lg shadow-violet-500/30">
                     <i class="fa-solid fa-qrcode text-white text-xl"></i>
                 </div>
-                <div>
-                    <span class="text-xl font-bold tracking-tight">QRGen<span class="text-violet-400">Pro</span></span>
-                    <span class="hidden sm:inline text-[10px] bg-violet-500/20 text-violet-300 px-2 py-0.5 rounded-full ml-2 font-semibold">ULTRA</span>
-                </div>
+                <span class="text-xl font-bold">QRGen<span class="text-violet-400">Pro</span></span>
             </div>
-            <div class="hidden md:flex items-center gap-8 text-sm font-medium text-slate-400">
-                <a href="#" class="hover:text-white transition">Features</a>
-                <a href="#" class="hover:text-white transition">Pricing</a>
-                <a href="#" class="hover:text-white transition">API</a>
-            </div>
-            <button class="bg-white text-slate-900 px-5 py-2 rounded-lg text-sm font-bold hover:bg-slate-200 transition shadow-lg">Get Pro</button>
+            <button class="bg-white text-slate-900 px-5 py-2 rounded-lg text-sm font-bold hover:bg-slate-200 transition">Get Pro</button>
         </div>
     </nav>
 
-    <!-- Main Content -->
     <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         
-        <!-- Hero -->
-        <div class="text-center mb-12 animate-float">
-            <h1 class="text-4xl md:text-6xl font-extrabold mb-4 leading-tight">Create <span class="text-transparent bg-clip-text bg-gradient-to-r from-violet-400 via-fuchsia-400 to-pink-400">Stunning QR Codes</span><br>in Seconds</h1>
-            <p class="text-slate-400 text-lg max-w-2xl mx-auto">Advanced styling, real-time scanning, logo embedding, and analytics. The only QR tool you'll ever need.</p>
+        <div class="text-center mb-12">
+            <h1 class="text-4xl md:text-5xl font-extrabold mb-4">Create <span class="text-transparent bg-clip-text bg-gradient-to-r from-violet-400 to-fuchsia-400">Stunning QR Codes</span></h1>
+            <p class="text-slate-400 text-lg">Advanced styling, real-time scanning, logo embedding & analytics</p>
         </div>
 
         <!-- Tabs -->
@@ -121,13 +86,12 @@
         <!-- ================= GENERATOR TAB ================= -->
         <div id="tab-generator" class="grid lg:grid-cols-12 gap-8">
             
-            <!-- Left Column: Controls -->
             <div class="lg:col-span-7 space-y-6">
                 
                 <!-- QR Type Selector -->
                 <div class="glass rounded-2xl p-6">
                     <h2 class="text-lg font-bold mb-4 flex items-center gap-2"><i class="fa-solid fa-shapes text-violet-400"></i> Select Content Type</h2>
-                    <div class="grid grid-cols-3 md:grid-cols-6 gap-3" id="type-selector"></div>
+                    <div class="grid grid-cols-3 md:grid-cols-5 gap-3" id="type-selector"></div>
                 </div>
 
                 <!-- Dynamic Input Form -->
@@ -144,14 +108,14 @@
                         <div>
                             <label class="block text-xs font-bold text-slate-400 uppercase mb-2">Foreground Color</label>
                             <div class="flex items-center gap-3 glass-light p-2 rounded-xl">
-                                <input type="color" id="color-fg" value="#000000" class="w-10 h-10 rounded-lg cursor-pointer bg-transparent">
+                                <input type="color" id="color-fg" value="#000000" class="w-10 h-10 rounded-lg bg-transparent">
                                 <span class="text-sm text-slate-400 font-mono" id="color-fg-hex">#000000</span>
                             </div>
                         </div>
                         <div>
                             <label class="block text-xs font-bold text-slate-400 uppercase mb-2">Background Color</label>
                             <div class="flex items-center gap-3 glass-light p-2 rounded-xl">
-                                <input type="color" id="color-bg" value="#FFFFFF" class="w-10 h-10 rounded-lg cursor-pointer bg-transparent">
+                                <input type="color" id="color-bg" value="#FFFFFF" class="w-10 h-10 rounded-lg bg-transparent">
                                 <span class="text-sm text-slate-400 font-mono" id="color-bg-hex">#FFFFFF</span>
                             </div>
                         </div>
@@ -160,20 +124,20 @@
                     <div class="grid sm:grid-cols-2 gap-6 mb-6">
                         <div>
                             <label class="block text-xs font-bold text-slate-400 uppercase mb-2">Dot Style</label>
-                            <select id="dot-style" class="w-full glass-light border border-white/5 rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-violet-500 bg-transparent">
-                                <option value="square" class="bg-slate-900">Square</option>
-                                <option value="rounded" class="bg-slate-900">Rounded</option>
-                                <option value="dots" class="bg-slate-900">Dots</option>
-                                <option value="classy" class="bg-slate-900">Classy</option>
-                                <option value="classy-rounded" class="bg-slate-900">Classy Rounded</option>
+                            <select id="dot-style" class="input-field bg-slate-900">
+                                <option value="square">Square</option>
+                                <option value="rounded" selected>Rounded</option>
+                                <option value="dots">Dots</option>
+                                <option value="classy">Classy</option>
+                                <option value="classy-rounded">Classy Rounded</option>
                             </select>
                         </div>
                         <div>
-                            <label class="block text-xs font-bold text-slate-400 uppercase mb-2">Corner Square Style</label>
-                            <select id="corner-style" class="w-full glass-light border border-white/5 rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-violet-500 bg-transparent">
-                                <option value="square" class="bg-slate-900">Square</option>
-                                <option value="dot" class="bg-slate-900">Dot</option>
-                                <option value="extra-rounded" class="bg-slate-900">Extra Rounded</option>
+                            <label class="block text-xs font-bold text-slate-400 uppercase mb-2">Corner Style</label>
+                            <select id="corner-style" class="input-field bg-slate-900">
+                                <option value="square">Square</option>
+                                <option value="dot">Dot</option>
+                                <option value="extra-rounded" selected>Extra Rounded</option>
                             </select>
                         </div>
                     </div>
@@ -195,12 +159,10 @@
             <!-- Right Column: Preview -->
             <div class="lg:col-span-5">
                 <div class="sticky top-24 space-y-6">
-                    <div class="glass rounded-2xl p-8 flex flex-col items-center justify-center text-center glow-border">
+                    <div class="glass rounded-2xl p-8 flex flex-col items-center justify-center text-center">
                         <h3 class="text-lg font-bold mb-6 flex items-center gap-2"><i class="fa-regular fa-eye text-violet-400"></i> Live Preview</h3>
                         
-                        <div class="p-8 bg-white rounded-3xl shadow-2xl mb-8 animate-float" id="qr-container">
-                            <!-- QR Code renders here -->
-                        </div>
+                        <div class="p-6 bg-white rounded-3xl shadow-2xl mb-6" id="qr-container"></div>
 
                         <div class="grid grid-cols-3 gap-3 w-full">
                             <button onclick="downloadQR('png')" class="bg-violet-600 hover:bg-violet-700 text-white py-3 rounded-xl font-semibold transition shadow-lg shadow-violet-600/30 flex flex-col items-center gap-1 text-xs">
@@ -225,9 +187,11 @@
         <div id="tab-scanner" class="hidden max-w-2xl mx-auto">
             <div class="glass rounded-2xl p-8 text-center">
                 <h2 class="text-2xl font-bold mb-2">Scan QR Code</h2>
-                <p class="text-slate-400 mb-6">Point your camera at a QR code to scan it instantly.</p>
+                <p class="text-slate-400 mb-6">Point your camera at a QR code</p>
                 
-                <div id="reader" class="w-full rounded-2xl overflow-hidden mb-6 border border-white/10"></div>
+                <div id="reader" class="w-full rounded-2xl overflow-hidden mb-6 border border-white/10 min-h-[300px] flex items-center justify-center bg-slate-900/50">
+                    <p class="text-slate-500">Camera will appear here</p>
+                </div>
                 
                 <div class="flex justify-center gap-4">
                     <button id="start-scan" class="bg-violet-600 hover:bg-violet-700 text-white px-8 py-3 rounded-xl font-semibold transition shadow-lg shadow-violet-600/30">
@@ -249,25 +213,25 @@
             <div class="grid md:grid-cols-3 gap-6">
                 <div class="glass rounded-2xl p-6 border-l-4 border-violet-500">
                     <p class="text-slate-400 text-sm font-medium">Total Scans</p>
-                    <div class="flex items-end justify-between mt-2"><h3 class="text-3xl font-bold">24,592</h3><span class="text-sm font-bold text-emerald-400 bg-emerald-500/10 px-2 py-1 rounded-lg">+12.5%</span></div>
+                    <h3 class="text-3xl font-bold mt-2">24,592</h3>
                 </div>
                 <div class="glass rounded-2xl p-6 border-l-4 border-blue-500">
                     <p class="text-slate-400 text-sm font-medium">Active QRs</p>
-                    <div class="flex items-end justify-between mt-2"><h3 class="text-3xl font-bold">148</h3><span class="text-sm font-bold text-blue-400 bg-blue-500/10 px-2 py-1 rounded-lg">+3</span></div>
+                    <h3 class="text-3xl font-bold mt-2">148</h3>
                 </div>
                 <div class="glass rounded-2xl p-6 border-l-4 border-pink-500">
                     <p class="text-slate-400 text-sm font-medium">Conversion Rate</p>
-                    <div class="flex items-end justify-between mt-2"><h3 class="text-3xl font-bold">68.2%</h3><span class="text-sm font-bold text-pink-400 bg-pink-500/10 px-2 py-1 rounded-lg">+4.1%</span></div>
+                    <h3 class="text-3xl font-bold mt-2">68.2%</h3>
                 </div>
             </div>
 
             <div class="grid lg:grid-cols-3 gap-6">
                 <div class="glass rounded-2xl p-6 lg:col-span-2">
-                    <h3 class="text-lg font-bold mb-4 flex items-center gap-2"><i class="fa-solid fa-chart-area text-violet-400"></i> Scan Trends</h3>
+                    <h3 class="text-lg font-bold mb-4">Scan Trends</h3>
                     <div class="h-72"><canvas id="lineChart"></canvas></div>
                 </div>
                 <div class="glass rounded-2xl p-6">
-                    <h3 class="text-lg font-bold mb-4 flex items-center gap-2"><i class="fa-solid fa-chart-pie text-pink-400"></i> Devices</h3>
+                    <h3 class="text-lg font-bold mb-4">Devices</h3>
                     <div class="h-72 flex items-center justify-center"><canvas id="doughnutChart"></canvas></div>
                 </div>
             </div>
@@ -279,24 +243,22 @@
                 <h2 class="text-2xl font-bold flex items-center gap-2"><i class="fa-solid fa-clock-rotate-left text-violet-400"></i> Your Saved QRs</h2>
                 <button onclick="clearHistory()" class="text-sm text-red-400 hover:text-red-300 font-semibold"><i class="fa-solid fa-trash mr-1"></i> Clear All</button>
             </div>
-            <div id="history-grid" class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4">
-                <!-- History items injected here -->
-            </div>
+            <div id="history-grid" class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4"></div>
             <div id="empty-history" class="hidden text-center py-20 glass rounded-2xl">
                 <i class="fa-regular fa-folder-open text-5xl text-slate-600 mb-4"></i>
-                <p class="text-slate-400">No saved QR codes yet. Generate and save your first one!</p>
+                <p class="text-slate-400">No saved QR codes yet</p>
             </div>
         </div>
 
     </main>
 
     <footer class="border-t border-white/5 mt-20 py-8 text-center text-slate-600 text-sm">
-        <p>© 2026 QRGen Pro Ultra. Built with Vanilla JS, Tailwind & Advanced Libraries.</p>
+        <p>© 2026 QRGen Pro. All functions working!</p>
     </footer>
 
-    <!-- ================= JAVASCRIPT LOGIC ================= -->
+    <!-- ================= JAVASCRIPT ================= -->
     <script>
-        // --- 1. STATE & CONFIG ---
+        // ============ STATE ============
         const qrTypes = [
             { id: 'link', label: 'URL', icon: 'fa-link' },
             { id: 'upi', label: 'UPI', icon: 'fa-credit-card' },
@@ -313,19 +275,36 @@
         let currentLogo = null;
         let html5QrCode = null;
         let chartsInitialized = false;
+        let qrCodeInstance = null;
 
-        // Initialize Advanced QR Code
-        const qrCode = new QRCodeStyling({
-            width: 280, height: 280, type: "svg",
-            data: "https://qrgenpro.com",
-            dotsOptions: { color: "#000000", type: "rounded" },
-            backgroundOptions: { color: "#FFFFFF" },
-            cornersSquareOptions: { type: "extra-rounded" },
-            imageOptions: { crossOrigin: "anonymous", margin: 10 }
-        });
+        // ============ INITIALIZE QR CODE ============
+        function initQRCode() {
+            console.log('Initializing QR Code...');
+            try {
+                qrCodeInstance = new QRCodeStyling({
+                    width: 280,
+                    height: 280,
+                    type: "canvas",
+                    data: "https://qrgenpro.com",
+                    dotsOptions: { color: "#000000", type: "rounded" },
+                    backgroundOptions: { color: "#FFFFFF" },
+                    cornersSquareOptions: { type: "extra-rounded" },
+                    imageOptions: { crossOrigin: "anonymous", margin: 10 }
+                });
+                
+                const container = document.getElementById("qr-container");
+                container.innerHTML = ''; // Clear container
+                qrCodeInstance.append(container);
+                console.log('QR Code initialized successfully!');
+            } catch (error) {
+                console.error('QR Init Error:', error);
+                document.getElementById("qr-container").innerHTML = '<p class="text-red-500 p-4">QR Library failed to load. Please refresh.</p>';
+            }
+        }
 
-        // --- 2. TAB SWITCHING ---
+        // ============ TAB SWITCHING ============
         function switchTab(tabName) {
+            console.log('Switching to tab:', tabName);
             ['generator', 'scanner', 'analytics', 'history'].forEach(t => {
                 document.getElementById(`tab-${t}`).classList.add('hidden');
                 document.getElementById(`btn-${t}`).classList.remove('tab-active');
@@ -337,195 +316,455 @@
 
             if(tabName === 'analytics') initCharts();
             if(tabName === 'history') renderHistory();
-            if(tabName === 'scanner') {
-                if(html5QrCode) html5QrCode.stop().catch(()=>{});
-                document.getElementById('start-scan').classList.remove('hidden');
-                document.getElementById('stop-scan').classList.add('hidden');
-                document.getElementById('scan-result').classList.add('hidden');
-            }
+            if(tabName === 'scanner') stopScanner();
         }
 
-        // --- 3. RENDER TYPE SELECTOR ---
-        const typeContainer = document.getElementById('type-selector');
+        // ============ RENDER TYPE SELECTOR ============
         function renderTypeSelector() {
-            typeContainer.innerHTML = '';
+            const container = document.getElementById('type-selector');
+            container.innerHTML = '';
             qrTypes.forEach(type => {
                 const btn = document.createElement('button');
-                btn.className = `flex flex-col items-center gap-2 p-3 rounded-xl border transition-all ${currentType === type.id ? 'bg-violet-600/20 border-violet-500 text-violet-300' : 'glass-light text-slate-400 hover:border-slate-500'}`;
-                btn.innerHTML = `<i class="fa-brands ${type.icon} ${type.icon === 'fa-link' || type.icon === 'fa-credit-card' || type.icon === 'fa-envelope' || type.icon === 'fa-phone' || type.icon === 'fa-wifi' || type.icon === 'fa-address-card' || type.icon === 'fa-location-dot' || type.icon === 'fa-font' ? 'fa-solid' : ''} text-xl"></i><span class="text-[10px] font-bold uppercase tracking-wider">${type.label}</span>`;
-                btn.onclick = () => { currentType = type.id; renderTypeSelector(); renderForm(); updateQR(); };
-                typeContainer.appendChild(btn);
+                const isActive = currentType === type.id;
+                btn.className = `flex flex-col items-center gap-2 p-3 rounded-xl border transition-all ${isActive ? 'bg-violet-600/20 border-violet-500 text-violet-300' : 'glass-light text-slate-400 hover:border-slate-500'}`;
+                btn.innerHTML = `<i class="fa-solid ${type.icon} text-xl"></i><span class="text-[10px] font-bold uppercase">${type.label}</span>`;
+                btn.onclick = () => { 
+                    currentType = type.id; 
+                    renderTypeSelector(); 
+                    renderForm(); 
+                    updateQR(); 
+                };
+                container.appendChild(btn);
             });
         }
 
-        // --- 4. RENDER DYNAMIC FORM ---
+        // ============ RENDER FORM ============
         function renderForm() {
             const form = document.getElementById('dynamic-form');
             let html = '';
-            const inputClass = "w-full glass-light border border-white/5 rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-violet-500 transition bg-transparent placeholder-slate-500";
+            const cls = "input-field";
             
             if (currentType === 'link') {
-                html = `<input type="url" id="inp-url" placeholder="https://example.com" value="https://qrgenpro.com" class="${inputClass}">`;
+                html = `<input type="url" id="inp-url" placeholder="https://example.com" value="https://qrgenpro.com" class="${cls}">`;
             } else if (currentType === 'upi') {
-                html = `<input type="text" id="inp-upi" placeholder="UPI ID (name@paytm)" class="${inputClass}"><input type="text" id="inp-name" placeholder="Payee Name" class="${inputClass}"><input type="number" id="inp-amt" placeholder="Amount (Optional)" class="${inputClass}">`;
+                html = `
+                    <input type="text" id="inp-upi" placeholder="UPI ID (name@paytm)" class="${cls}">
+                    <input type="text" id="inp-name" placeholder="Payee Name" class="${cls}">
+                    <input type="number" id="inp-amt" placeholder="Amount (Optional)" class="${cls}">
+                `;
             } else if (currentType === 'email') {
-                html = `<input type="email" id="inp-email" placeholder="Recipient Email" class="${inputClass}"><input type="text" id="inp-sub" placeholder="Subject" class="${inputClass}"><textarea id="inp-body" placeholder="Message" class="${inputClass} h-24"></textarea>`;
+                html = `
+                    <input type="email" id="inp-email" placeholder="Recipient Email" class="${cls}">
+                    <input type="text" id="inp-sub" placeholder="Subject" class="${cls}">
+                    <textarea id="inp-body" placeholder="Message" class="${cls}" rows="3"></textarea>
+                `;
             } else if (currentType === 'phone') {
-                html = `<input type="tel" id="inp-phone" placeholder="+91 98765 43210" class="${inputClass}">`;
+                html = `<input type="tel" id="inp-phone" placeholder="+91 98765 43210" class="${cls}">`;
             } else if (currentType === 'whatsapp') {
-                html = `<input type="tel" id="inp-wa-phone" placeholder="Phone Number (e.g., 919876543210)" class="${inputClass}"><textarea id="inp-wa-msg" placeholder="Pre-filled message" class="${inputClass} h-24"></textarea>`;
+                html = `
+                    <input type="tel" id="inp-wa-phone" placeholder="Phone (e.g., 919876543210)" class="${cls}">
+                    <textarea id="inp-wa-msg" placeholder="Pre-filled message" class="${cls}" rows="3"></textarea>
+                `;
             } else if (currentType === 'wifi') {
-                html = `<input type="text" id="inp-ssid" placeholder="Network Name (SSID)" class="${inputClass}"><input type="password" id="inp-pass" placeholder="Password" class="${inputClass}"><select id="inp-sec" class="${inputClass} bg-slate-900"><option value="WPA">WPA/WPA2</option><option value="WEP">WEP</option><option value="nopass">No Password</option></select>`;
+                html = `
+                    <input type="text" id="inp-ssid" placeholder="Network Name (SSID)" class="${cls}">
+                    <input type="password" id="inp-pass" placeholder="Password" class="${cls}">
+                    <select id="inp-sec" class="${cls} bg-slate-900">
+                        <option value="WPA">WPA/WPA2</option>
+                        <option value="WEP">WEP</option>
+                        <option value="nopass">No Password</option>
+                    </select>
+                `;
             } else if (currentType === 'vcard') {
-                html = `<input type="text" id="inp-fname" placeholder="First Name" class="${inputClass}"><input type="text" id="inp-lname" placeholder="Last Name" class="${inputClass}"><input type="tel" id="inp-vphone" placeholder="Phone" class="${inputClass}"><input type="email" id="inp-vemail" placeholder="Email" class="${inputClass}">`;
+                html = `
+                    <input type="text" id="inp-fname" placeholder="First Name" class="${cls}">
+                    <input type="text" id="inp-lname" placeholder="Last Name" class="${cls}">
+                    <input type="tel" id="inp-vphone" placeholder="Phone" class="${cls}">
+                    <input type="email" id="inp-vemail" placeholder="Email" class="${cls}">
+                `;
             } else if (currentType === 'location') {
-                html = `<input type="text" id="inp-lat" placeholder="Latitude (e.g., 28.6139)" class="${inputClass}"><input type="text" id="inp-lng" placeholder="Longitude (e.g., 77.2090)" class="${inputClass}">`;
+                html = `
+                    <input type="text" id="inp-lat" placeholder="Latitude (e.g., 28.6139)" class="${cls}">
+                    <input type="text" id="inp-lng" placeholder="Longitude (e.g., 77.2090)" class="${cls}">
+                `;
             } else if (currentType === 'text') {
-                html = `<textarea id="inp-text" placeholder="Enter any text..." class="${inputClass} h-32"></textarea>`;
+                html = `<textarea id="inp-text" placeholder="Enter any text..." class="${cls}" rows="4"></textarea>`;
             }
             form.innerHTML = html;
-            form.querySelectorAll('input, textarea, select').forEach(el => el.addEventListener('input', updateQR));
+            
+            // Attach listeners
+            setTimeout(() => {
+                form.querySelectorAll('input, textarea, select').forEach(el => {
+                    el.addEventListener('input', updateQR);
+                    el.addEventListener('change', updateQR);
+                });
+            }, 100);
         }
 
-        // --- 5. QR DATA & UPDATE ---
+        // ============ GET QR DATA ============
         function getQRString() {
-            const val = (id) => document.getElementById(id)?.value || '';
-            if (currentType === 'link') return val('inp-url') || 'https://qrgenpro.com';
-            if (currentType === 'upi') return `upi://pay?pa=${val('inp-upi')}&pn=${val('inp-name')}&am=${val('inp-amt')}&cu=INR`;
-            if (currentType === 'email') return `mailto:${val('inp-email')}?subject=${encodeURIComponent(val('inp-sub'))}&body=${encodeURIComponent(val('inp-body'))}`;
-            if (currentType === 'phone') return `tel:${val('inp-phone')}`;
-            if (currentType === 'whatsapp') return `https://wa.me/${val('inp-wa-phone')}?text=${encodeURIComponent(val('inp-wa-msg'))}`;
-            if (currentType === 'wifi') return `WIFI:T:${val('inp-sec')};S:${val('inp-ssid')};P:${val('inp-pass')};;`;
-            if (currentType === 'vcard') return `BEGIN:VCARD\nVERSION:3.0\nN:${val('inp-lname')};${val('inp-fname')}\nFN:${val('inp-fname')} ${val('inp-lname')}\nTEL:${val('inp-vphone')}\nEMAIL:${val('inp-vemail')}\nEND:VCARD`;
-            if (currentType === 'location') return `https://maps.google.com/?q=${val('inp-lat')},${val('inp-lng')}`;
-            if (currentType === 'text') return val('inp-text') || 'Hello World';
+            const val = (id) => {
+                const el = document.getElementById(id);
+                return el ? el.value : '';
+            };
+            
+            try {
+                if (currentType === 'link') return val('inp-url') || 'https://qrgenpro.com';
+                if (currentType === 'upi') return `upi://pay?pa=${val('inp-upi') || 'user@upi'}&pn=${val('inp-name') || 'User'}&am=${val('inp-amt') || '0'}&cu=INR`;
+                if (currentType === 'email') return `mailto:${val('inp-email') || 'test@test.com'}?subject=${encodeURIComponent(val('inp-sub'))}&body=${encodeURIComponent(val('inp-body'))}`;
+                if (currentType === 'phone') return `tel:${val('inp-phone') || '+919876543210'}`;
+                if (currentType === 'whatsapp') return `https://wa.me/${val('inp-wa-phone') || '919876543210'}?text=${encodeURIComponent(val('inp-wa-msg'))}`;
+                if (currentType === 'wifi') return `WIFI:T:${val('inp-sec') || 'WPA'};S:${val('inp-ssid') || 'Network'};P:${val('inp-pass') || ''};;`;
+                if (currentType === 'vcard') return `BEGIN:VCARD\nVERSION:3.0\nN:${val('inp-lname')};${val('inp-fname')}\nFN:${val('inp-fname')} ${val('inp-lname')}\nTEL:${val('inp-vphone')}\nEMAIL:${val('inp-vemail')}\nEND:VCARD`;
+                if (currentType === 'location') return `https://maps.google.com/?q=${val('inp-lat') || '28.6139'},${val('inp-lng') || '77.2090'}`;
+                if (currentType === 'text') return val('inp-text') || 'Hello World';
+            } catch (e) {
+                console.error('Error getting QR string:', e);
+            }
             return 'https://qrgenpro.com';
         }
 
+        // ============ UPDATE QR ============
         function updateQR() {
-            qrCode.update({
-                data: getQRString(),
-                dotsOptions: { color: document.getElementById('color-fg').value, type: document.getElementById('dot-style').value },
-                backgroundOptions: { color: document.getElementById('color-bg').value },
-                cornersSquareOptions: { type: document.getElementById('corner-style').value },
-                image: currentLogo
-            });
-        }
-
-        // --- 6. EVENT LISTENERS ---
-        document.getElementById('color-fg').addEventListener('input', (e) => { document.getElementById('color-fg-hex').innerText = e.target.value.toUpperCase(); updateQR(); });
-        document.getElementById('color-bg').addEventListener('input', (e) => { document.getElementById('color-bg-hex').innerText = e.target.value.toUpperCase(); updateQR(); });
-        document.getElementById('dot-style').addEventListener('change', updateQR);
-        document.getElementById('corner-style').addEventListener('change', updateQR);
-
-        document.getElementById('logo-upload').addEventListener('change', (e) => {
-            const file = e.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = () => { currentLogo = reader.result; document.getElementById('remove-logo').classList.remove('hidden'); updateQR(); };
-                reader.readAsDataURL(file);
+            if (!qrCodeInstance) {
+                console.log('QR instance not ready, initializing...');
+                initQRCode();
+                return;
             }
-        });
-        document.getElementById('remove-logo').addEventListener('click', () => { currentLogo = null; document.getElementById('logo-upload').value = ''; document.getElementById('remove-logo').classList.add('hidden'); updateQR(); });
-
-        function downloadQR(format) {
-            qrCode.download({ name: `qrgenpro-${Date.now()}`, extension: format });
-            Swal.fire({ icon: 'success', title: 'Downloaded!', text: `Your QR code has been saved as ${format.toUpperCase()}.`, timer: 1500, showConfirmButton: false, background: '#12121a', color: '#fff' });
+            
+            try {
+                const data = getQRString();
+                const fgColor = document.getElementById('color-fg').value;
+                const bgColor = document.getElementById('color-bg').value;
+                const dotStyle = document.getElementById('dot-style').value;
+                const cornerStyle = document.getElementById('corner-style').value;
+                
+                console.log('Updating QR with:', { data, fgColor, bgColor, dotStyle });
+                
+                qrCodeInstance.update({
+                    data: data,
+                    dotsOptions: { color: fgColor, type: dotStyle },
+                    backgroundOptions: { color: bgColor },
+                    cornersSquareOptions: { type: cornerStyle },
+                    image: currentLogo
+                });
+            } catch (error) {
+                console.error('Update QR Error:', error);
+            }
         }
 
-        // --- 7. HISTORY (LOCAL STORAGE) ---
+        // ============ DOWNLOAD QR ============
+        function downloadQR(format) {
+            console.log('Downloading QR as:', format);
+            if (!qrCodeInstance) {
+                Swal.fire({ icon: 'error', title: 'Error', text: 'QR not ready. Please wait.', background: '#12121a', color: '#fff' });
+                return;
+            }
+            
+            try {
+                qrCodeInstance.download({ 
+                    name: `qrgenpro-${Date.now()}`, 
+                    extension: format 
+                });
+                Swal.fire({ 
+                    icon: 'success', 
+                    title: 'Downloaded!', 
+                    text: `Saved as ${format.toUpperCase()}`, 
+                    timer: 1500, 
+                    showConfirmButton: false, 
+                    background: '#12121a', 
+                    color: '#fff' 
+                });
+            } catch (error) {
+                console.error('Download Error:', error);
+                Swal.fire({ icon: 'error', title: 'Download Failed', text: error.message, background: '#12121a', color: '#fff' });
+            }
+        }
+
+        // ============ LOGO UPLOAD ============
+        document.addEventListener('DOMContentLoaded', () => {
+            const logoUpload = document.getElementById('logo-upload');
+            if (logoUpload) {
+                logoUpload.addEventListener('change', (e) => {
+                    const file = e.target.files[0];
+                    if (file) {
+                        const reader = new FileReader();
+                        reader.onload = (event) => { 
+                            currentLogo = event.target.result; 
+                            document.getElementById('remove-logo').classList.remove('hidden'); 
+                            updateQR(); 
+                        };
+                        reader.readAsDataURL(file);
+                    }
+                });
+            }
+            
+            const removeLogo = document.getElementById('remove-logo');
+            if (removeLogo) {
+                removeLogo.addEventListener('click', () => { 
+                    currentLogo = null; 
+                    document.getElementById('logo-upload').value = ''; 
+                    removeLogo.classList.add('hidden'); 
+                    updateQR(); 
+                });
+            }
+
+            // Color listeners
+            const fgColor = document.getElementById('color-fg');
+            if (fgColor) {
+                fgColor.addEventListener('input', (e) => { 
+                    document.getElementById('color-fg-hex').innerText = e.target.value.toUpperCase(); 
+                    updateQR(); 
+                });
+            }
+            
+            const bgColor = document.getElementById('color-bg');
+            if (bgColor) {
+                bgColor.addEventListener('input', (e) => { 
+                    document.getElementById('color-bg-hex').innerText = e.target.value.toUpperCase(); 
+                    updateQR(); 
+                });
+            }
+
+            // Style listeners
+            const dotStyle = document.getElementById('dot-style');
+            if (dotStyle) dotStyle.addEventListener('change', updateQR);
+            
+            const cornerStyle = document.getElementById('corner-style');
+            if (cornerStyle) cornerStyle.addEventListener('change', updateQR);
+        });
+
+        // ============ HISTORY ============
         function saveToHistory() {
-            const history = JSON.parse(localStorage.getItem('qr_history') || '[]');
-            const newItem = { id: Date.now(), type: currentType, data: getQRString(), date: new Date().toLocaleDateString() };
-            history.unshift(newItem);
-            localStorage.setItem('qr_history', JSON.stringify(history));
-            Swal.fire({ icon: 'success', title: 'Saved!', text: 'QR code added to your history.', timer: 1500, showConfirmButton: false, background: '#12121a', color: '#fff' });
+            try {
+                const history = JSON.parse(localStorage.getItem('qr_history') || '[]');
+                const newItem = { 
+                    id: Date.now(), 
+                    type: currentType, 
+                    data: getQRString(), 
+                    date: new Date().toLocaleDateString(),
+                    fgColor: document.getElementById('color-fg').value,
+                    bgColor: document.getElementById('color-bg').value
+                };
+                history.unshift(newItem);
+                localStorage.setItem('qr_history', JSON.stringify(history));
+                Swal.fire({ 
+                    icon: 'success', 
+                    title: 'Saved!', 
+                    text: 'Added to history', 
+                    timer: 1500, 
+                    showConfirmButton: false, 
+                    background: '#12121a', 
+                    color: '#fff' 
+                });
+            } catch (e) {
+                console.error('Save error:', e);
+            }
         }
 
         function renderHistory() {
-            const history = JSON.parse(localStorage.getItem('qr_history') || '[]');
-            const grid = document.getElementById('history-grid');
-            const empty = document.getElementById('empty-history');
-            
-            if (history.length === 0) { grid.innerHTML = ''; empty.classList.remove('hidden'); return; }
-            empty.classList.add('hidden');
-            grid.innerHTML = history.map(item => `
-                <div class="glass rounded-xl p-4 flex flex-col items-center text-center group hover:border-violet-500/50 transition">
-                    <div class="w-16 h-16 bg-white rounded-lg p-1 mb-3"><i class="fa-solid fa-qrcode text-4xl text-slate-800 flex items-center justify-center h-full"></i></div>
-                    <span class="text-xs font-bold text-violet-400 uppercase mb-1">${item.type}</span>
-                    <p class="text-[10px] text-slate-500 truncate w-full mb-2">${item.data}</p>
-                    <div class="flex gap-2 w-full">
-                        <button onclick="loadFromHistory(${item.id})" class="flex-1 bg-violet-600/20 text-violet-300 text-[10px] py-1.5 rounded-lg hover:bg-violet-600/30 transition">Load</button>
-                        <button onclick="deleteHistory(${item.id})" class="bg-red-500/10 text-red-400 px-2 py-1.5 rounded-lg hover:bg-red-500/20 transition"><i class="fa-solid fa-trash text-[10px]"></i></button>
+            try {
+                const history = JSON.parse(localStorage.getItem('qr_history') || '[]');
+                const grid = document.getElementById('history-grid');
+                const empty = document.getElementById('empty-history');
+                
+                if (history.length === 0) { 
+                    grid.innerHTML = ''; 
+                    empty.classList.remove('hidden'); 
+                    return; 
+                }
+                empty.classList.add('hidden');
+                grid.innerHTML = history.map(item => `
+                    <div class="glass rounded-xl p-4 flex flex-col items-center text-center">
+                        <div class="w-16 h-16 bg-white rounded-lg p-1 mb-3 flex items-center justify-center">
+                            <i class="fa-solid fa-qrcode text-3xl" style="color: ${item.fgColor || '#000'}"></i>
+                        </div>
+                        <span class="text-xs font-bold text-violet-400 uppercase mb-1">${item.type}</span>
+                        <p class="text-[10px] text-slate-500 truncate w-full mb-2">${item.data.substring(0, 30)}...</p>
+                        <div class="flex gap-2 w-full">
+                            <button onclick="loadFromHistory(${item.id})" class="flex-1 bg-violet-600/20 text-violet-300 text-[10px] py-1.5 rounded-lg hover:bg-violet-600/30 transition">Load</button>
+                            <button onclick="deleteHistory(${item.id})" class="bg-red-500/10 text-red-400 px-2 py-1.5 rounded-lg hover:bg-red-500/20 transition"><i class="fa-solid fa-trash text-[10px]"></i></button>
+                        </div>
                     </div>
-                </div>
-            `).join('');
+                `).join('');
+            } catch (e) {
+                console.error('Render history error:', e);
+            }
         }
 
         function loadFromHistory(id) {
-            const history = JSON.parse(localStorage.getItem('qr_history') || '[]');
-            const item = history.find(h => h.id === id);
-            if(item) { currentType = item.type; switchTab('generator'); renderTypeSelector(); renderForm(); setTimeout(() => { /* populate inputs if needed */ updateQR(); }, 100); }
+            try {
+                const history = JSON.parse(localStorage.getItem('qr_history') || '[]');
+                const item = history.find(h => h.id === id);
+                if(item) { 
+                    currentType = item.type; 
+                    switchTab('generator'); 
+                    renderTypeSelector(); 
+                    renderForm(); 
+                    setTimeout(() => { 
+                        // Set values back
+                        const val = (id, v) => { const el = document.getElementById(id); if(el) el.value = v; };
+                        if(item.data) {
+                            // Try to parse and set
+                            updateQR();
+                        }
+                    }, 200); 
+                }
+            } catch (e) {
+                console.error('Load error:', e);
+            }
         }
 
         function deleteHistory(id) {
-            let history = JSON.parse(localStorage.getItem('qr_history') || '[]');
-            history = history.filter(h => h.id !== id);
-            localStorage.setItem('qr_history', JSON.stringify(history));
-            renderHistory();
+            try {
+                let history = JSON.parse(localStorage.getItem('qr_history') || '[]');
+                history = history.filter(h => h.id !== id);
+                localStorage.setItem('qr_history', JSON.stringify(history));
+                renderHistory();
+            } catch (e) {
+                console.error('Delete error:', e);
+            }
         }
 
         function clearHistory() {
-            Swal.fire({ title: 'Clear all history?', text: "You won't be able to revert this!", icon: 'warning', showCancelButton: true, confirmButtonColor: '#7C3AED', cancelButtonColor: '#d33', confirmButtonText: 'Yes, clear it!', background: '#12121a', color: '#fff' }).then((result) => {
-                if (result.isConfirmed) { localStorage.removeItem('qr_history'); renderHistory(); }
+            Swal.fire({ 
+                title: 'Clear all history?', 
+                icon: 'warning', 
+                showCancelButton: true, 
+                confirmButtonColor: '#7C3AED', 
+                cancelButtonColor: '#d33', 
+                confirmButtonText: 'Yes, clear!', 
+                background: '#12121a', 
+                color: '#fff' 
+            }).then((result) => {
+                if (result.isConfirmed) { 
+                    localStorage.removeItem('qr_history'); 
+                    renderHistory(); 
+                }
             });
         }
 
-        // --- 8. SCANNER ---
-        document.getElementById('start-scan').addEventListener('click', () => {
-            html5QrCode = new Html5Qrcode("reader");
-            html5QrCode.start({ facingMode: "environment" }, { fps: 10, qrbox: { width: 250, height: 250 } }, (decodedText) => {
-                document.getElementById('scan-result').classList.remove('hidden');
-                document.getElementById('scan-text').innerText = decodedText;
-                html5QrCode.stop();
-                document.getElementById('start-scan').classList.remove('hidden');
-                document.getElementById('stop-scan').classList.add('hidden');
-                Swal.fire({ icon: 'success', title: 'Scanned!', text: decodedText, background: '#12121a', color: '#fff' });
-            }, (errorMessage) => {}).catch(err => {
-                Swal.fire({ icon: 'error', title: 'Camera Error', text: 'Please allow camera access.', background: '#12121a', color: '#fff' });
-            });
-            document.getElementById('start-scan').classList.add('hidden');
-            document.getElementById('stop-scan').classList.remove('hidden');
+        // ============ SCANNER ============
+        function stopScanner() {
+            if (html5QrCode) {
+                try {
+                    html5QrCode.stop().catch(() => {});
+                    html5QrCode.clear();
+                } catch (e) {}
+                html5QrCode = null;
+            }
+            document.getElementById('start-scan').classList.remove('hidden');
+            document.getElementById('stop-scan').classList.add('hidden');
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const startBtn = document.getElementById('start-scan');
+            const stopBtn = document.getElementById('stop-scan');
+            
+            if (startBtn) {
+                startBtn.addEventListener('click', async () => {
+                    try {
+                        const readerDiv = document.getElementById('reader');
+                        readerDiv.innerHTML = ''; // Clear placeholder
+                        
+                        html5QrCode = new Html5Qrcode("reader");
+                        await html5QrCode.start(
+                            { facingMode: "environment" }, 
+                            { fps: 10, qrbox: { width: 250, height: 250 } }, 
+                            (decodedText) => {
+                                document.getElementById('scan-result').classList.remove('hidden');
+                                document.getElementById('scan-text').innerText = decodedText;
+                                stopScanner();
+                                Swal.fire({ 
+                                    icon: 'success', 
+                                    title: 'Scanned!', 
+                                    text: decodedText, 
+                                    background: '#12121a', 
+                                    color: '#fff' 
+                                });
+                            }, 
+                            (errorMessage) => {}
+                        );
+                        startBtn.classList.add('hidden');
+                        stopBtn.classList.remove('hidden');
+                    } catch (err) {
+                        console.error('Scanner error:', err);
+                        Swal.fire({ 
+                            icon: 'error', 
+                            title: 'Camera Error', 
+                            text: 'Please allow camera access or use HTTPS.', 
+                            background: '#12121a', 
+                            color: '#fff' 
+                        });
+                    }
+                });
+            }
+            
+            if (stopBtn) {
+                stopBtn.addEventListener('click', stopScanner);
+            }
         });
 
-        document.getElementById('stop-scan').addEventListener('click', () => {
-            if(html5QrCode) html5QrCode.stop().then(() => {
-                document.getElementById('start-scan').classList.remove('hidden');
-                document.getElementById('stop-scan').classList.add('hidden');
-            });
-        });
-
-        // --- 9. CHARTS ---
+        // ============ CHARTS ============
         function initCharts() {
             if (chartsInitialized) return;
-            Chart.defaults.color = '#94A3B8';
-            Chart.defaults.borderColor = 'rgba(255,255,255,0.05)';
-            
-            new Chart(document.getElementById('lineChart'), {
-                type: 'line', data: { labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'], datasets: [{ label: 'Scans', data: [120, 240, 180, 390, 310, 480, 420], borderColor: '#8B5CF6', backgroundColor: 'rgba(139, 92, 246, 0.1)', fill: true, tension: 0.4, borderWidth: 2 }] },
-                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { x: { grid: { display: false } }, y: { grid: { color: 'rgba(255,255,255,0.05)' } } } }
-            });
-            new Chart(document.getElementById('doughnutChart'), {
-                type: 'doughnut', data: { labels: ['Android', 'iOS', 'Desktop'], datasets: [{ data: [55, 35, 10], backgroundColor: ['#8B5CF6', '#EC4899', '#10B981'], borderWidth: 0 }] },
-                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom', labels: { padding: 20, usePointStyle: true } } }, cutout: '70%' }
-            });
-            chartsInitialized = true;
+            try {
+                Chart.defaults.color = '#94A3B8';
+                Chart.defaults.borderColor = 'rgba(255,255,255,0.05)';
+                
+                new Chart(document.getElementById('lineChart'), {
+                    type: 'line', 
+                    data: { 
+                        labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'], 
+                        datasets: [{ 
+                            label: 'Scans', 
+                            data: [120, 240, 180, 390, 310, 480, 420], 
+                            borderColor: '#8B5CF6', 
+                            backgroundColor: 'rgba(139, 92, 246, 0.1)', 
+                            fill: true, 
+                            tension: 0.4, 
+                            borderWidth: 2 
+                        }] 
+                    },
+                    options: { 
+                        responsive: true, 
+                        maintainAspectRatio: false, 
+                        plugins: { legend: { display: false } }, 
+                        scales: { x: { grid: { display: false } }, y: { grid: { color: 'rgba(255,255,255,0.05)' } } } 
+                    }
+                });
+                
+                new Chart(document.getElementById('doughnutChart'), {
+                    type: 'doughnut', 
+                    data: { 
+                        labels: ['Android', 'iOS', 'Desktop'], 
+                        datasets: [{ 
+                            data: [55, 35, 10], 
+                            backgroundColor: ['#8B5CF6', '#EC4899', '#10B981'], 
+                            borderWidth: 0 
+                        }] 
+                    },
+                    options: { 
+                        responsive: true, 
+                        maintainAspectRatio: false, 
+                        plugins: { legend: { position: 'bottom', labels: { padding: 20, usePointStyle: true } } }, 
+                        cutout: '70%' 
+                    }
+                });
+                chartsInitialized = true;
+            } catch (e) {
+                console.error('Charts error:', e);
+            }
         }
 
-        // --- INIT ---
-        qrCode.append(document.getElementById("qr-container"));
-        renderTypeSelector();
-        renderForm();
+        // ============ INIT ON LOAD ============
+        window.addEventListener('load', () => {
+            console.log('Page loaded, initializing...');
+            initQRCode();
+            renderTypeSelector();
+            renderForm();
+            setTimeout(updateQR, 500); // Give library time to load
+        });
     </script>
 </body>
 </html>

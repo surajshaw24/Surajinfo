@@ -3,73 +3,91 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>QRGen Pro - Advanced QR Code Generator</title>
+    <title>QRGen Pro Ultra - Advanced QR Generator</title>
     
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    
-    <!-- FontAwesome Icons -->
+    <!-- FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <!-- Chart.js for Analytics -->
+    <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    
-    <!-- QRCode.js for Generation -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <!-- Advanced QR Code Styling -->
+    <script src="https://unpkg.com/qr-code-styling@1.5.0/lib/qr-code-styling.js"></script>
+    <!-- Real QR Scanner -->
+    <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-    <!-- Custom Config & Styles -->
     <script>
         tailwind.config = {
             theme: {
                 extend: {
                     colors: {
+                        dark: { 900: '#050507', 800: '#0a0a0f', 700: '#12121a' },
                         brand: { 500: '#8B5CF6', 600: '#7C3AED', 700: '#6D28D9' }
-                    }
+                    },
+                    fontFamily: { sans: ['Inter', 'sans-serif'] }
                 }
             }
         }
     </script>
     <style>
-        body { font-family: 'Inter', sans-serif; background-color: #020617; color: white; }
-        .glass { background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.08); }
-        .glass-light { background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.05); }
-        .glow { box-shadow: 0 0 40px -10px rgba(139, 92, 246, 0.3); }
-        .blob { position: absolute; border-radius: 50%; filter: blur(80px); opacity: 0.4; z-index: -1; }
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+        
+        body { background-color: #050507; color: white; }
+        .glass { background: rgba(18, 18, 26, 0.7); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.06); }
+        .glass-light { background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.04); }
+        .glow-border { box-shadow: 0 0 0 1px rgba(139, 92, 246, 0.3), 0 0 40px -10px rgba(139, 92, 246, 0.2); }
+        .blob { position: fixed; border-radius: 50%; filter: blur(100px); opacity: 0.15; z-index: -1; pointer-events: none; }
+        
+        /* Custom Inputs */
         input[type="color"] { -webkit-appearance: none; border: none; padding: 0; }
         input[type="color"]::-webkit-color-swatch-wrapper { padding: 0; }
         input[type="color"]::-webkit-color-swatch { border: none; border-radius: 0.5rem; }
-        .tab-active { background: #7C3AED; color: white; box-shadow: 0 10px 15px -3px rgba(124, 58, 237, 0.4); }
+        input[type="range"] { -webkit-appearance: none; background: transparent; }
+        input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; height: 16px; width: 16px; border-radius: 50%; background: #8B5CF6; cursor: pointer; margin-top: -6px; }
+        input[type="range"]::-webkit-slider-runnable-track { width: 100%; height: 4px; cursor: pointer; background: #334155; border-radius: 2px; }
+
+        /* Animations */
+        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+        .animate-float { animation: float 6s ease-in-out infinite; }
+        @keyframes pulse-glow { 0%, 100% { box-shadow: 0 0 20px rgba(139, 92, 246, 0.2); } 50% { box-shadow: 0 0 40px rgba(139, 92, 246, 0.4); } }
+        .animate-pulse-glow { animation: pulse-glow 3s ease-in-out infinite; }
+        
+        .tab-active { background: linear-gradient(135deg, #7C3AED, #8B5CF6); color: white; box-shadow: 0 10px 25px -5px rgba(124, 58, 237, 0.5); }
         .tab-inactive { color: #94A3B8; }
-        .tab-inactive:hover { color: white; background: rgba(255,255,255,0.05); }
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: #0f172a; }
-        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
+        .tab-inactive:hover { color: white; background: rgba(255,255,255,0.03); }
+        
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #0a0a0f; }
+        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 3px; }
     </style>
 </head>
-<body class="min-h-screen overflow-x-hidden relative">
+<body class="min-h-screen overflow-x-hidden relative font-sans">
 
     <!-- Background Blobs -->
-    <div class="blob bg-violet-600 w-96 h-96 top-0 left-0"></div>
-    <div class="blob bg-fuchsia-600 w-96 h-96 bottom-0 right-0"></div>
-    <div class="blob bg-blue-600 w-72 h-72 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"></div>
+    <div class="blob bg-violet-600 w-[500px] h-[500px] -top-40 -left-40"></div>
+    <div class="blob bg-fuchsia-600 w-[500px] h-[500px] bottom-0 -right-40"></div>
+    <div class="blob bg-blue-600 w-[400px] h-[400px] top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"></div>
 
     <!-- Navbar -->
     <nav class="sticky top-0 z-50 glass border-b border-white/5">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-            <div class="flex items-center gap-2">
-                <div class="w-9 h-9 bg-gradient-to-br from-violet-500 to-fuchsia-600 rounded-xl flex items-center justify-center shadow-lg shadow-violet-500/30">
-                    <i class="fa-solid fa-qrcode text-white text-lg"></i>
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 bg-gradient-to-br from-violet-500 to-fuchsia-600 rounded-xl flex items-center justify-center shadow-lg shadow-violet-500/30 animate-pulse-glow">
+                    <i class="fa-solid fa-qrcode text-white text-xl"></i>
                 </div>
-                <span class="text-xl font-bold tracking-tight">QRGen<span class="text-violet-400">Pro</span></span>
+                <div>
+                    <span class="text-xl font-bold tracking-tight">QRGen<span class="text-violet-400">Pro</span></span>
+                    <span class="hidden sm:inline text-[10px] bg-violet-500/20 text-violet-300 px-2 py-0.5 rounded-full ml-2 font-semibold">ULTRA</span>
+                </div>
             </div>
-            <div class="hidden md:flex items-center gap-6 text-sm font-medium text-slate-300">
+            <div class="hidden md:flex items-center gap-8 text-sm font-medium text-slate-400">
                 <a href="#" class="hover:text-white transition">Features</a>
                 <a href="#" class="hover:text-white transition">Pricing</a>
                 <a href="#" class="hover:text-white transition">API</a>
-                <a href="#" class="hover:text-white transition">Docs</a>
             </div>
-            <button class="bg-white text-slate-900 px-5 py-2 rounded-lg text-sm font-bold hover:bg-slate-200 transition">Get Pro</button>
+            <button class="bg-white text-slate-900 px-5 py-2 rounded-lg text-sm font-bold hover:bg-slate-200 transition shadow-lg">Get Pro</button>
         </div>
     </nav>
 
@@ -77,22 +95,25 @@
     <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         
         <!-- Hero -->
-        <div class="text-center mb-12">
-            <h1 class="text-4xl md:text-5xl font-extrabold mb-4">Generate <span class="text-transparent bg-clip-text bg-gradient-to-r from-violet-400 to-fuchsia-400">ANY QR Code</span> Instantly</h1>
-            <p class="text-slate-400 text-lg max-w-2xl mx-auto">UPI, Mobile, Email, Image, Link & More — All in One Place with Advanced Analytics.</p>
+        <div class="text-center mb-12 animate-float">
+            <h1 class="text-4xl md:text-6xl font-extrabold mb-4 leading-tight">Create <span class="text-transparent bg-clip-text bg-gradient-to-r from-violet-400 via-fuchsia-400 to-pink-400">Stunning QR Codes</span><br>in Seconds</h1>
+            <p class="text-slate-400 text-lg max-w-2xl mx-auto">Advanced styling, real-time scanning, logo embedding, and analytics. The only QR tool you'll ever need.</p>
         </div>
 
         <!-- Tabs -->
         <div class="flex justify-center mb-10">
-            <div class="glass-light p-1 rounded-xl inline-flex gap-1">
-                <button onclick="switchTab('generator')" id="btn-generator" class="tab-active px-6 py-2.5 rounded-lg text-sm font-semibold transition flex items-center gap-2">
+            <div class="glass-light p-1.5 rounded-2xl inline-flex gap-1 flex-wrap justify-center">
+                <button onclick="switchTab('generator')" id="btn-generator" class="tab-active px-5 py-2.5 rounded-xl text-sm font-semibold transition flex items-center gap-2">
                     <i class="fa-solid fa-wand-magic-sparkles"></i> Generator
                 </button>
-                <button onclick="switchTab('analytics')" id="btn-analytics" class="tab-inactive px-6 py-2.5 rounded-lg text-sm font-semibold transition flex items-center gap-2">
+                <button onclick="switchTab('scanner')" id="btn-scanner" class="tab-inactive px-5 py-2.5 rounded-xl text-sm font-semibold transition flex items-center gap-2">
+                    <i class="fa-solid fa-camera"></i> Scanner
+                </button>
+                <button onclick="switchTab('analytics')" id="btn-analytics" class="tab-inactive px-5 py-2.5 rounded-xl text-sm font-semibold transition flex items-center gap-2">
                     <i class="fa-solid fa-chart-line"></i> Analytics
                 </button>
-                <button onclick="switchTab('bulk')" id="btn-bulk" class="tab-inactive px-6 py-2.5 rounded-lg text-sm font-semibold transition flex items-center gap-2">
-                    <i class="fa-solid fa-layer-group"></i> Bulk Create
+                <button onclick="switchTab('history')" id="btn-history" class="tab-inactive px-5 py-2.5 rounded-xl text-sm font-semibold transition flex items-center gap-2">
+                    <i class="fa-solid fa-clock-rotate-left"></i> History
                 </button>
             </div>
         </div>
@@ -105,41 +126,67 @@
                 
                 <!-- QR Type Selector -->
                 <div class="glass rounded-2xl p-6">
-                    <h2 class="text-lg font-bold mb-4 flex items-center gap-2"><i class="fa-solid fa-shapes text-violet-400"></i> Select QR Type</h2>
-                    <div class="grid grid-cols-3 md:grid-cols-6 gap-3" id="type-selector">
-                        <!-- Injected via JS -->
-                    </div>
+                    <h2 class="text-lg font-bold mb-4 flex items-center gap-2"><i class="fa-solid fa-shapes text-violet-400"></i> Select Content Type</h2>
+                    <div class="grid grid-cols-3 md:grid-cols-6 gap-3" id="type-selector"></div>
                 </div>
 
                 <!-- Dynamic Input Form -->
                 <div class="glass rounded-2xl p-6">
-                    <h2 class="text-lg font-bold mb-4 flex items-center gap-2"><i class="fa-solid fa-keyboard text-violet-400"></i> Enter Content</h2>
-                    <div id="dynamic-form" class="space-y-4">
-                        <!-- Injected via JS -->
-                    </div>
+                    <h2 class="text-lg font-bold mb-4 flex items-center gap-2"><i class="fa-solid fa-keyboard text-violet-400"></i> Enter Details</h2>
+                    <div id="dynamic-form" class="space-y-4"></div>
                 </div>
 
-                <!-- Customization -->
+                <!-- Design Studio -->
                 <div class="glass rounded-2xl p-6">
-                    <h2 class="text-lg font-bold mb-4 flex items-center gap-2"><i class="fa-solid fa-palette text-violet-400"></i> Customize Design</h2>
-                    <div class="grid sm:grid-cols-2 gap-6">
+                    <h2 class="text-lg font-bold mb-4 flex items-center gap-2"><i class="fa-solid fa-palette text-violet-400"></i> Design Studio</h2>
+                    
+                    <div class="grid sm:grid-cols-2 gap-6 mb-6">
                         <div>
-                            <label class="block text-sm font-medium text-slate-300 mb-2">Foreground Color</label>
-                            <div class="flex items-center gap-3 glass-light p-2 rounded-lg">
-                                <input type="color" id="color-fg" value="#000000" class="w-10 h-10 rounded cursor-pointer bg-transparent">
+                            <label class="block text-xs font-bold text-slate-400 uppercase mb-2">Foreground Color</label>
+                            <div class="flex items-center gap-3 glass-light p-2 rounded-xl">
+                                <input type="color" id="color-fg" value="#000000" class="w-10 h-10 rounded-lg cursor-pointer bg-transparent">
                                 <span class="text-sm text-slate-400 font-mono" id="color-fg-hex">#000000</span>
                             </div>
                         </div>
                         <div>
-                            <label class="block text-sm font-medium text-slate-300 mb-2">Background Color</label>
-                            <div class="flex items-center gap-3 glass-light p-2 rounded-lg">
-                                <input type="color" id="color-bg" value="#FFFFFF" class="w-10 h-10 rounded cursor-pointer bg-transparent">
+                            <label class="block text-xs font-bold text-slate-400 uppercase mb-2">Background Color</label>
+                            <div class="flex items-center gap-3 glass-light p-2 rounded-xl">
+                                <input type="color" id="color-bg" value="#FFFFFF" class="w-10 h-10 rounded-lg cursor-pointer bg-transparent">
                                 <span class="text-sm text-slate-400 font-mono" id="color-bg-hex">#FFFFFF</span>
                             </div>
                         </div>
-                        <div class="sm:col-span-2">
-                            <label class="block text-sm font-medium text-slate-300 mb-2">Size: <span id="size-val">256</span>px</label>
-                            <input type="range" id="qr-size" min="128" max="400" value="256" class="w-full accent-violet-500 h-2 bg-slate-700 rounded-lg appearance-none cursor-pointer">
+                    </div>
+
+                    <div class="grid sm:grid-cols-2 gap-6 mb-6">
+                        <div>
+                            <label class="block text-xs font-bold text-slate-400 uppercase mb-2">Dot Style</label>
+                            <select id="dot-style" class="w-full glass-light border border-white/5 rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-violet-500 bg-transparent">
+                                <option value="square" class="bg-slate-900">Square</option>
+                                <option value="rounded" class="bg-slate-900">Rounded</option>
+                                <option value="dots" class="bg-slate-900">Dots</option>
+                                <option value="classy" class="bg-slate-900">Classy</option>
+                                <option value="classy-rounded" class="bg-slate-900">Classy Rounded</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-400 uppercase mb-2">Corner Square Style</label>
+                            <select id="corner-style" class="w-full glass-light border border-white/5 rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-violet-500 bg-transparent">
+                                <option value="square" class="bg-slate-900">Square</option>
+                                <option value="dot" class="bg-slate-900">Dot</option>
+                                <option value="extra-rounded" class="bg-slate-900">Extra Rounded</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold text-slate-400 uppercase mb-2">Embed Logo</label>
+                        <div class="flex items-center gap-4">
+                            <label class="flex-1 cursor-pointer glass-light hover:bg-white/5 border border-dashed border-white/10 rounded-xl p-4 text-center transition">
+                                <i class="fa-solid fa-cloud-arrow-up text-violet-400 text-xl mb-1"></i>
+                                <p class="text-sm text-slate-300">Upload Logo (PNG/JPG)</p>
+                                <input type="file" id="logo-upload" accept="image/*" class="hidden">
+                            </label>
+                            <button id="remove-logo" class="hidden px-4 py-2 bg-red-500/10 text-red-400 rounded-xl text-sm font-semibold hover:bg-red-500/20 transition">Remove</button>
                         </div>
                     </div>
                 </div>
@@ -148,40 +195,51 @@
             <!-- Right Column: Preview -->
             <div class="lg:col-span-5">
                 <div class="sticky top-24 space-y-6">
-                    <div class="glass rounded-2xl p-8 flex flex-col items-center justify-center text-center glow">
-                        <h3 class="text-lg font-bold mb-6">Live Preview</h3>
+                    <div class="glass rounded-2xl p-8 flex flex-col items-center justify-center text-center glow-border">
+                        <h3 class="text-lg font-bold mb-6 flex items-center gap-2"><i class="fa-regular fa-eye text-violet-400"></i> Live Preview</h3>
                         
-                        <!-- QR Code Container -->
-                        <div class="p-6 bg-white rounded-2xl shadow-2xl mb-6 relative" id="qr-container">
-                            <div id="qrcode"></div>
-                            <!-- Logo Overlay -->
-                            <div id="logo-overlay" class="absolute inset-0 flex items-center justify-center hidden">
-                                <div class="w-14 h-14 bg-white p-1 rounded-xl shadow-lg border border-slate-200">
-                                    <i class="fa-solid fa-bolt text-violet-600 text-2xl flex items-center justify-center h-full"></i>
-                                </div>
-                            </div>
+                        <div class="p-8 bg-white rounded-3xl shadow-2xl mb-8 animate-float" id="qr-container">
+                            <!-- QR Code renders here -->
                         </div>
 
-                        <div class="flex gap-3 w-full">
-                            <button class="flex-1 bg-violet-600 hover:bg-violet-700 text-white py-3 rounded-xl font-semibold transition shadow-lg shadow-violet-600/30 flex items-center justify-center gap-2">
-                                <i class="fa-solid fa-download"></i> Download PNG
+                        <div class="grid grid-cols-3 gap-3 w-full">
+                            <button onclick="downloadQR('png')" class="bg-violet-600 hover:bg-violet-700 text-white py-3 rounded-xl font-semibold transition shadow-lg shadow-violet-600/30 flex flex-col items-center gap-1 text-xs">
+                                <i class="fa-solid fa-download text-base"></i> PNG
                             </button>
-                            <button class="flex-1 glass-light hover:bg-white/10 text-white py-3 rounded-xl font-semibold transition flex items-center justify-center gap-2">
-                                <i class="fa-solid fa-bolt text-yellow-400"></i> Dynamic
+                            <button onclick="downloadQR('svg')" class="glass-light hover:bg-white/10 text-white py-3 rounded-xl font-semibold transition flex flex-col items-center gap-1 text-xs">
+                                <i class="fa-solid fa-bezier-curve text-base text-pink-400"></i> SVG
+                            </button>
+                            <button onclick="downloadQR('jpeg')" class="glass-light hover:bg-white/10 text-white py-3 rounded-xl font-semibold transition flex flex-col items-center gap-1 text-xs">
+                                <i class="fa-regular fa-image text-base text-blue-400"></i> JPEG
                             </button>
                         </div>
+                        <button onclick="saveToHistory()" class="w-full mt-3 glass-light hover:bg-white/10 text-violet-300 py-3 rounded-xl font-semibold transition flex items-center justify-center gap-2 text-sm">
+                            <i class="fa-regular fa-bookmark"></i> Save to History
+                        </button>
                     </div>
+                </div>
+            </div>
+        </div>
 
-                    <!-- Pro Features -->
-                    <div class="glass rounded-2xl p-6">
-                        <h4 class="text-sm font-bold text-slate-400 uppercase tracking-wider mb-4">Pro Features</h4>
-                        <div class="space-y-3">
-                            <div class="flex items-center gap-3 text-slate-300"><i class="fa-solid fa-circle-check text-emerald-400"></i><span class="text-sm">Track Scan Analytics</span></div>
-                            <div class="flex items-center gap-3 text-slate-300"><i class="fa-solid fa-circle-check text-emerald-400"></i><span class="text-sm">Edit Content Anytime</span></div>
-                            <div class="flex items-center gap-3 text-slate-300"><i class="fa-solid fa-circle-check text-emerald-400"></i><span class="text-sm">Password Protection</span></div>
-                            <div class="flex items-center gap-3 text-slate-300"><i class="fa-solid fa-circle-check text-emerald-400"></i><span class="text-sm">Set Expiry Date</span></div>
-                        </div>
-                    </div>
+        <!-- ================= SCANNER TAB ================= -->
+        <div id="tab-scanner" class="hidden max-w-2xl mx-auto">
+            <div class="glass rounded-2xl p-8 text-center">
+                <h2 class="text-2xl font-bold mb-2">Scan QR Code</h2>
+                <p class="text-slate-400 mb-6">Point your camera at a QR code to scan it instantly.</p>
+                
+                <div id="reader" class="w-full rounded-2xl overflow-hidden mb-6 border border-white/10"></div>
+                
+                <div class="flex justify-center gap-4">
+                    <button id="start-scan" class="bg-violet-600 hover:bg-violet-700 text-white px-8 py-3 rounded-xl font-semibold transition shadow-lg shadow-violet-600/30">
+                        <i class="fa-solid fa-camera mr-2"></i> Start Camera
+                    </button>
+                    <button id="stop-scan" class="hidden bg-red-500/20 hover:bg-red-500/30 text-red-400 px-8 py-3 rounded-xl font-semibold transition">
+                        <i class="fa-solid fa-stop mr-2"></i> Stop Camera
+                    </button>
+                </div>
+                <div id="scan-result" class="mt-6 p-4 glass-light rounded-xl hidden">
+                    <p class="text-xs text-slate-400 uppercase font-bold mb-1">Scanned Result</p>
+                    <p id="scan-text" class="text-lg font-mono text-violet-300 break-all"></p>
                 </div>
             </div>
         </div>
@@ -189,69 +247,86 @@
         <!-- ================= ANALYTICS TAB ================= -->
         <div id="tab-analytics" class="hidden space-y-6">
             <div class="grid md:grid-cols-3 gap-6">
-                <div class="glass rounded-2xl p-6">
-                    <p class="text-slate-400 text-sm">Total Scans</p>
-                    <div class="flex items-end justify-between mt-2"><h3 class="text-3xl font-bold">24,592</h3><span class="text-sm font-medium text-emerald-400">+12.5%</span></div>
+                <div class="glass rounded-2xl p-6 border-l-4 border-violet-500">
+                    <p class="text-slate-400 text-sm font-medium">Total Scans</p>
+                    <div class="flex items-end justify-between mt-2"><h3 class="text-3xl font-bold">24,592</h3><span class="text-sm font-bold text-emerald-400 bg-emerald-500/10 px-2 py-1 rounded-lg">+12.5%</span></div>
                 </div>
-                <div class="glass rounded-2xl p-6">
-                    <p class="text-slate-400 text-sm">Active QRs</p>
-                    <div class="flex items-end justify-between mt-2"><h3 class="text-3xl font-bold">148</h3><span class="text-sm font-medium text-blue-400">+3</span></div>
+                <div class="glass rounded-2xl p-6 border-l-4 border-blue-500">
+                    <p class="text-slate-400 text-sm font-medium">Active QRs</p>
+                    <div class="flex items-end justify-between mt-2"><h3 class="text-3xl font-bold">148</h3><span class="text-sm font-bold text-blue-400 bg-blue-500/10 px-2 py-1 rounded-lg">+3</span></div>
                 </div>
-                <div class="glass rounded-2xl p-6">
-                    <p class="text-slate-400 text-sm">Conversion Rate</p>
-                    <div class="flex items-end justify-between mt-2"><h3 class="text-3xl font-bold">68.2%</h3><span class="text-sm font-medium text-violet-400">+4.1%</span></div>
+                <div class="glass rounded-2xl p-6 border-l-4 border-pink-500">
+                    <p class="text-slate-400 text-sm font-medium">Conversion Rate</p>
+                    <div class="flex items-end justify-between mt-2"><h3 class="text-3xl font-bold">68.2%</h3><span class="text-sm font-bold text-pink-400 bg-pink-500/10 px-2 py-1 rounded-lg">+4.1%</span></div>
                 </div>
             </div>
 
             <div class="grid lg:grid-cols-3 gap-6">
                 <div class="glass rounded-2xl p-6 lg:col-span-2">
-                    <h3 class="text-lg font-bold mb-4">Scan Trends (Last 7 Days)</h3>
+                    <h3 class="text-lg font-bold mb-4 flex items-center gap-2"><i class="fa-solid fa-chart-area text-violet-400"></i> Scan Trends</h3>
                     <div class="h-72"><canvas id="lineChart"></canvas></div>
                 </div>
                 <div class="glass rounded-2xl p-6">
-                    <h3 class="text-lg font-bold mb-4">Device Breakdown</h3>
+                    <h3 class="text-lg font-bold mb-4 flex items-center gap-2"><i class="fa-solid fa-chart-pie text-pink-400"></i> Devices</h3>
                     <div class="h-72 flex items-center justify-center"><canvas id="doughnutChart"></canvas></div>
                 </div>
             </div>
         </div>
 
-        <!-- ================= BULK TAB ================= -->
-        <div id="tab-bulk" class="hidden max-w-4xl mx-auto">
-            <div class="glass rounded-2xl p-8 text-center">
-                <div class="border-2 border-dashed border-slate-700 rounded-2xl p-16 hover:border-violet-500 transition cursor-pointer bg-slate-800/30">
-                    <i class="fa-solid fa-cloud-arrow-up text-5xl text-slate-500 mb-4"></i>
-                    <h3 class="text-xl font-bold mb-2">Upload CSV or Excel File</h3>
-                    <p class="text-slate-400 text-sm mb-6">Drag and drop your file here, or click to browse. Supports up to 10,000 rows.</p>
-                    <button class="bg-slate-700 hover:bg-slate-600 text-white px-6 py-2 rounded-lg text-sm font-medium transition">Select File</button>
-                </div>
+        <!-- ================= HISTORY TAB ================= -->
+        <div id="tab-history" class="hidden">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-2xl font-bold flex items-center gap-2"><i class="fa-solid fa-clock-rotate-left text-violet-400"></i> Your Saved QRs</h2>
+                <button onclick="clearHistory()" class="text-sm text-red-400 hover:text-red-300 font-semibold"><i class="fa-solid fa-trash mr-1"></i> Clear All</button>
+            </div>
+            <div id="history-grid" class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4">
+                <!-- History items injected here -->
+            </div>
+            <div id="empty-history" class="hidden text-center py-20 glass rounded-2xl">
+                <i class="fa-regular fa-folder-open text-5xl text-slate-600 mb-4"></i>
+                <p class="text-slate-400">No saved QR codes yet. Generate and save your first one!</p>
             </div>
         </div>
 
     </main>
 
-    <!-- Footer -->
-    <footer class="border-t border-white/5 mt-20 py-8 text-center text-slate-500 text-sm">
-        <p>© 2026 QRGen Pro. Built with Vanilla HTML, Tailwind CSS & Chart.js.</p>
+    <footer class="border-t border-white/5 mt-20 py-8 text-center text-slate-600 text-sm">
+        <p>© 2026 QRGen Pro Ultra. Built with Vanilla JS, Tailwind & Advanced Libraries.</p>
     </footer>
 
     <!-- ================= JAVASCRIPT LOGIC ================= -->
     <script>
         // --- 1. STATE & CONFIG ---
         const qrTypes = [
-            { id: 'link', label: 'Link', icon: 'fa-link' },
+            { id: 'link', label: 'URL', icon: 'fa-link' },
             { id: 'upi', label: 'UPI', icon: 'fa-credit-card' },
             { id: 'email', label: 'Email', icon: 'fa-envelope' },
             { id: 'phone', label: 'Phone', icon: 'fa-phone' },
+            { id: 'whatsapp', label: 'WhatsApp', icon: 'fa-whatsapp' },
             { id: 'wifi', label: 'WiFi', icon: 'fa-wifi' },
+            { id: 'vcard', label: 'vCard', icon: 'fa-address-card' },
+            { id: 'location', label: 'Location', icon: 'fa-location-dot' },
             { id: 'text', label: 'Text', icon: 'fa-font' }
         ];
 
         let currentType = 'link';
-        let qrCodeInstance = null;
+        let currentLogo = null;
+        let html5QrCode = null;
+        let chartsInitialized = false;
+
+        // Initialize Advanced QR Code
+        const qrCode = new QRCodeStyling({
+            width: 280, height: 280, type: "svg",
+            data: "https://qrgenpro.com",
+            dotsOptions: { color: "#000000", type: "rounded" },
+            backgroundOptions: { color: "#FFFFFF" },
+            cornersSquareOptions: { type: "extra-rounded" },
+            imageOptions: { crossOrigin: "anonymous", margin: 10 }
+        });
 
         // --- 2. TAB SWITCHING ---
         function switchTab(tabName) {
-            ['generator', 'analytics', 'bulk'].forEach(t => {
+            ['generator', 'scanner', 'analytics', 'history'].forEach(t => {
                 document.getElementById(`tab-${t}`).classList.add('hidden');
                 document.getElementById(`btn-${t}`).classList.remove('tab-active');
                 document.getElementById(`btn-${t}`).classList.add('tab-inactive');
@@ -261,26 +336,25 @@
             document.getElementById(`btn-${tabName}`).classList.remove('tab-inactive');
 
             if(tabName === 'analytics') initCharts();
+            if(tabName === 'history') renderHistory();
+            if(tabName === 'scanner') {
+                if(html5QrCode) html5QrCode.stop().catch(()=>{});
+                document.getElementById('start-scan').classList.remove('hidden');
+                document.getElementById('stop-scan').classList.add('hidden');
+                document.getElementById('scan-result').classList.add('hidden');
+            }
         }
 
         // --- 3. RENDER TYPE SELECTOR ---
         const typeContainer = document.getElementById('type-selector');
-        qrTypes.forEach(type => {
-            const btn = document.createElement('button');
-            btn.className = `flex flex-col items-center gap-2 p-3 rounded-xl border transition-all ${currentType === type.id ? 'bg-violet-600/20 border-violet-500 text-violet-300' : 'glass-light text-slate-400 hover:border-slate-500'}`;
-            btn.innerHTML = `<i class="fa-solid ${type.icon} text-xl"></i><span class="text-xs font-semibold">${type.label}</span>`;
-            btn.onclick = () => { currentType = type.id; renderTypeSelector(); renderForm(); generateQR(); };
-            typeContainer.appendChild(btn);
-        });
-
         function renderTypeSelector() {
-            const buttons = typeContainer.querySelectorAll('button');
-            buttons.forEach((btn, index) => {
-                if (qrTypes[index].id === currentType) {
-                    btn.className = 'flex flex-col items-center gap-2 p-3 rounded-xl border transition-all bg-violet-600/20 border-violet-500 text-violet-300';
-                } else {
-                    btn.className = 'flex flex-col items-center gap-2 p-3 rounded-xl border transition-all glass-light text-slate-400 hover:border-slate-500';
-                }
+            typeContainer.innerHTML = '';
+            qrTypes.forEach(type => {
+                const btn = document.createElement('button');
+                btn.className = `flex flex-col items-center gap-2 p-3 rounded-xl border transition-all ${currentType === type.id ? 'bg-violet-600/20 border-violet-500 text-violet-300' : 'glass-light text-slate-400 hover:border-slate-500'}`;
+                btn.innerHTML = `<i class="fa-brands ${type.icon} ${type.icon === 'fa-link' || type.icon === 'fa-credit-card' || type.icon === 'fa-envelope' || type.icon === 'fa-phone' || type.icon === 'fa-wifi' || type.icon === 'fa-address-card' || type.icon === 'fa-location-dot' || type.icon === 'fa-font' ? 'fa-solid' : ''} text-xl"></i><span class="text-[10px] font-bold uppercase tracking-wider">${type.label}</span>`;
+                btn.onclick = () => { currentType = type.id; renderTypeSelector(); renderForm(); updateQR(); };
+                typeContainer.appendChild(btn);
             });
         }
 
@@ -288,150 +362,170 @@
         function renderForm() {
             const form = document.getElementById('dynamic-form');
             let html = '';
+            const inputClass = "w-full glass-light border border-white/5 rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-violet-500 transition bg-transparent placeholder-slate-500";
             
             if (currentType === 'link') {
-                html = `<input type="url" id="input-data" placeholder="https://example.com" value="https://qrgenpro.com" class="w-full glass-light border border-slate-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-violet-500 transition">`;
+                html = `<input type="url" id="inp-url" placeholder="https://example.com" value="https://qrgenpro.com" class="${inputClass}">`;
             } else if (currentType === 'upi') {
-                html = `
-                    <input type="text" id="input-upi" placeholder="UPI ID (e.g., name@paytm)" class="w-full glass-light border border-slate-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-violet-500 transition">
-                    <input type="text" id="input-name" placeholder="Payee Name" class="w-full glass-light border border-slate-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-violet-500 transition">
-                    <input type="number" id="input-amount" placeholder="Amount (Optional)" class="w-full glass-light border border-slate-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-violet-500 transition">
-                `;
+                html = `<input type="text" id="inp-upi" placeholder="UPI ID (name@paytm)" class="${inputClass}"><input type="text" id="inp-name" placeholder="Payee Name" class="${inputClass}"><input type="number" id="inp-amt" placeholder="Amount (Optional)" class="${inputClass}">`;
             } else if (currentType === 'email') {
-                html = `
-                    <input type="email" id="input-email" placeholder="Recipient Email" class="w-full glass-light border border-slate-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-violet-500 transition">
-                    <input type="text" id="input-subject" placeholder="Subject" class="w-full glass-light border border-slate-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-violet-500 transition">
-                    <textarea id="input-body" placeholder="Message Body" class="w-full glass-light border border-slate-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-violet-500 transition h-24"></textarea>
-                `;
+                html = `<input type="email" id="inp-email" placeholder="Recipient Email" class="${inputClass}"><input type="text" id="inp-sub" placeholder="Subject" class="${inputClass}"><textarea id="inp-body" placeholder="Message" class="${inputClass} h-24"></textarea>`;
             } else if (currentType === 'phone') {
-                html = `<input type="tel" id="input-phone" placeholder="+91 98765 43210" class="w-full glass-light border border-slate-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-violet-500 transition">`;
+                html = `<input type="tel" id="inp-phone" placeholder="+91 98765 43210" class="${inputClass}">`;
+            } else if (currentType === 'whatsapp') {
+                html = `<input type="tel" id="inp-wa-phone" placeholder="Phone Number (e.g., 919876543210)" class="${inputClass}"><textarea id="inp-wa-msg" placeholder="Pre-filled message" class="${inputClass} h-24"></textarea>`;
             } else if (currentType === 'wifi') {
-                html = `
-                    <input type="text" id="input-ssid" placeholder="Network Name (SSID)" class="w-full glass-light border border-slate-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-violet-500 transition">
-                    <input type="password" id="input-pass" placeholder="Password" class="w-full glass-light border border-slate-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-violet-500 transition">
-                    <select id="input-sec" class="w-full glass-light border border-slate-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-violet-500 transition bg-slate-900"><option value="WPA">WPA/WPA2</option><option value="WEP">WEP</option><option value="nopass">No Password</option></select>
-                `;
+                html = `<input type="text" id="inp-ssid" placeholder="Network Name (SSID)" class="${inputClass}"><input type="password" id="inp-pass" placeholder="Password" class="${inputClass}"><select id="inp-sec" class="${inputClass} bg-slate-900"><option value="WPA">WPA/WPA2</option><option value="WEP">WEP</option><option value="nopass">No Password</option></select>`;
+            } else if (currentType === 'vcard') {
+                html = `<input type="text" id="inp-fname" placeholder="First Name" class="${inputClass}"><input type="text" id="inp-lname" placeholder="Last Name" class="${inputClass}"><input type="tel" id="inp-vphone" placeholder="Phone" class="${inputClass}"><input type="email" id="inp-vemail" placeholder="Email" class="${inputClass}">`;
+            } else if (currentType === 'location') {
+                html = `<input type="text" id="inp-lat" placeholder="Latitude (e.g., 28.6139)" class="${inputClass}"><input type="text" id="inp-lng" placeholder="Longitude (e.g., 77.2090)" class="${inputClass}">`;
             } else if (currentType === 'text') {
-                html = `<textarea id="input-text" placeholder="Enter your text here..." class="w-full glass-light border border-slate-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-violet-500 transition h-32"></textarea>`;
+                html = `<textarea id="inp-text" placeholder="Enter any text..." class="${inputClass} h-32"></textarea>`;
             }
             form.innerHTML = html;
-
-            // Attach listeners to new inputs
-            form.querySelectorAll('input, textarea, select').forEach(el => {
-                el.addEventListener('input', generateQR);
-            });
+            form.querySelectorAll('input, textarea, select').forEach(el => el.addEventListener('input', updateQR));
         }
 
-        // --- 5. QR GENERATION LOGIC ---
+        // --- 5. QR DATA & UPDATE ---
         function getQRString() {
-            if (currentType === 'link') return document.getElementById('input-data')?.value || 'https://qrgenpro.com';
-            if (currentType === 'upi') {
-                const pa = document.getElementById('input-upi')?.value || 'user@upi';
-                const pn = document.getElementById('input-name')?.value || 'User';
-                const am = document.getElementById('input-amount')?.value || '0';
-                return `upi://pay?pa=${pa}&pn=${pn}&am=${am}&cu=INR`;
-            }
-            if (currentType === 'email') {
-                const to = document.getElementById('input-email')?.value || 'test@test.com';
-                const sub = document.getElementById('input-subject')?.value || '';
-                const body = document.getElementById('input-body')?.value || '';
-                return `mailto:${to}?subject=${encodeURIComponent(sub)}&body=${encodeURIComponent(body)}`;
-            }
-            if (currentType === 'phone') return `tel:${document.getElementById('input-phone')?.value || '+919876543210'}`;
-            if (currentType === 'wifi') {
-                const ssid = document.getElementById('input-ssid')?.value || 'Network';
-                const pass = document.getElementById('input-pass')?.value || '';
-                const sec = document.getElementById('input-sec')?.value || 'WPA';
-                return `WIFI:T:${sec};S:${ssid};P:${pass};;`;
-            }
-            if (currentType === 'text') return document.getElementById('input-text')?.value || 'Hello World';
+            const val = (id) => document.getElementById(id)?.value || '';
+            if (currentType === 'link') return val('inp-url') || 'https://qrgenpro.com';
+            if (currentType === 'upi') return `upi://pay?pa=${val('inp-upi')}&pn=${val('inp-name')}&am=${val('inp-amt')}&cu=INR`;
+            if (currentType === 'email') return `mailto:${val('inp-email')}?subject=${encodeURIComponent(val('inp-sub'))}&body=${encodeURIComponent(val('inp-body'))}`;
+            if (currentType === 'phone') return `tel:${val('inp-phone')}`;
+            if (currentType === 'whatsapp') return `https://wa.me/${val('inp-wa-phone')}?text=${encodeURIComponent(val('inp-wa-msg'))}`;
+            if (currentType === 'wifi') return `WIFI:T:${val('inp-sec')};S:${val('inp-ssid')};P:${val('inp-pass')};;`;
+            if (currentType === 'vcard') return `BEGIN:VCARD\nVERSION:3.0\nN:${val('inp-lname')};${val('inp-fname')}\nFN:${val('inp-fname')} ${val('inp-lname')}\nTEL:${val('inp-vphone')}\nEMAIL:${val('inp-vemail')}\nEND:VCARD`;
+            if (currentType === 'location') return `https://maps.google.com/?q=${val('inp-lat')},${val('inp-lng')}`;
+            if (currentType === 'text') return val('inp-text') || 'Hello World';
             return 'https://qrgenpro.com';
         }
 
-        function generateQR() {
-            const container = document.getElementById('qrcode');
-            container.innerHTML = ''; // Clear previous
-            
-            const fg = document.getElementById('color-fg').value;
-            const bg = document.getElementById('color-bg').value;
-            const size = parseInt(document.getElementById('qr-size').value);
-            const data = getQRString();
-
-            qrCodeInstance = new QRCode(container, {
-                text: data,
-                width: size,
-                height: size,
-                colorDark: fg,
-                colorLight: bg,
-                correctLevel: QRCode.CorrectLevel.H
+        function updateQR() {
+            qrCode.update({
+                data: getQRString(),
+                dotsOptions: { color: document.getElementById('color-fg').value, type: document.getElementById('dot-style').value },
+                backgroundOptions: { color: document.getElementById('color-bg').value },
+                cornersSquareOptions: { type: document.getElementById('corner-style').value },
+                image: currentLogo
             });
         }
 
-        // --- 6. EVENT LISTENERS FOR CUSTOMIZATION ---
-        document.getElementById('color-fg').addEventListener('input', (e) => {
-            document.getElementById('color-fg-hex').innerText = e.target.value.toUpperCase();
-            generateQR();
+        // --- 6. EVENT LISTENERS ---
+        document.getElementById('color-fg').addEventListener('input', (e) => { document.getElementById('color-fg-hex').innerText = e.target.value.toUpperCase(); updateQR(); });
+        document.getElementById('color-bg').addEventListener('input', (e) => { document.getElementById('color-bg-hex').innerText = e.target.value.toUpperCase(); updateQR(); });
+        document.getElementById('dot-style').addEventListener('change', updateQR);
+        document.getElementById('corner-style').addEventListener('change', updateQR);
+
+        document.getElementById('logo-upload').addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = () => { currentLogo = reader.result; document.getElementById('remove-logo').classList.remove('hidden'); updateQR(); };
+                reader.readAsDataURL(file);
+            }
         });
-        document.getElementById('color-bg').addEventListener('input', (e) => {
-            document.getElementById('color-bg-hex').innerText = e.target.value.toUpperCase();
-            generateQR();
-        });
-        document.getElementById('qr-size').addEventListener('input', (e) => {
-            document.getElementById('size-val').innerText = e.target.value;
-            generateQR();
+        document.getElementById('remove-logo').addEventListener('click', () => { currentLogo = null; document.getElementById('logo-upload').value = ''; document.getElementById('remove-logo').classList.add('hidden'); updateQR(); });
+
+        function downloadQR(format) {
+            qrCode.download({ name: `qrgenpro-${Date.now()}`, extension: format });
+            Swal.fire({ icon: 'success', title: 'Downloaded!', text: `Your QR code has been saved as ${format.toUpperCase()}.`, timer: 1500, showConfirmButton: false, background: '#12121a', color: '#fff' });
+        }
+
+        // --- 7. HISTORY (LOCAL STORAGE) ---
+        function saveToHistory() {
+            const history = JSON.parse(localStorage.getItem('qr_history') || '[]');
+            const newItem = { id: Date.now(), type: currentType, data: getQRString(), date: new Date().toLocaleDateString() };
+            history.unshift(newItem);
+            localStorage.setItem('qr_history', JSON.stringify(history));
+            Swal.fire({ icon: 'success', title: 'Saved!', text: 'QR code added to your history.', timer: 1500, showConfirmButton: false, background: '#12121a', color: '#fff' });
+        }
+
+        function renderHistory() {
+            const history = JSON.parse(localStorage.getItem('qr_history') || '[]');
+            const grid = document.getElementById('history-grid');
+            const empty = document.getElementById('empty-history');
+            
+            if (history.length === 0) { grid.innerHTML = ''; empty.classList.remove('hidden'); return; }
+            empty.classList.add('hidden');
+            grid.innerHTML = history.map(item => `
+                <div class="glass rounded-xl p-4 flex flex-col items-center text-center group hover:border-violet-500/50 transition">
+                    <div class="w-16 h-16 bg-white rounded-lg p-1 mb-3"><i class="fa-solid fa-qrcode text-4xl text-slate-800 flex items-center justify-center h-full"></i></div>
+                    <span class="text-xs font-bold text-violet-400 uppercase mb-1">${item.type}</span>
+                    <p class="text-[10px] text-slate-500 truncate w-full mb-2">${item.data}</p>
+                    <div class="flex gap-2 w-full">
+                        <button onclick="loadFromHistory(${item.id})" class="flex-1 bg-violet-600/20 text-violet-300 text-[10px] py-1.5 rounded-lg hover:bg-violet-600/30 transition">Load</button>
+                        <button onclick="deleteHistory(${item.id})" class="bg-red-500/10 text-red-400 px-2 py-1.5 rounded-lg hover:bg-red-500/20 transition"><i class="fa-solid fa-trash text-[10px]"></i></button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function loadFromHistory(id) {
+            const history = JSON.parse(localStorage.getItem('qr_history') || '[]');
+            const item = history.find(h => h.id === id);
+            if(item) { currentType = item.type; switchTab('generator'); renderTypeSelector(); renderForm(); setTimeout(() => { /* populate inputs if needed */ updateQR(); }, 100); }
+        }
+
+        function deleteHistory(id) {
+            let history = JSON.parse(localStorage.getItem('qr_history') || '[]');
+            history = history.filter(h => h.id !== id);
+            localStorage.setItem('qr_history', JSON.stringify(history));
+            renderHistory();
+        }
+
+        function clearHistory() {
+            Swal.fire({ title: 'Clear all history?', text: "You won't be able to revert this!", icon: 'warning', showCancelButton: true, confirmButtonColor: '#7C3AED', cancelButtonColor: '#d33', confirmButtonText: 'Yes, clear it!', background: '#12121a', color: '#fff' }).then((result) => {
+                if (result.isConfirmed) { localStorage.removeItem('qr_history'); renderHistory(); }
+            });
+        }
+
+        // --- 8. SCANNER ---
+        document.getElementById('start-scan').addEventListener('click', () => {
+            html5QrCode = new Html5Qrcode("reader");
+            html5QrCode.start({ facingMode: "environment" }, { fps: 10, qrbox: { width: 250, height: 250 } }, (decodedText) => {
+                document.getElementById('scan-result').classList.remove('hidden');
+                document.getElementById('scan-text').innerText = decodedText;
+                html5QrCode.stop();
+                document.getElementById('start-scan').classList.remove('hidden');
+                document.getElementById('stop-scan').classList.add('hidden');
+                Swal.fire({ icon: 'success', title: 'Scanned!', text: decodedText, background: '#12121a', color: '#fff' });
+            }, (errorMessage) => {}).catch(err => {
+                Swal.fire({ icon: 'error', title: 'Camera Error', text: 'Please allow camera access.', background: '#12121a', color: '#fff' });
+            });
+            document.getElementById('start-scan').classList.add('hidden');
+            document.getElementById('stop-scan').classList.remove('hidden');
         });
 
-        // --- 7. CHARTS INITIALIZATION ---
-        let chartsInitialized = false;
+        document.getElementById('stop-scan').addEventListener('click', () => {
+            if(html5QrCode) html5QrCode.stop().then(() => {
+                document.getElementById('start-scan').classList.remove('hidden');
+                document.getElementById('stop-scan').classList.add('hidden');
+            });
+        });
+
+        // --- 9. CHARTS ---
         function initCharts() {
             if (chartsInitialized) return;
+            Chart.defaults.color = '#94A3B8';
+            Chart.defaults.borderColor = 'rgba(255,255,255,0.05)';
             
-            // Line Chart
             new Chart(document.getElementById('lineChart'), {
-                type: 'line',
-                data: {
-                    labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
-                    datasets: [{
-                        label: 'Scans',
-                        data: [120, 240, 180, 390, 310, 480, 420],
-                        borderColor: '#8B5CF6',
-                        backgroundColor: 'rgba(139, 92, 246, 0.1)',
-                        fill: true,
-                        tension: 0.4
-                    }]
-                },
-                options: {
-                    responsive: true, maintainAspectRatio: false,
-                    plugins: { legend: { display: false } },
-                    scales: {
-                        x: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#94A3B8' } },
-                        y: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#94A3B8' } }
-                    }
-                }
+                type: 'line', data: { labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'], datasets: [{ label: 'Scans', data: [120, 240, 180, 390, 310, 480, 420], borderColor: '#8B5CF6', backgroundColor: 'rgba(139, 92, 246, 0.1)', fill: true, tension: 0.4, borderWidth: 2 }] },
+                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { x: { grid: { display: false } }, y: { grid: { color: 'rgba(255,255,255,0.05)' } } } }
             });
-
-            // Doughnut Chart
             new Chart(document.getElementById('doughnutChart'), {
-                type: 'doughnut',
-                data: {
-                    labels: ['Android', 'iOS', 'Desktop'],
-                    datasets: [{
-                        data: [55, 35, 10],
-                        backgroundColor: ['#8B5CF6', '#EC4899', '#10B981'],
-                        borderWidth: 0
-                    }]
-                },
-                options: {
-                    responsive: true, maintainAspectRatio: false,
-                    plugins: { legend: { position: 'bottom', labels: { color: '#94A3B8' } } }
-                }
+                type: 'doughnut', data: { labels: ['Android', 'iOS', 'Desktop'], datasets: [{ data: [55, 35, 10], backgroundColor: ['#8B5CF6', '#EC4899', '#10B981'], borderWidth: 0 }] },
+                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom', labels: { padding: 20, usePointStyle: true } } }, cutout: '70%' }
             });
             chartsInitialized = true;
         }
 
         // --- INIT ---
+        qrCode.append(document.getElementById("qr-container"));
+        renderTypeSelector();
         renderForm();
-        generateQR();
     </script>
 </body>
 </html>

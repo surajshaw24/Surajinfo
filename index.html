@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Voice Assistant - Sab Kuch Kare</title>
+    <style>
+        :root {
+            --bg-color: #0f172a;
+            --card-bg: rgba(30, 41, 59, 0.7);
+            --primary: #38bdf8;
+            --text: #f8fafc;
+            --text-dim: #94a3b8;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            background: var(--bg-color);
+            color: var(--text);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+            background-image: radial-gradient(circle at 50% 50%, #1e293b 0%, #0f172a 100%);
+        }
+
+        .container {
+            text-align: center;
+            width: 90%;
+            max-width: 600px;
+        }
+
+        h1 {
+            font-size: 2rem;
+            margin-bottom: 10px;
+            background: linear-gradient(90deg, var(--primary), #818cf8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .status {
+            color: var(--text-dim);
+            height: 24px;
+            margin-bottom: 20px;
+            font-size: 1.1rem;
+        }
+
+        .chat-box {
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 20px;
+            padding: 20px;
+            height: 300px;
+            overflow-y: auto;
+            margin-bottom: 30px;
+            text-align: left;
+            scroll-behavior: smooth;
+        }
+
+        .msg {
+            margin: 10px 0;
+            padding: 10px 15px;
+            border-radius: 15px;
+            max-width: 80%;
+            line-height: 1.4;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .user-msg {
+            background: #1e40af;
+            margin-left: auto;
+            text-align: right;
+            border-bottom-right-radius: 5px;
+        }
+
+        .ai-msg {
+            background: #334155;
+            margin-right: auto;
+            border-bottom-left-radius: 5px;
+        }
+
+        .mic-btn {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary), #818cf8);
+            border: none;
+            color: white;
+            font-size: 2rem;
+            cursor: pointer;
+            transition: transform 0.2s;
+            box-shadow: 0 10px 25px rgba(56, 189, 248, 0.3);
+            position: relative;
+        }
+
+        .mic-btn:hover { transform: scale(1.05); }
+        .mic-btn:active { transform: scale(0.95); }
+
+        .mic-btn.listening {
+            animation: pulse 1.5s infinite;
+            background: linear-gradient(135deg, #ef4444, #f97316);
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); }
+            70% { box-shadow: 0 0 0 20px rgba(239, 68, 68, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .settings-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: none;
+            border: none;
+            color: var(--text-dim);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.8);
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+        }
+
+        .modal-content {
+            background: #1e293b;
+            padding: 30px;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 400px;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 8px;
+            border: 1px solid #475569;
+            background: #0f172a;
+            color: white;
+            box-sizing: border-box;
+        }
+
+        button.save-btn {
+            background: var(--primary);
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            width: 100%;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <button class="settings-btn" onclick="toggleSettings()">⚙️</button>
+
+    <div class="container">
+        <h1>AI Voice Assistant</h1>
+        <p class="status" id="status">Click the mic to start</p>
+        
+        <div class="chat-box" id="chatBox">
+            <div class="msg ai-msg">Hello! Main aapka AI assistant hoon. Boliye main aapki kya madad karoon?</div>
+        </div>
+
+        <button class="mic-btn" id="micBtn" onclick="toggleListening()">🎤</button>
+    </div>
+
+    <!-- Settings Modal for API Key -->
+    <div class="modal" id="settingsModal">
+        <div class="modal-content">
+            <h3>Settings</h3>
+            <p style="color: var(--text-dim); font-size: 0.9rem;">Apna OpenAI API Key yahan dalein (Advanced AI chat ke liye).</p>
+            <input type="password" id="apiKeyInput" placeholder="sk-... (OpenAI API Key)">
+            <button class="save-btn" onclick="saveSettings()">Save & Close</button>
+        </div>
+    </div>
+
+    <script>
+        // --- CONFIGURATION ---
+        // ⚠️ WARNING: API key hardcoded here is NOT secure for production!
+        let API_KEY = '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';
+        
+        const synth = window.speechSynthesis;
+        const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+        
+        recognition.lang = 'en-IN';
+        recognition.continuous = false;
+        recognition.interimResults = false;
+
+        let isListening = false;
+
+        // --- UI ELEMENTS ---
+        const micBtn = document.getElementById('micBtn');
+        const statusText = document.getElementById('status');
+        const chatBox = document.getElementById('chatBox');
+
+        // --- SPEECH RECOGNITION (EARS) ---
+        recognition.onstart = () => {
+            isListening = true;
+            micBtn.classList.add('listening');
+            statusText.innerText = "Listening...";
+        };
+
+        recognition.onresult = (event) => {
+            const transcript = event.results[0][0].transcript;
+            addMessage(transcript, 'user');
+            statusText.innerText = "Thinking...";
+            processCommand(transcript);
+        };
+
+        recognition.onend = () => {
+            isListening = false;
+            micBtn.classList.remove('listening');
+            if(statusText.innerText === "Listening...") statusText.innerText = "Click mic to speak";
+        };
+
+        recognition.onerror = (event) => {
+            console.error(event.error);
+            statusText.innerText = "Error: " + event.error;
+            micBtn.classList.remove('listening');
+            isListening = false;
+        };
+
+        // --- COMMAND PROCESSOR (BRAIN & HANDS) ---
+        async function processCommand(text) {
+            const lowerText = text.toLowerCase();
+
+            // 1. Local Commands (Fast & No API needed)
+            if (lowerText.includes('time') || lowerText.includes('samay') || lowerText.includes('waqt')) {
+                const time = new Date().toLocaleTimeString();
+                respond(`Abhi ka samay hai ${time}`);
+            } 
+            else if (lowerText.includes('date') || lowerText.includes('tarikh') || lowerText.includes('din')) {
+                const date = new Date().toLocaleDateString('hi-IN', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+                respond(`Aaj ki tarikh hai ${date}`);
+            } 
+            else if (lowerText.includes('open youtube') || lowerText.includes('youtube kholo')) {
+                respond("YouTube open kar raha hoon.");
+                window.open('https://youtube.com', '_blank');
+            } 
+            else if (lowerText.includes('open google') || lowerText.includes('google kholo')) {
+                respond("Google open kar raha hoon.");
+                window.open('https://google.com', '_blank');
+            } 
+            else if (lowerText.includes('search') || lowerText.includes('dhundo')) {
+                const query = text.replace(/search|dhundo|for/gi, '').trim();
+                respond(`${query} search kar raha hoon.`);
+                window.open(`https://www.google.com/search?q=${encodeURIComponent(query)}`, '_blank');
+            } 
+            else if (lowerText.includes('wikipedia') || lowerText.includes('wiki')) {
+                const query = text.replace(/wikipedia|wiki|search/gi, '').trim();
+                respond(`Wikipedia par ${query} dhundh raha hoon.`);
+                window.open(`https://en.wikipedia.org/wiki/Special:Search?search=${encodeURIComponent(query)}`, '_blank');
+            }
+            else if (lowerText.includes('stop') || lowerText.includes('band karo') || lowerText.includes('chup')) {
+                synth.cancel();
+                respond("Theek hai, main chup ho gaya.");
+            }
+            // 2. AI Fallback (If no local command matches)
+            else {
+                await askAI(text);
+            }
+        }
+
+        // --- AI INTEGRATION (OPENAI) ---
+        async function askAI(userText) {
+            try {
+                const response = await fetch('https://api.openai.com/v1/chat/completions', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${API_KEY}`
+                    },
+                    body: JSON.stringify({
+                        model: "gpt-3.5-turbo",
+                        messages: [
+                            { role: "system", content: "You are a helpful, friendly AI voice assistant. Keep answers concise and conversational as they will be spoken out loud." },
+                            { role: "user", content: userText }
+                        ],
+                        max_tokens: 150
+                    })
+                });
+
+                const data = await response.json();
+                if (data.error) throw new Error(data.error.message);
+                
+                const aiReply = data.choices[0].message.content;
+                respond(aiReply);
+            } catch (error) {
+                console.error(error);
+                respond("Sorry, AI se connect karne mein error aaya. Please apni API key check karein.");
+            }
+        }
+
+        // --- TEXT TO SPEECH (MOUTH) ---
+        function respond(text) {
+            addMessage(text, 'ai');
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.lang = 'en-IN';
+            utterance.rate = 1;
+            utterance.pitch = 1;
+            
+            const voices = synth.getVoices();
+            const indianVoice = voices.find(v => v.lang.includes('en-IN'));
+            if (indianVoice) utterance.voice = indianVoice;
+
+            statusText.innerText = "Speaking...";
+            synth.speak(utterance);
+            
+            utterance.onend = () => {
+                statusText.innerText = "Click mic to speak";
+            };
+        }
+
+        // --- UI HELPERS ---
+        function addMessage(text, sender) {
+            const msgDiv = document.createElement('div');
+            msgDiv.classList.add('msg', sender === 'user' ? 'user-msg' : 'ai-msg');
+            msgDiv.innerText = text;
+            chatBox.appendChild(msgDiv);
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+
+        function toggleListening() {
+            if (isListening) {
+                recognition.stop();
+            } else {
+                synth.cancel();
+                recognition.start();
+            }
+        }
+
+        function toggleSettings() {
+            const modal = document.getElementById('settingsModal');
+            modal.style.display = modal.style.display === 'flex' ? 'none' : 'flex';
+            document.getElementById('apiKeyInput').value = API_KEY;
+        }
+
+        function saveSettings() {
+            API_KEY = document.getElementById('apiKeyInput').value.trim();
+            localStorage.setItem('openai_api_key', API_KEY);
+            toggleSettings();
+            respond("Settings save ho gayi hain!");
+        }
+
+        // Load voices (needed for some browsers)
+        synth.onvoiceschanged = () => synth.getVoices();
+    </script>
+</body>
+</html>
